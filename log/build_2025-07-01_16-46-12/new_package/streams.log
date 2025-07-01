@@ -1,0 +1,24 @@
+[2.141s] Invoking command in '/home/ptrip/ros2_ws/src/new_package': PYTHONPATH=/home/ptrip/ros2_ws/build/new_package/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/new_package build --build-base /home/ptrip/ros2_ws/build/new_package/build install --record /home/ptrip/ros2_ws/build/new_package/install.log --single-version-externally-managed install_data
+[2.783s] running egg_info
+[2.838s] writing ../../build/new_package/new_package.egg-info/PKG-INFO
+[2.859s] writing dependency_links to ../../build/new_package/new_package.egg-info/dependency_links.txt
+[2.861s] writing entry points to ../../build/new_package/new_package.egg-info/entry_points.txt
+[2.863s] writing requirements to ../../build/new_package/new_package.egg-info/requires.txt
+[2.864s] writing top-level names to ../../build/new_package/new_package.egg-info/top_level.txt
+[2.961s] reading manifest file '../../build/new_package/new_package.egg-info/SOURCES.txt'
+[2.964s] writing manifest file '../../build/new_package/new_package.egg-info/SOURCES.txt'
+[2.965s] running build
+[2.965s] running build_py
+[2.966s] copying new_package/new_node.py -> /home/ptrip/ros2_ws/build/new_package/build/lib/new_package
+[2.966s] running install
+[2.983s] running install_lib
+[3.033s] copying /home/ptrip/ros2_ws/build/new_package/build/lib/new_package/new_node.py -> /home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages/new_package
+[3.035s] byte-compiling /home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages/new_package/new_node.py to new_node.cpython-312.pyc
+[3.039s] running install_data
+[3.039s] running install_egg_info
+[3.090s] removing '/home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages/new_package-0.0.0-py3.12.egg-info' (and everything under it)
+[3.091s] Copying ../../build/new_package/new_package.egg-info to /home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages/new_package-0.0.0-py3.12.egg-info
+[3.094s] running install_scripts
+[3.400s] Installing new_node script to /home/ptrip/ros2_ws/install/new_package/lib/new_package
+[3.401s] writing list of installed files to '/home/ptrip/ros2_ws/build/new_package/install.log'
+[3.483s] Invoked command in '/home/ptrip/ros2_ws/src/new_package' returned '0': PYTHONPATH=/home/ptrip/ros2_ws/build/new_package/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/new_package build --build-base /home/ptrip/ros2_ws/build/new_package/build install --record /home/ptrip/ros2_ws/build/new_package/install.log --single-version-externally-managed install_data

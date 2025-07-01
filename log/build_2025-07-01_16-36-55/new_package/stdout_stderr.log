@@ -1,0 +1,33 @@
+running egg_info
+creating ../../build/new_package/new_package.egg-info
+writing ../../build/new_package/new_package.egg-info/PKG-INFO
+writing dependency_links to ../../build/new_package/new_package.egg-info/dependency_links.txt
+writing requirements to ../../build/new_package/new_package.egg-info/requires.txt
+writing top-level names to ../../build/new_package/new_package.egg-info/top_level.txt
+writing manifest file '../../build/new_package/new_package.egg-info/SOURCES.txt'
+reading manifest file '../../build/new_package/new_package.egg-info/SOURCES.txt'
+writing manifest file '../../build/new_package/new_package.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/ptrip/ros2_ws/build/new_package/build
+creating /home/ptrip/ros2_ws/build/new_package/build/lib
+creating /home/ptrip/ros2_ws/build/new_package/build/lib/new_package
+copying new_package/new_node.py -> /home/ptrip/ros2_ws/build/new_package/build/lib/new_package
+copying new_package/__init__.py -> /home/ptrip/ros2_ws/build/new_package/build/lib/new_package
+running install
+running install_lib
+creating /home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages/new_package
+copying /home/ptrip/ros2_ws/build/new_package/build/lib/new_package/new_node.py -> /home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages/new_package
+copying /home/ptrip/ros2_ws/build/new_package/build/lib/new_package/__init__.py -> /home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages/new_package
+byte-compiling /home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages/new_package/new_node.py to new_node.cpython-312.pyc
+byte-compiling /home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages/new_package/__init__.py to __init__.cpython-312.pyc
+running install_data
+creating /home/ptrip/ros2_ws/install/new_package/share/ament_index
+creating /home/ptrip/ros2_ws/install/new_package/share/ament_index/resource_index
+creating /home/ptrip/ros2_ws/install/new_package/share/ament_index/resource_index/packages
+copying resource/new_package -> /home/ptrip/ros2_ws/install/new_package/share/ament_index/resource_index/packages
+copying package.xml -> /home/ptrip/ros2_ws/install/new_package/share/new_package
+running install_egg_info
+Copying ../../build/new_package/new_package.egg-info to /home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages/new_package-0.0.0-py3.12.egg-info
+running install_scripts
+writing list of installed files to '/home/ptrip/ros2_ws/build/new_package/install.log'
