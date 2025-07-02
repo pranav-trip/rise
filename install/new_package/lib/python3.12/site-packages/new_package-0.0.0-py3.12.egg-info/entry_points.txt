@@ -1,2 +1,0 @@
-[console_scripts]
-new_node = new_package.new_node:main

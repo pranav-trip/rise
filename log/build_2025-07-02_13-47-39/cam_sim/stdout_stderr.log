@@ -1,0 +1,17 @@
+running develop
+running egg_info
+writing cam_sim.egg-info/PKG-INFO
+writing dependency_links to cam_sim.egg-info/dependency_links.txt
+writing entry points to cam_sim.egg-info/entry_points.txt
+writing requirements to cam_sim.egg-info/requires.txt
+writing top-level names to cam_sim.egg-info/top_level.txt
+reading manifest file 'cam_sim.egg-info/SOURCES.txt'
+writing manifest file 'cam_sim.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages/cam-sim.egg-link (link to .)
+Installing sim script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim
+
+Installed /home/ptrip/ros2_ws/build/cam_sim
+running symlink_data
+symbolically linking /home/ptrip/ros2_ws/build/cam_sim/resource/cam_sim -> /home/ptrip/ros2_ws/install/cam_sim/share/ament_index/resource_index/packages
+symbolically linking /home/ptrip/ros2_ws/build/cam_sim/package.xml -> /home/ptrip/ros2_ws/install/cam_sim/share/cam_sim
