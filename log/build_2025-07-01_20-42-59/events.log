@@ -1,0 +1,90 @@
+[0.000000] (-) TimerEvent: {}
+[0.002077] (drone_sim) JobQueued: {'identifier': 'drone_sim', 'dependencies': OrderedDict()}
+[0.002237] (new_package) JobQueued: {'identifier': 'new_package', 'dependencies': OrderedDict()}
+[0.003184] (drone_sim) JobStarted: {'identifier': 'drone_sim'}
+[0.024453] (new_package) JobStarted: {'identifier': 'new_package'}
+[0.098912] (-) TimerEvent: {}
+[0.199557] (-) TimerEvent: {}
+[0.300226] (-) TimerEvent: {}
+[0.400952] (-) TimerEvent: {}
+[0.502097] (-) TimerEvent: {}
+[0.602904] (-) TimerEvent: {}
+[0.703564] (-) TimerEvent: {}
+[0.804246] (-) TimerEvent: {}
+[0.905131] (-) TimerEvent: {}
+[1.005997] (-) TimerEvent: {}
+[1.107103] (-) TimerEvent: {}
+[1.207828] (-) TimerEvent: {}
+[1.308538] (-) TimerEvent: {}
+[1.409378] (-) TimerEvent: {}
+[1.510202] (-) TimerEvent: {}
+[1.611191] (-) TimerEvent: {}
+[1.712047] (-) TimerEvent: {}
+[1.812927] (-) TimerEvent: {}
+[1.913638] (-) TimerEvent: {}
+[2.014356] (-) TimerEvent: {}
+[2.114977] (-) TimerEvent: {}
+[2.215718] (-) TimerEvent: {}
+[2.316532] (-) TimerEvent: {}
+[2.332704] (new_package) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/new_package', 'build', '--build-base', '/home/ptrip/ros2_ws/build/new_package/build', 'install', '--record', '/home/ptrip/ros2_ws/build/new_package/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/ptrip/ros2_ws/src/new_package', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'ptrip', 'GIT_ASKPASS': '/home/ptrip/.vscode-server/bin/2901c5ac6db8a986a5666c3af51ff804d05af0d4/extensions/git/dist/askpass.sh', 'SHLVL': '2', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/opt/rviz_ogre_vendor/lib:/opt/ros/jazzy/lib/x86_64-linux-gnu:/opt/ros/jazzy/opt/gz_math_vendor/lib:/opt/ros/jazzy/opt/gz_utils_vendor/lib:/opt/ros/jazzy/opt/gz_cmake_vendor/lib:/opt/ros/jazzy/lib', 'HOME': '/home/ptrip', 'OLDPWD': '/home/ptrip/ros2_ws/src', 'TERM_PROGRAM_VERSION': '1.101.2', 'VSCODE_IPC_HOOK_CLI': '/tmp/vscode-ipc-70f92e28-d766-45df-a5d5-2d8c103f6112.sock', 'ROS_PYTHON_VERSION': '3', 'VSCODE_GIT_ASKPASS_MAIN': '/home/ptrip/.vscode-server/bin/2901c5ac6db8a986a5666c3af51ff804d05af0d4/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/home/ptrip/.vscode-server/bin/2901c5ac6db8a986a5666c3af51ff804d05af0d4/node', 'COLORTERM': 'truecolor', 'WSL_DISTRO_NAME': 'Ubuntu-24.04', 'COLCON_PREFIX_PATH': '/home/ptrip/ros2_ws/install', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'ptrip', 'NAME': 'Code', 'WSL_INTEROP': '/run/WSL/3425_interop', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'TERM': 'xterm-256color', 'PATH': '/home/ptrip/.vscode-server/bin/2901c5ac6db8a986a5666c3af51ff804d05af0d4/bin/remote-cli:/opt/ros/jazzy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/cmd:/mnt/c/Users/prana/AppData/Local/Programs/Python/Launcher/:/mnt/c/Users/prana/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/prana/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/home/ptrip/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand', 'LANG': 'C.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'VSCODE_GIT_IPC_HANDLE': '/tmp/vscode-git-c24bc90a59.sock', 'TERM_PROGRAM': 'vscode', 'AMENT_PREFIX_PATH': '/home/ptrip/ros2_ws/install/drone_sim:/home/ptrip/ros2_ws/install/new_package:/opt/ros/jazzy', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'PWD': '/home/ptrip/ros2_ws/build/new_package', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/ptrip/ros2_ws/build/new_package/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages:/home/ptrip/ros2_ws/install/drone_sim/lib/python3.12/site-packages:/home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1', 'HOSTTYPE': 'x86_64', 'CMAKE_PREFIX_PATH': '/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor', 'WSLENV': 'ELECTRON_RUN_AS_NODE/w:'}, 'shell': False}
+[2.356552] (drone_sim) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/drone_sim', 'build', '--build-base', '/home/ptrip/ros2_ws/build/drone_sim/build', 'install', '--record', '/home/ptrip/ros2_ws/build/drone_sim/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/ptrip/ros2_ws/src/drone_sim', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'ptrip', 'GIT_ASKPASS': '/home/ptrip/.vscode-server/bin/2901c5ac6db8a986a5666c3af51ff804d05af0d4/extensions/git/dist/askpass.sh', 'SHLVL': '2', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/opt/rviz_ogre_vendor/lib:/opt/ros/jazzy/lib/x86_64-linux-gnu:/opt/ros/jazzy/opt/gz_math_vendor/lib:/opt/ros/jazzy/opt/gz_utils_vendor/lib:/opt/ros/jazzy/opt/gz_cmake_vendor/lib:/opt/ros/jazzy/lib', 'HOME': '/home/ptrip', 'OLDPWD': '/home/ptrip/ros2_ws/src', 'TERM_PROGRAM_VERSION': '1.101.2', 'VSCODE_IPC_HOOK_CLI': '/tmp/vscode-ipc-70f92e28-d766-45df-a5d5-2d8c103f6112.sock', 'ROS_PYTHON_VERSION': '3', 'VSCODE_GIT_ASKPASS_MAIN': '/home/ptrip/.vscode-server/bin/2901c5ac6db8a986a5666c3af51ff804d05af0d4/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/home/ptrip/.vscode-server/bin/2901c5ac6db8a986a5666c3af51ff804d05af0d4/node', 'COLORTERM': 'truecolor', 'WSL_DISTRO_NAME': 'Ubuntu-24.04', 'COLCON_PREFIX_PATH': '/home/ptrip/ros2_ws/install', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'ptrip', 'NAME': 'Code', 'WSL_INTEROP': '/run/WSL/3425_interop', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'TERM': 'xterm-256color', 'PATH': '/home/ptrip/.vscode-server/bin/2901c5ac6db8a986a5666c3af51ff804d05af0d4/bin/remote-cli:/opt/ros/jazzy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/cmd:/mnt/c/Users/prana/AppData/Local/Programs/Python/Launcher/:/mnt/c/Users/prana/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/prana/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/home/ptrip/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand', 'LANG': 'C.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'VSCODE_GIT_IPC_HANDLE': '/tmp/vscode-git-c24bc90a59.sock', 'TERM_PROGRAM': 'vscode', 'AMENT_PREFIX_PATH': '/home/ptrip/ros2_ws/install/drone_sim:/home/ptrip/ros2_ws/install/new_package:/opt/ros/jazzy', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'PWD': '/home/ptrip/ros2_ws/build/drone_sim', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/ptrip/ros2_ws/build/drone_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/drone_sim/lib/python3.12/site-packages:/home/ptrip/ros2_ws/install/drone_sim/lib/python3.12/site-packages:/home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1', 'HOSTTYPE': 'x86_64', 'CMAKE_PREFIX_PATH': '/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor', 'WSLENV': 'ELECTRON_RUN_AS_NODE/w:'}, 'shell': False}
+[2.416902] (-) TimerEvent: {}
+[2.517848] (-) TimerEvent: {}
+[2.618606] (-) TimerEvent: {}
+[2.719378] (-) TimerEvent: {}
+[2.820334] (-) TimerEvent: {}
+[2.921051] (-) TimerEvent: {}
+[2.941221] (new_package) StdoutLine: {'line': b'running egg_info\n'}
+[2.990656] (new_package) StdoutLine: {'line': b'writing ../../build/new_package/new_package.egg-info/PKG-INFO\n'}
+[2.992201] (new_package) StdoutLine: {'line': b'writing dependency_links to ../../build/new_package/new_package.egg-info/dependency_links.txt\n'}
+[2.993033] (new_package) StdoutLine: {'line': b'writing entry points to ../../build/new_package/new_package.egg-info/entry_points.txt\n'}
+[2.993709] (new_package) StdoutLine: {'line': b'writing requirements to ../../build/new_package/new_package.egg-info/requires.txt\n'}
+[2.994697] (new_package) StdoutLine: {'line': b'writing top-level names to ../../build/new_package/new_package.egg-info/top_level.txt\n'}
+[3.012709] (drone_sim) StdoutLine: {'line': b'running egg_info\n'}
+[3.021301] (-) TimerEvent: {}
+[3.059561] (drone_sim) StdoutLine: {'line': b'writing ../../build/drone_sim/drone_sim.egg-info/PKG-INFO\n'}
+[3.060930] (drone_sim) StdoutLine: {'line': b'writing dependency_links to ../../build/drone_sim/drone_sim.egg-info/dependency_links.txt\n'}
+[3.061465] (drone_sim) StdoutLine: {'line': b'writing entry points to ../../build/drone_sim/drone_sim.egg-info/entry_points.txt\n'}
+[3.062115] (drone_sim) StdoutLine: {'line': b'writing requirements to ../../build/drone_sim/drone_sim.egg-info/requires.txt\n'}
+[3.062776] (drone_sim) StdoutLine: {'line': b'writing top-level names to ../../build/drone_sim/drone_sim.egg-info/top_level.txt\n'}
+[3.081686] (new_package) StdoutLine: {'line': b"reading manifest file '../../build/new_package/new_package.egg-info/SOURCES.txt'\n"}
+[3.083176] (new_package) StdoutLine: {'line': b"writing manifest file '../../build/new_package/new_package.egg-info/SOURCES.txt'\n"}
+[3.083914] (new_package) StdoutLine: {'line': b'running build\n'}
+[3.084113] (new_package) StdoutLine: {'line': b'running build_py\n'}
+[3.084490] (new_package) StdoutLine: {'line': b'running install\n'}
+[3.098221] (new_package) StdoutLine: {'line': b'running install_lib\n'}
+[3.121585] (-) TimerEvent: {}
+[3.139185] (drone_sim) StdoutLine: {'line': b"reading manifest file '../../build/drone_sim/drone_sim.egg-info/SOURCES.txt'\n"}
+[3.140653] (drone_sim) StdoutLine: {'line': b"writing manifest file '../../build/drone_sim/drone_sim.egg-info/SOURCES.txt'\n"}
+[3.141681] (drone_sim) StdoutLine: {'line': b'running build\n'}
+[3.142487] (drone_sim) StdoutLine: {'line': b'running build_py\n'}
+[3.143433] (drone_sim) StdoutLine: {'line': b'copying drone_sim/sim_node.py -> /home/ptrip/ros2_ws/build/drone_sim/build/lib/drone_sim\n'}
+[3.143710] (drone_sim) StdoutLine: {'line': b'running install\n'}
+[3.143954] (new_package) StdoutLine: {'line': b'running install_data\n'}
+[3.144165] (new_package) StdoutLine: {'line': b'running install_egg_info\n'}
+[3.157138] (drone_sim) StdoutLine: {'line': b'running install_lib\n'}
+[3.183826] (new_package) StdoutLine: {'line': b"removing '/home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages/new_package-0.0.0-py3.12.egg-info' (and everything under it)\n"}
+[3.184603] (new_package) StdoutLine: {'line': b'Copying ../../build/new_package/new_package.egg-info to /home/ptrip/ros2_ws/install/new_package/lib/python3.12/site-packages/new_package-0.0.0-py3.12.egg-info\n'}
+[3.187898] (new_package) StdoutLine: {'line': b'running install_scripts\n'}
+[3.195345] (drone_sim) StdoutLine: {'line': b'copying /home/ptrip/ros2_ws/build/drone_sim/build/lib/drone_sim/sim_node.py -> /home/ptrip/ros2_ws/install/drone_sim/lib/python3.12/site-packages/drone_sim\n'}
+[3.198170] (drone_sim) StdoutLine: {'line': b'byte-compiling /home/ptrip/ros2_ws/install/drone_sim/lib/python3.12/site-packages/drone_sim/sim_node.py to sim_node.cpython-312.pyc\n'}
+[3.205096] (drone_sim) StderrLine: {'line': b'Sorry: IndentationError: expected an indented block after function definition on line 33 (sim_node.py, line 34)\n'}
+[3.205914] (drone_sim) StdoutLine: {'line': b'running install_data\n'}
+[3.206230] (drone_sim) StdoutLine: {'line': b'running install_egg_info\n'}
+[3.221882] (-) TimerEvent: {}
+[3.255684] (drone_sim) StdoutLine: {'line': b"removing '/home/ptrip/ros2_ws/install/drone_sim/lib/python3.12/site-packages/drone_sim-0.0.0-py3.12.egg-info' (and everything under it)\n"}
+[3.256383] (drone_sim) StdoutLine: {'line': b'Copying ../../build/drone_sim/drone_sim.egg-info to /home/ptrip/ros2_ws/install/drone_sim/lib/python3.12/site-packages/drone_sim-0.0.0-py3.12.egg-info\n'}
+[3.259369] (drone_sim) StdoutLine: {'line': b'running install_scripts\n'}
+[3.322216] (-) TimerEvent: {}
+[3.423008] (-) TimerEvent: {}
+[3.477335] (new_package) StdoutLine: {'line': b'Installing new_node script to /home/ptrip/ros2_ws/install/new_package/lib/new_package\n'}
+[3.478150] (new_package) StdoutLine: {'line': b"writing list of installed files to '/home/ptrip/ros2_ws/build/new_package/install.log'\n"}
+[3.523271] (-) TimerEvent: {}
+[3.543780] (drone_sim) StdoutLine: {'line': b'Installing sim_node script to /home/ptrip/ros2_ws/install/drone_sim/lib/drone_sim\n'}
+[3.544724] (drone_sim) StdoutLine: {'line': b"writing list of installed files to '/home/ptrip/ros2_ws/build/drone_sim/install.log'\n"}
+[3.557060] (new_package) CommandEnded: {'returncode': 0}
+[3.581934] (new_package) JobEnded: {'identifier': 'new_package', 'rc': 0}
+[3.623573] (-) TimerEvent: {}
+[3.640917] (drone_sim) CommandEnded: {'returncode': 0}
+[3.658608] (drone_sim) JobEnded: {'identifier': 'drone_sim', 'rc': 0}
+[3.662765] (-) EventReactorShutdown: {}

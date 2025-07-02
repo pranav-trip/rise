@@ -1,0 +1,24 @@
+[2.409s] Invoking command in '/home/ptrip/ros2_ws/src/drone_sim': PYTHONPATH=/home/ptrip/ros2_ws/build/drone_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/drone_sim/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/drone_sim build --build-base /home/ptrip/ros2_ws/build/drone_sim/build install --record /home/ptrip/ros2_ws/build/drone_sim/install.log --single-version-externally-managed install_data
+[3.051s] running egg_info
+[3.098s] writing ../../build/drone_sim/drone_sim.egg-info/PKG-INFO
+[3.100s] writing dependency_links to ../../build/drone_sim/drone_sim.egg-info/dependency_links.txt
+[3.101s] writing entry points to ../../build/drone_sim/drone_sim.egg-info/entry_points.txt
+[3.102s] writing requirements to ../../build/drone_sim/drone_sim.egg-info/requires.txt
+[3.103s] writing top-level names to ../../build/drone_sim/drone_sim.egg-info/top_level.txt
+[3.209s] reading manifest file '../../build/drone_sim/drone_sim.egg-info/SOURCES.txt'
+[3.211s] writing manifest file '../../build/drone_sim/drone_sim.egg-info/SOURCES.txt'
+[3.212s] running build
+[3.212s] running build_py
+[3.213s] copying drone_sim/sim_node.py -> /home/ptrip/ros2_ws/build/drone_sim/build/lib/drone_sim
+[3.214s] running install
+[3.228s] running install_lib
+[3.286s] copying /home/ptrip/ros2_ws/build/drone_sim/build/lib/drone_sim/sim_node.py -> /home/ptrip/ros2_ws/install/drone_sim/lib/python3.12/site-packages/drone_sim
+[3.288s] byte-compiling /home/ptrip/ros2_ws/install/drone_sim/lib/python3.12/site-packages/drone_sim/sim_node.py to sim_node.cpython-312.pyc
+[3.291s] running install_data
+[3.292s] running install_egg_info
+[3.348s] removing '/home/ptrip/ros2_ws/install/drone_sim/lib/python3.12/site-packages/drone_sim-0.0.0-py3.12.egg-info' (and everything under it)
+[3.350s] Copying ../../build/drone_sim/drone_sim.egg-info to /home/ptrip/ros2_ws/install/drone_sim/lib/python3.12/site-packages/drone_sim-0.0.0-py3.12.egg-info
+[3.352s] running install_scripts
+[3.663s] Installing sim_node script to /home/ptrip/ros2_ws/install/drone_sim/lib/drone_sim
+[3.664s] writing list of installed files to '/home/ptrip/ros2_ws/build/drone_sim/install.log'
+[3.746s] Invoked command in '/home/ptrip/ros2_ws/src/drone_sim' returned '0': PYTHONPATH=/home/ptrip/ros2_ws/build/drone_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/drone_sim/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/drone_sim build --build-base /home/ptrip/ros2_ws/build/drone_sim/build install --record /home/ptrip/ros2_ws/build/drone_sim/install.log --single-version-externally-managed install_data
