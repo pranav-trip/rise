@@ -11,7 +11,7 @@ class camSim(Node):
     def __init__(self):
         super().__init__('cam_sim')
     
-        self.x_lim, self.y_lim, self.z_lim = 80, 60, 60
+        self.x_lim, self.y_lim, self.z_lim = 80, 50, 50
 
         self.drone_x , self.drone_y, self.drone_z = self.x_lim/2, self.y_lim/2, self.z_lim/5
         self.drone_dx, self.drone_dy, self.drone_dz = 0, 0, 0
