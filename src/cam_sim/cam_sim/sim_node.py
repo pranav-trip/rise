@@ -11,12 +11,12 @@ class camSim(Node):
     def __init__(self):
         super().__init__('cam_sim')
     
-        self.x_lim, self.y_lim = 80, 40
+        self.x_lim, self.y_lim = 80, 60
 
         self.drone_x , self.drone_y = self.x_lim/2, self.y_lim/2
         self.drone_dx, self.drone_dy = 0, 0
 
-        self.world_points = [(random.uniform(0, self.x_lim), random.uniform(0, self.y_lim)) for x in range(12)]
+        self.world_points = [(random.uniform(0, self.x_lim), random.uniform(0, self.y_lim)) for x in range(10)]
 
         self.timer = self.create_timer(0.005, self.timer_callback)
         self.last_printed = None
@@ -39,17 +39,17 @@ class camSim(Node):
 
             for i, (x, y) in enumerate(self.transformed_points):
                 x_org, y_org = self.world_points[i]
-                self.get_logger().info(f'Point {i+1}: x = {x_org:.2f}, y = {y_org:.2f}')
+                self.get_logger().info(f'Point {i}: x = {x_org:.2f}, y = {y_org:.2f}')
                 self.get_logger().info(f'Drone Frame: x = {x:.2f}, y = {y:.2f}\n')
             
             self.last_printed = self.transformed_points
 
         for i, (x, y) in enumerate(self.transformed_points):    
-            plt.plot(x, y, 'bo', markersize=12)
-            plt.plot(x, y, marker=f'${i+1}$', markersize=8, color='white') 
+            plt.plot(x, y, 'bo', markersize=14)
+            plt.plot(x, y, marker=f'${i}$', markersize=8, color='white') 
 
         
-        plt.plot(self.drone_x, self.drone_y, 'ko', markersize=10)
+        plt.plot(self.drone_x, self.drone_y, 'ko', markersize=12)
         plt.xlim(self.x_lim*0.25, self.x_lim*0.75) 
         plt.ylim(self.y_lim*0.25, self.y_lim*0.75)
 
