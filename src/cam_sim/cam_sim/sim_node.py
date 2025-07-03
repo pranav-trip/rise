@@ -74,7 +74,7 @@ class camSim(Node):
 
             Vx, Vy = self.velocities[i]
             if (self.show_vel):
-                plt.quiver(x, y, 200*Vx, 200*Vy, angles='xy', scale_units='xy', scale=1, color='red', headwidth=2, headlength=3)
+                plt.quiver(x, y, 200*Vx, 200*Vy, angles='xy', scale_units='xy', scale=0.5, color='red')
 
         self.drone_x += self.drone_dx
         self.drone_y += self.drone_dy
