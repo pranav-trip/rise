@@ -45,8 +45,8 @@ class camSim(Node):
             self.last_printed = self.transformed_points
 
         for i, (x, y) in enumerate(self.transformed_points):    
-            plt.plot(x, y, 'bo', markersize=14)
-            plt.plot(x, y, marker=f'${i}$', markersize=8, color='white') 
+            plt.plot(x, y, 'bo', markersize=12)
+            plt.plot(x, y, marker=f'${i}$', markersize=7, color='white') 
 
         
         plt.plot(self.drone_x, self.drone_y, 'ko', markersize=12)

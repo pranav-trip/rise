@@ -1,0 +1,13 @@
+package.xml
+setup.cfg
+setup.py
+cam_sim/__init__.py
+cam_sim/sim_node.py
+cam_sim.egg-info/PKG-INFO
+cam_sim.egg-info/SOURCES.txt
+cam_sim.egg-info/dependency_links.txt
+cam_sim.egg-info/entry_points.txt
+cam_sim.egg-info/requires.txt
+cam_sim.egg-info/top_level.txt
+cam_sim.egg-info/zip-safe
+resource/cam_sim
