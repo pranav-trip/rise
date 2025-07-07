@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'sim = cam_sim.sim_node:main',
+            'sim1 = cam_sim.sim_node:main',
             'sim2 = cam_sim.top_sim:main',
         ],
     },
