@@ -13,6 +13,7 @@ class topSim(Node):
 
         self.height = 200
         self.width = 200
+        self.depth = 200
         self.bound_width = 60
 
         self.focal_length = 60
@@ -31,14 +32,14 @@ class topSim(Node):
 
         for i in range(5):
             x = -self.bound_width
-            y = random.uniform(-self.height/2, self.height/2)
-            z = random.uniform(-self.height/2, self.height/2)
+            y = random.uniform(-self.depth/2, self.depth/2)
+            z = random.uniform(-self.height/2, 0)
             points.append({'num': i, 'x': x, 'y': y, 'z': z})
 
         for i in range(5):
             x = self.bound_width
-            y = random.uniform(-self.height/2, self.height/2)
-            z = random.uniform(-self.height/2, self.height/2)
+            y = random.uniform(-self.depth/2, self.depth/2)
+            z = random.uniform(-self.height/2, 0)
             points.append({'num': i + 5, 'x': x, 'y': y, 'z': z})
 
         return points
@@ -111,7 +112,7 @@ class topSim(Node):
         self.frame_count += 1
 
         for point in self.points:
-            if point['z'] < self.drone_z: point['z'] += random.uniform(0, 200)
+            if point['z'] < self.drone_z: point['z'] += random.uniform(0, self.height/2)
 
         transformed, velocities = [], []
 
