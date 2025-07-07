@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'sim = cam_sim.sim_node:main',
+            'sim2 = cam_sim.top_sim:main',
         ],
     },
 )

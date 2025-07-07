@@ -10,6 +10,7 @@ setup.py
 ../../build/cam_sim/cam_sim.egg-info/zip-safe
 cam_sim/__init__.py
 cam_sim/sim_node.py
+cam_sim/top_sim.py
 cam_sim.egg-info/PKG-INFO
 cam_sim.egg-info/SOURCES.txt
 cam_sim.egg-info/dependency_links.txt
