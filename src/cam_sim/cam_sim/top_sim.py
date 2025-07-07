@@ -154,7 +154,7 @@ class topSim(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = topSim()
+    node = topSim() 
 
     plt.ion()
     plt.show(block=False)
