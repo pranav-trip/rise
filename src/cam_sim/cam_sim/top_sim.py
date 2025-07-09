@@ -13,7 +13,7 @@ class topSim(Node):
 
         self.height = 200
         self.width = 200
-        self.depth = 200
+        self.depth = 100
         self.bound_width = 60
 
         self.focal_length = 60
@@ -33,16 +33,16 @@ class topSim(Node):
 
         for i in range(point_count):
             x = -self.bound_width
-            if i%2 == 0: y = random.uniform(-self.height/2, 0)
-            else: y = random.uniform(0, self.height/2)
-            z = random.uniform(-self.height/2+20, self.height/2)
+            if i%2 == 0: y = random.uniform(-self.depth/2, 0)
+            else: y = random.uniform(0, self.depth/2)
+            z = random.uniform(-self.height/4, 0)
             points.append({'num': i, 'x': x, 'y': y, 'z': z})
 
         for i in range(point_count):
             x = self.bound_width
-            if i%2 == 0: y = random.uniform(-self.height/2, 0)
-            else: y = random.uniform(0, self.height/2)
-            z = random.uniform(-self.height/2+20, self.height/2)
+            if i%2 == 0: y = random.uniform(0, self.depth/2)
+            else: y = random.uniform(-self.depth/2, 0)
+            z = random.uniform(-self.height/4, 0)
             points.append({'num': i + point_count, 'x': x, 'y': y, 'z': z})
 
         return points
@@ -114,6 +114,11 @@ class topSim(Node):
             if dy < 0: bottom_vy_sum += norm_weight * (Vy - bottom_vy_avg)
             else: top_vy_sum += norm_weight * (Vy - top_vy_avg)
 
+        plt.plot(20, self.drone_z, 'ko', markersize=8)
+        plt.plot(-20, self.drone_z, 'ko', markersize=8)
+        plt.quiver(20, self.drone_z, 8000 * right_vx_sum, 0, angles='xy', scale_units='xy', scale=1, color='red')
+        plt.quiver(-20, self.drone_z, 8000 * left_vx_sum, 0, angles='xy', scale_units='xy', scale=1, color='red')
+
         self.drone_dx = left_vx_sum + right_vx_sum
         self.drone_dy = bottom_vy_sum + top_vy_sum
         self.drone_dz = 1.0
@@ -151,14 +156,13 @@ class topSim(Node):
         if self.drone_z == self.height/2: 
             return
         
-        if (self.frame_count == 80):
-            self.drone_x = 5
+        if (self.frame_count == 120): self.drone_x = 10
 
         for point in self.points:
-            if point['z'] < self.drone_z + 20: 
-                point['z'] += random.uniform(self.drone_z + 20, self.height/2)
-                if point['y'] < 0: point['y'] = random.uniform(-self.height/2, 0)
-                else: point['y'] = random.uniform(0, self.height/2)
+            if point['z'] < self.drone_z + self.height/4: 
+                point['z'] = random.uniform(self.drone_z + self.height/4, self.drone_z + self.height/2)
+                if point['y'] < 0: point['y'] = random.uniform(-self.depth/2, 0)
+                else: point['y'] = random.uniform(0, self.depth/2)
 
         self.control()
         self.transform()
@@ -169,7 +173,7 @@ class topSim(Node):
         for i, point in enumerate(self.transformed_points):
             print(f"Point {point['num']}: x = {point['world_x']:.2f}, y = {point['world_y']:.2f}, z = {point['world_z']:.2f}")
             print(f"Drone Frame: x = {point['x']:.2f}, y = {point['y']:.2f}")
-            print(f"Velocity: Vx = {point['Vx']:.2f}, Vy = {point['Vy']:.2f}\n")
+            print(f"Velocity: Vx = {point['Vx']*1000:.2f}, Vy = {point['Vy']*1000:.2f}\n")
         
         self.plot()
 
