@@ -29,7 +29,7 @@ class topSim(Node):
 
     def generate_points(self):
         points = []
-        point_count = 5
+        point_count = 25
 
         for i in range(point_count):
             x = -self.bound_width
@@ -63,11 +63,29 @@ class topSim(Node):
 
         plt.plot(self.drone_x, self.drone_z, 'ro', markersize=12)
 
-    def control(self):
-        left_vx_sum, right_vx_sum = 0.0, 0.0
-        left_vx_avg, right_vx_avg = 0.0, 0.0
+    def sample_points(self):
+        point_dist = 30
+        left_point = {'x': -30, 'y': 0, 'z': self.drone_z + point_dist}
+        right_point = {'x': 30, 'y': 0, 'z': self.drone_z + point_dist}
 
-        bottom_vy_sum, top_vy_sum = 0.0, 0.0
+        dx_left = left_point['x'] - self.drone_x
+        dz_left = left_point['z'] - self.drone_z
+        Vx_left = (-self.drone_dx * dz_left + self.drone_dz * dx_left) / (dz_left ** 2)
+
+        dx_right = right_point['x'] - self.drone_x
+        dz_right = right_point['z'] - self.drone_z
+        Vx_right = (-self.drone_dx * dz_right + self.drone_dz * dx_right) / (dz_right ** 2)
+
+        plt.plot(left_point['x'], left_point['z'], 'ko', markersize=10)
+        plt.plot(right_point['x'], right_point['z'], 'ko', markersize=10)
+
+        plt.quiver(left_point['x'], left_point['z'], 1000 * Vx_left, 0, angles='xy', scale_units='xy', scale=1, color='magenta')
+        plt.quiver(right_point['x'], right_point['z'], 1000 * Vx_right, 0, angles='xy', scale_units='xy', scale=1, color='magenta')
+
+        print(f"Left Point Vx: {Vx_left * 1000:.2f}, Right Point Vx: {Vx_right * 1000:.2f}")
+
+    def control(self):
+        left_vx_avg, right_vx_avg = 0.0, 0.0
         bottom_vy_avg, top_vy_avg = 0.0, 0.0
 
         total_weight = 0.0
@@ -94,8 +112,8 @@ class topSim(Node):
             total_weight = 1.0
 
         for dx, dy, weight, Vx, Vy in weights:
-            if dx < 0: left_vx_avg += weight * Vx
-            else: right_vx_avg += weight * Vx
+            if dx < 0: left_vx_avg += Vx
+            else: right_vx_avg += Vx
 
             if dy < 0: bottom_vy_avg += weight*Vy
             else: top_vy_avg += weight*Vy
@@ -105,23 +123,18 @@ class topSim(Node):
         bottom_vy_avg /= total_weight
         top_vy_avg /= total_weight
 
-        for dx, dy, weight, Vx, Vy in weights:
-            norm_weight = weight/total_weight
+        self.sample_points()
 
-            if dx < 0: left_vx_sum += norm_weight * (Vx - left_vx_avg)
-            else: right_vx_sum += norm_weight * (Vx - right_vx_avg)
+        left_scale = 1000 * abs(left_vx_avg*10000)**2
+        right_scale = 1000 * abs(right_vx_avg*10000)**2
 
-            if dy < 0: bottom_vy_sum += norm_weight * (Vy - bottom_vy_avg)
-            else: top_vy_sum += norm_weight * (Vy - top_vy_avg)
-
-        plt.plot(20, self.drone_z, 'ko', markersize=8)
-        plt.plot(-20, self.drone_z, 'ko', markersize=8)
-        plt.quiver(20, self.drone_z, 8000 * right_vx_sum, 0, angles='xy', scale_units='xy', scale=1, color='red')
-        plt.quiver(-20, self.drone_z, 8000 * left_vx_sum, 0, angles='xy', scale_units='xy', scale=1, color='red')
-
-        self.drone_dx = left_vx_sum + right_vx_sum
-        self.drone_dy = bottom_vy_sum + top_vy_sum
+        self.drone_dx = ((left_vx_avg * left_scale) + (right_vx_avg * right_scale))
         self.drone_dz = 1.0
+
+        plt.plot(80, 0, 'ko', markersize=8)
+        plt.plot(-80, 0, 'ko', markersize=8)
+        plt.quiver(80, 0, 300000 * right_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
+        plt.quiver(-80, 0, 300000 * left_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
 
         self.drone_x += self.drone_dx
         self.drone_y += self.drone_dy
@@ -156,7 +169,7 @@ class topSim(Node):
         if self.drone_z == self.height/2: 
             return
         
-        if (self.frame_count == 120): self.drone_x = 10
+        if (self.frame_count == 50): self.drone_x = 2
 
         for point in self.points:
             if point['z'] < self.drone_z + self.height/4: 

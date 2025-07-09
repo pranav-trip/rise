@@ -1,0 +1,18 @@
+[0.966s] Invoking command in '/home/ptrip/ros2_ws/build/cam_sim': PYTHONPATH=/home/ptrip/ros2_ws/build/cam_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/ptrip/ros2_ws/build/cam_sim/build --no-deps symlink_data
+[1.326s] running develop
+[1.549s] running egg_info
+[1.567s] writing cam_sim.egg-info/PKG-INFO
+[1.568s] writing dependency_links to cam_sim.egg-info/dependency_links.txt
+[1.568s] writing entry points to cam_sim.egg-info/entry_points.txt
+[1.568s] writing requirements to cam_sim.egg-info/requires.txt
+[1.569s] writing top-level names to cam_sim.egg-info/top_level.txt
+[1.603s] reading manifest file 'cam_sim.egg-info/SOURCES.txt'
+[1.604s] writing manifest file 'cam_sim.egg-info/SOURCES.txt'
+[1.625s] running build_ext
+[1.625s] Creating /home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages/cam-sim.egg-link (link to .)
+[1.627s] Installing sim1 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim
+[1.627s] Installing sim2 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim
+[1.628s] 
+[1.628s] Installed /home/ptrip/ros2_ws/build/cam_sim
+[1.629s] running symlink_data
+[1.683s] Invoked command in '/home/ptrip/ros2_ws/build/cam_sim' returned '0': PYTHONPATH=/home/ptrip/ros2_ws/build/cam_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/ptrip/ros2_ws/build/cam_sim/build --no-deps symlink_data
