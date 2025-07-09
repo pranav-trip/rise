@@ -84,9 +84,6 @@ class topSim(Node):
 
         print(f"Left Point Vx: {Vx_left * 1000:.2f}, Right Point Vx: {Vx_right * 1000:.2f}")
 
-    def scale(self, velocity):
-        return 1000 * abs(velocity*10000)**2
-
     def control(self):
         left_vx_avg, right_vx_avg = 0.0, 0.0
         bottom_vy_avg, top_vy_avg = 0.0, 0.0
@@ -126,10 +123,12 @@ class topSim(Node):
         bottom_vy_avg /= total_weight
         top_vy_avg /= total_weight
 
-        self.sample_points()
+        #self.sample_points()
 
-        self.drone_dx = (left_vx_avg * self.scale(left_vx_avg)) + (right_vx_avg * self.scale(left_vx_avg))
-        self.drone_dy = (bottom_vy_avg * self.scale(bottom_vy_avg)) + (top_vy_avg * self.scale(top_vy_avg))
+        left_scale = 1000 * abs(left_vx_avg*10000)**2
+        right_scale = 1000 * abs(right_vx_avg*10000)**2
+
+        self.drone_dx = ((left_vx_avg * left_scale) + (right_vx_avg * right_scale))
         self.drone_dz = 1.0
 
         plt.plot(80, 0, 'ko', markersize=8)
@@ -170,7 +169,7 @@ class topSim(Node):
         if self.drone_z == self.height/2: 
             return
         
-        if (self.frame_count == 50): self.drone_x = 2
+        if (self.frame_count == 50): self.drone_x = 30
 
         for point in self.points:
             if point['z'] < self.drone_z + self.height/4: 
