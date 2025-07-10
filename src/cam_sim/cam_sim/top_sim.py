@@ -23,6 +23,7 @@ class topSim(Node):
         self.drone_dx, self.drone_dy, self.drone_dz = 0.0, 0.0, 1.0
 
         self.frame_count = 0
+        self.point_count = 10
 
         self.points = self.generate_points()
         self.transformed_points = []
@@ -30,21 +31,20 @@ class topSim(Node):
 
     def generate_points(self):
         points = []
-        point_count = 20
 
-        for i in range(point_count):
+        for i in range(self.point_count):
             x = -self.bound_width
             if i%2 == 0: y = random.uniform(-self.depth/2, 0)
             else: y = random.uniform(0, self.depth/2)
             z = random.uniform(-self.height/4, 0)
             points.append({'num': i, 'x': x, 'y': y, 'z': z})
 
-        for i in range(point_count):
+        for i in range(self.point_count):
             x = self.bound_width
             if i%2 == 0: y = random.uniform(0, self.depth/2)
             else: y = random.uniform(-self.depth/2, 0)
             z = random.uniform(-self.height/4, 0)
-            points.append({'num': i + point_count, 'x': x, 'y': y, 'z': z})
+            points.append({'num': i + self.point_count, 'x': x, 'y': y, 'z': z})
 
         return points
 
@@ -65,14 +65,16 @@ class topSim(Node):
             plt.plot(point['x'], point['z'], marker = f'${point["num"]}$', markersize = 7, color = 'white')
 
     def scale_vel(self, vel):
-        return vel * 12 * abs(vel*100)**2.2
+        return vel * 1.2 * abs(vel*100)**3.2
     
     def weight_vels(self, drone_x, drone_y, drone_z):
         left_vx_avg, right_vx_avg = 0.0, 0.0
         bottom_vy_avg, top_vy_avg = 0.0, 0.0
 
+        vels = []
+        max_vx, min_vx = 0.0, 0.0
+        max_vy, min_vy = 0.0, 0.0
         total_weight = 0.0
-        weights = []
 
         for point in self.points:
             dx = point['x'] - drone_x
@@ -85,26 +87,31 @@ class topSim(Node):
             Vx = (-self.drone_dx * dz + self.drone_dz * dx) / (dz ** 2)
             Vy = (-self.drone_dy * dz + self.drone_dz * dy) / (dz ** 2)
 
-            speed = (Vx**2 + Vy**2)**0.5
-            weight = speed**0.5
+            if (Vx > max_vx): max_vx = Vx
+            elif (Vx < min_vx): min_vx = Vx
+            if (Vy > max_vy): max_vy = Vy
+            elif (Vy < min_vy): min_vy = Vy
 
-            weights.append((dx, dy, weight, Vx, Vy))
-            total_weight += weight
+            vels.append((dx, dy, Vx, Vy))
+        
+        for dx, dy, Vx, Vy in vels:
+            Vx = (Vx - min_vx) / (max_vx - min_vx)
+            Vy = (Vy - min_vy) / (max_vy - min_vy)
 
         if total_weight == 0:
             total_weight = 1.0
 
-        for dx, dy, weight, Vx, Vy in weights:
-            if dx < 0: left_vx_avg += weight * Vx
-            else: right_vx_avg += weight * Vx
+        for dx, dy, Vx, Vy in vels:
+            if dx < 0: left_vx_avg += Vx
+            else: right_vx_avg += Vx
 
-            if dy < 0: bottom_vy_avg += weight * Vy
-            else: top_vy_avg += weight * Vy
+            if dy < 0: bottom_vy_avg += Vy
+            else: top_vy_avg += Vy
 
-        left_vx_avg /= total_weight
-        right_vx_avg /= total_weight
-        bottom_vy_avg /= total_weight
-        top_vy_avg /= total_weight
+        left_vx_avg /= self.point_count
+        right_vx_avg /= self.point_count
+        bottom_vy_avg /= self.point_count
+        top_vy_avg /= self.point_count
 
         drone_dx = (self.scale_vel(left_vx_avg) + self.scale_vel(right_vx_avg))
         drone_dy = (self.scale_vel(bottom_vy_avg) + self.scale_vel(top_vy_avg))
