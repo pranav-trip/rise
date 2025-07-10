@@ -22,6 +22,7 @@ setup(
         'console_scripts': [
             'sim1 = cam_sim.sim_node:main',
             'sim2 = cam_sim.top_sim:main',
+            'sim3 = cam_sim.curve_sim:main',
         ],
     },
 )

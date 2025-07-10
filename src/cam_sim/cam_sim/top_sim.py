@@ -3,6 +3,7 @@ from rclpy.node import Node
 import matplotlib.pyplot as plt
 import matplotlib
 import random
+import numpy as np
 import os
 
 matplotlib.use('Qt5Agg')
@@ -29,7 +30,7 @@ class topSim(Node):
 
     def generate_points(self):
         points = []
-        point_count = 25
+        point_count = 20
 
         for i in range(point_count):
             x = -self.bound_width
@@ -46,45 +47,27 @@ class topSim(Node):
             points.append({'num': i + point_count, 'x': x, 'y': y, 'z': z})
 
         return points
-    
+
     def plot(self):
         for side in [-1, 1]:
             x = side * self.bound_width
             plt.plot([x, x], [-self.height/2, self.height/2], color = 'black', linestyle = '-')
 
-        if abs(self.drone_x) < 1 and abs(self.drone_y) < 1: clr = 'green'
+        if abs(self.drone_x) < self.bound_width/12 and abs(self.drone_y) < self.bound_width/12: clr = 'green'
         else: clr = 'red'
 
-        plt.plot([0, 0], [-self.height/2, self.height/2], color = clr, linestyle = '--')
+        for side in [-1, 1]:
+            x = side * self.bound_width/12
+            plt.plot([x, x], [-self.height/2, self.height/2], color = clr, linestyle = '--')
 
         for point in self.points:
             plt.plot(point['x'], point['z'], 'bo', markersize=12)
             plt.plot(point['x'], point['z'], marker = f'${point["num"]}$', markersize = 7, color = 'white')
 
-        plt.plot(self.drone_x, self.drone_z, 'ro', markersize=12)
-
-    def sample_points(self):
-        point_dist = 30
-        left_point = {'x': -30, 'y': 0, 'z': self.drone_z + point_dist}
-        right_point = {'x': 30, 'y': 0, 'z': self.drone_z + point_dist}
-
-        dx_left = left_point['x'] - self.drone_x
-        dz_left = left_point['z'] - self.drone_z
-        Vx_left = (-self.drone_dx * dz_left + self.drone_dz * dx_left) / (dz_left ** 2)
-
-        dx_right = right_point['x'] - self.drone_x
-        dz_right = right_point['z'] - self.drone_z
-        Vx_right = (-self.drone_dx * dz_right + self.drone_dz * dx_right) / (dz_right ** 2)
-
-        plt.plot(left_point['x'], left_point['z'], 'ko', markersize=10)
-        plt.plot(right_point['x'], right_point['z'], 'ko', markersize=10)
-
-        plt.quiver(left_point['x'], left_point['z'], 1000 * Vx_left, 0, angles='xy', scale_units='xy', scale=1, color='magenta')
-        plt.quiver(right_point['x'], right_point['z'], 1000 * Vx_right, 0, angles='xy', scale_units='xy', scale=1, color='magenta')
-
-        print(f"Left Point Vx: {Vx_left * 1000:.2f}, Right Point Vx: {Vx_right * 1000:.2f}")
-
-    def control(self):
+    def scale_vel(self, vel):
+        return vel * 12 * abs(vel*100)**2.2
+    
+    def weight_vels(self, drone_x, drone_y, drone_z):
         left_vx_avg, right_vx_avg = 0.0, 0.0
         bottom_vy_avg, top_vy_avg = 0.0, 0.0
 
@@ -92,7 +75,7 @@ class topSim(Node):
         weights = []
 
         for point in self.points:
-            dx = point['x'] - self.drone_x
+            dx = point['x'] - drone_x
             dy = point['y'] - self.drone_y
             dz = point['z'] - self.drone_z
 
@@ -103,7 +86,7 @@ class topSim(Node):
             Vy = (-self.drone_dy * dz + self.drone_dz * dy) / (dz ** 2)
 
             speed = (Vx**2 + Vy**2)**0.5
-            weight = 1.0 / max(speed, 0.001)
+            weight = speed**0.5
 
             weights.append((dx, dy, weight, Vx, Vy))
             total_weight += weight
@@ -112,34 +95,48 @@ class topSim(Node):
             total_weight = 1.0
 
         for dx, dy, weight, Vx, Vy in weights:
-            if dx < 0: left_vx_avg += Vx
-            else: right_vx_avg += Vx
+            if dx < 0: left_vx_avg += weight * Vx
+            else: right_vx_avg += weight * Vx
 
-            if dy < 0: bottom_vy_avg += weight*Vy
-            else: top_vy_avg += weight*Vy
+            if dy < 0: bottom_vy_avg += weight * Vy
+            else: top_vy_avg += weight * Vy
 
         left_vx_avg /= total_weight
         right_vx_avg /= total_weight
         bottom_vy_avg /= total_weight
         top_vy_avg /= total_weight
 
-        #self.sample_points()
+        drone_dx = (self.scale_vel(left_vx_avg) + self.scale_vel(right_vx_avg))
+        drone_dy = (self.scale_vel(bottom_vy_avg) + self.scale_vel(top_vy_avg))
+        drone_dz = 1.0
 
-        left_scale = 1000 * abs(left_vx_avg*10000)**2
-        right_scale = 1000 * abs(right_vx_avg*10000)**2
+        return drone_dx, drone_dy, drone_dz, self.scale_vel(left_vx_avg), self.scale_vel(right_vx_avg)
 
-        self.drone_dx = ((left_vx_avg * left_scale) + (right_vx_avg * right_scale))
-        self.drone_dz = 1.0
-
-        plt.plot(80, 0, 'ko', markersize=8)
-        plt.plot(-80, 0, 'ko', markersize=8)
-        plt.quiver(80, 0, 300000 * right_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
-        plt.quiver(-80, 0, 300000 * left_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
+    def control(self):
+        self.drone_dx, self.drone_dy, self.drone_dz, left_vx_avg, right_vx_avg = self.weight_vels(self.drone_x, self.drone_y, self.drone_z)
 
         self.drone_x += self.drone_dx
         self.drone_y += self.drone_dy
         self.drone_z += self.drone_dz
         self.frame_count += 1
+
+        plt.plot(self.drone_x, self.drone_z, 'ro', markersize=12)
+        plt.plot(80, 0, 'ko', markersize=10)
+        plt.plot(-80, 0, 'ko', markersize=10)
+        plt.quiver(80, 0, 500 * right_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
+        plt.quiver(-80, 0, 500 * left_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
+
+    def control_field(self):
+        
+        field_x = [-50, -35, -20, 20, 35, 50]
+        field_z = [-75, -50, -25, 0, 25, 50, 75]
+
+        for x in field_x:
+            for z in field_z:
+                if (z < self.drone_z + self.height/4):
+                    dx, dy, dz, left_vel, right_vel = self.weight_vels(x, 0, z)
+                    plt.plot(x, z, 'bo', markersize=6)
+                    plt.quiver(x, z, 12 * dx, 12 * dz, angles='xy', scale_units='xy', scale=1, color='red')
 
     def transform(self):
         self.transformed_points = []
@@ -152,24 +149,16 @@ class topSim(Node):
             if dz <= 0:
                 continue
 
-            x_proj = self.focal_length * (dx / dz)
-            y_proj = self.focal_length * (dy / dz)
-
             Vx = (-self.drone_dx * dz + self.drone_dz * dx) / (dz ** 2)
             Vy = (-self.drone_dy * dz + self.drone_dz * dy) / (dz ** 2)
 
-            self.transformed_points.append({'num': point['num'], 
-                'x': x_proj, 'y': y_proj, 
-                'world_x': point['x'], 'world_y': point['y'], 'world_z': point['z'], 
-                'Vx': Vx, 'Vy': Vy})
+            self.transformed_points.append({'num': point['num'], 'x': point['x'], 'y': point['y'], 'z': point['z'], 'Vx': Vx, 'Vy': Vy})
 
     def update(self):
         plt.clf()
         
         if self.drone_z == self.height/2: 
             return
-        
-        if (self.frame_count == 50): self.drone_x = 30
 
         for point in self.points:
             if point['z'] < self.drone_z + self.height/4: 
@@ -177,18 +166,17 @@ class topSim(Node):
                 if point['y'] < 0: point['y'] = random.uniform(-self.depth/2, 0)
                 else: point['y'] = random.uniform(0, self.depth/2)
 
+        self.plot()
         self.control()
+        self.control_field()
         self.transform()
 
         os.system("clear")
         print(f"Drone Position: x = {self.drone_x:.2f}, y = {self.drone_y:.2f}, z = {self.drone_z:.2f}\n")
 
         for i, point in enumerate(self.transformed_points):
-            print(f"Point {point['num']}: x = {point['world_x']:.2f}, y = {point['world_y']:.2f}, z = {point['world_z']:.2f}")
-            print(f"Drone Frame: x = {point['x']:.2f}, y = {point['y']:.2f}")
+            print(f"Point {point['num']}: x = {point['x']:.2f}, y = {point['y']:.2f}, z = {point['z']:.2f}")
             print(f"Velocity: Vx = {point['Vx']*1000:.2f}, Vy = {point['Vy']*1000:.2f}\n")
-        
-        self.plot()
 
         plt.axis('equal')
         plt.xlim(-self.width/2, self.width / 2)

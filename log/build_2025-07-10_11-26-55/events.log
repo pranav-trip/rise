@@ -1,0 +1,69 @@
+[0.000000] (-) TimerEvent: {}
+[0.000490] (cam_sim) JobQueued: {'identifier': 'cam_sim', 'dependencies': OrderedDict()}
+[0.001864] (cam_sim) JobStarted: {'identifier': 'cam_sim'}
+[0.099560] (-) TimerEvent: {}
+[0.200332] (-) TimerEvent: {}
+[0.301083] (-) TimerEvent: {}
+[0.401970] (-) TimerEvent: {}
+[0.502807] (-) TimerEvent: {}
+[0.603800] (-) TimerEvent: {}
+[0.705030] (-) TimerEvent: {}
+[0.806207] (-) TimerEvent: {}
+[0.907147] (-) TimerEvent: {}
+[1.008004] (-) TimerEvent: {}
+[1.108825] (-) TimerEvent: {}
+[1.209961] (-) TimerEvent: {}
+[1.310942] (-) TimerEvent: {}
+[1.411781] (-) TimerEvent: {}
+[1.513141] (-) TimerEvent: {}
+[1.614107] (-) TimerEvent: {}
+[1.715079] (-) TimerEvent: {}
+[1.816039] (-) TimerEvent: {}
+[1.916940] (-) TimerEvent: {}
+[2.017877] (-) TimerEvent: {}
+[2.118662] (-) TimerEvent: {}
+[2.219603] (-) TimerEvent: {}
+[2.323912] (-) TimerEvent: {}
+[2.432821] (-) TimerEvent: {}
+[2.537710] (-) TimerEvent: {}
+[2.646990] (-) TimerEvent: {}
+[2.670018] (cam_sim) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'develop', '--editable', '--build-directory', '/home/ptrip/ros2_ws/build/cam_sim/build', '--no-deps', 'symlink_data'], 'cwd': '/home/ptrip/ros2_ws/build/cam_sim', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'ptrip', 'GIT_ASKPASS': '/home/ptrip/.vscode-server/bin/2901c5ac6db8a986a5666c3af51ff804d05af0d4/extensions/git/dist/askpass.sh', 'SHLVL': '2', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/opt/rviz_ogre_vendor/lib:/opt/ros/jazzy/lib/x86_64-linux-gnu:/opt/ros/jazzy/opt/gz_math_vendor/lib:/opt/ros/jazzy/opt/gz_utils_vendor/lib:/opt/ros/jazzy/opt/gz_cmake_vendor/lib:/opt/ros/jazzy/lib', 'WT_PROFILE_ID': '{d8e96812-b789-5068-a5ae-10b2fb53e95f}', 'HOME': '/home/ptrip', 'TERM_PROGRAM_VERSION': '1.101.2', 'VSCODE_IPC_HOOK_CLI': '/run/user/1000/vscode-ipc-84295179-d5c4-4411-930c-9cd383196e49.sock', 'ROS_PYTHON_VERSION': '3', 'VSCODE_GIT_ASKPASS_MAIN': '/home/ptrip/.vscode-server/bin/2901c5ac6db8a986a5666c3af51ff804d05af0d4/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/home/ptrip/.vscode-server/bin/2901c5ac6db8a986a5666c3af51ff804d05af0d4/node', 'PYDEVD_DISABLE_FILE_VALIDATION': '1', 'BUNDLED_DEBUGPY_PATH': '/home/ptrip/.vscode-server/extensions/ms-python.debugpy-2025.8.0-linux-x64/bundled/libs/debugpy', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'WSL_DISTRO_NAME': 'Ubuntu-24.04', 'WAYLAND_DISPLAY': 'wayland-0', 'COLCON_PREFIX_PATH': '/home/ptrip/ros2_ws/install:/home/ptrip/ros2_ws/src/cam_sim/cam_sim/install', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'ptrip', 'NAME': 'Code', 'WSL_INTEROP': '/run/WSL/132533_interop', 'PULSE_SERVER': 'unix:/mnt/wslg/PulseServer', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'TERM': 'xterm-256color', 'PATH': '/home/ptrip/.vscode-server/bin/2901c5ac6db8a986a5666c3af51ff804d05af0d4/bin/remote-cli:/opt/ros/jazzy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/cmd:/mnt/c/Users/prana/AppData/Local/Muse Hub/lib:/mnt/c/Users/prana/AppData/Local/Programs/Python/Launcher/:/mnt/c/Users/prana/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/prana/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/home/ptrip/.vscode-server/extensions/ms-python.debugpy-2025.8.0-linux-x64/bundled/scripts/noConfigScripts:/home/ptrip/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand', 'WT_SESSION': 'eaa06ee6-7369-4995-8915-620db0f072ea', 'XDG_RUNTIME_DIR': '/run/user/1000/', 'DISPLAY': ':0', 'VSCODE_DEBUGPY_ADAPTER_ENDPOINTS': '/home/ptrip/.vscode-server/extensions/ms-python.debugpy-2025.8.0-linux-x64/.noConfigDebugAdapterEndpoints/endpoint-c01d623203cddd7b.txt', 'LANG': 'C.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1000/vscode-git-c24bc90a59.sock', 'TERM_PROGRAM': 'vscode', 'AMENT_PREFIX_PATH': '/home/ptrip/ros2_ws/install/camera_sim:/home/ptrip/ros2_ws/install/cam_sim:/opt/ros/jazzy', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'PWD': '/home/ptrip/ros2_ws/build/cam_sim', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/ptrip/ros2_ws/build/cam_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages:/home/ptrip/ros2_ws/build/camera_sim:/home/ptrip/ros2_ws/install/camera_sim/lib/python3.12/site-packages:/home/ptrip/ros2_ws/build/cam_sim:/home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1', 'WSL2_GUI_APPS_ENABLED': '1', 'HOSTTYPE': 'x86_64', 'CMAKE_PREFIX_PATH': '/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor', 'WSLENV': 'ELECTRON_RUN_AS_NODE/w:WT_SESSION:WT_PROFILE_ID:'}, 'shell': False}
+[2.751513] (-) TimerEvent: {}
+[2.852740] (-) TimerEvent: {}
+[2.958011] (-) TimerEvent: {}
+[3.059731] (-) TimerEvent: {}
+[3.162502] (-) TimerEvent: {}
+[3.265618] (-) TimerEvent: {}
+[3.367133] (-) TimerEvent: {}
+[3.468097] (-) TimerEvent: {}
+[3.569447] (-) TimerEvent: {}
+[3.671153] (-) TimerEvent: {}
+[3.773388] (-) TimerEvent: {}
+[3.841011] (cam_sim) StdoutLine: {'line': b'running develop\n'}
+[3.873776] (-) TimerEvent: {}
+[3.976912] (-) TimerEvent: {}
+[4.078038] (-) TimerEvent: {}
+[4.180911] (-) TimerEvent: {}
+[4.281714] (-) TimerEvent: {}
+[4.382327] (-) TimerEvent: {}
+[4.431282] (cam_sim) StdoutLine: {'line': b'running egg_info\n'}
+[4.474414] (cam_sim) StdoutLine: {'line': b'writing cam_sim.egg-info/PKG-INFO\n'}
+[4.475702] (cam_sim) StdoutLine: {'line': b'writing dependency_links to cam_sim.egg-info/dependency_links.txt\n'}
+[4.477111] (cam_sim) StdoutLine: {'line': b'writing entry points to cam_sim.egg-info/entry_points.txt\n'}
+[4.478326] (cam_sim) StdoutLine: {'line': b'writing requirements to cam_sim.egg-info/requires.txt\n'}
+[4.479142] (cam_sim) StdoutLine: {'line': b'writing top-level names to cam_sim.egg-info/top_level.txt\n'}
+[4.482573] (-) TimerEvent: {}
+[4.570637] (cam_sim) StdoutLine: {'line': b"reading manifest file 'cam_sim.egg-info/SOURCES.txt'\n"}
+[4.572238] (cam_sim) StdoutLine: {'line': b"writing manifest file 'cam_sim.egg-info/SOURCES.txt'\n"}
+[4.582898] (-) TimerEvent: {}
+[4.622834] (cam_sim) StdoutLine: {'line': b'running build_ext\n'}
+[4.623251] (cam_sim) StdoutLine: {'line': b'Creating /home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages/cam-sim.egg-link (link to .)\n'}
+[4.625639] (cam_sim) StdoutLine: {'line': b'Installing sim1 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim\n'}
+[4.629147] (cam_sim) StdoutLine: {'line': b'Installing sim2 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim\n'}
+[4.631502] (cam_sim) StdoutLine: {'line': b'\n'}
+[4.631879] (cam_sim) StdoutLine: {'line': b'Installed /home/ptrip/ros2_ws/build/cam_sim\n'}
+[4.632027] (cam_sim) StdoutLine: {'line': b'running symlink_data\n'}
+[4.683133] (-) TimerEvent: {}
+[4.721793] (cam_sim) CommandEnded: {'returncode': 0}
+[4.750329] (cam_sim) JobEnded: {'identifier': 'cam_sim', 'rc': 0}
+[4.753138] (-) EventReactorShutdown: {}
