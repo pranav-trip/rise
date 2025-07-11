@@ -29,6 +29,8 @@ class topSim(Node):
         self.transformed_points = []
         self.timer = self.create_timer(0.02, self.update)
 
+        self.plotted, self.vels = [], []
+
     def generate_points(self):
         points = []
 
@@ -65,7 +67,7 @@ class topSim(Node):
             plt.plot(point['x'], point['z'], marker = f'${point["num"]}$', markersize = 7, color = 'white')
 
     def scale_vel(self, vel):
-        return vel * 1.2 * abs(vel*100)**3.2
+        return vel * 1.2 * abs(vel*100)**2.8
     
     def weight_vels(self, drone_x, drone_y, drone_z):
         left_vx_avg, right_vx_avg = 0.0, 0.0
@@ -119,6 +121,11 @@ class topSim(Node):
 
         return drone_dx, drone_dy, drone_dz, self.scale_vel(left_vx_avg), self.scale_vel(right_vx_avg)
 
+    def static_vels(self, drone_x, drone_z, point_x, point_z):
+        dx = point_x - drone_x
+        dz = point_z - drone_z
+        return  -1 * (-self.drone_dx * dz + self.drone_dz * dx) / (dz ** 2)
+
     def control(self):
         self.drone_dx, self.drone_dy, self.drone_dz, left_vx_avg, right_vx_avg = self.weight_vels(self.drone_x, self.drone_y, self.drone_z)
 
@@ -134,17 +141,47 @@ class topSim(Node):
         plt.quiver(-80, 0, 500 * left_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
 
     def control_field(self):
-        
         field_x = [-50, -35, -20, 20, 35, 50]
         field_z = [-75, -50, -25, 0, 25, 50, 75]
 
         for x in field_x:
             for z in field_z:
-                if (z < self.drone_z + self.height/4):
-                    dx, dy, dz, left_vel, right_vel = self.weight_vels(x, 0, z)
-                    plt.plot(x, z, 'bo', markersize=6)
-                    plt.quiver(x, z, 12 * dx, 12 * dz, angles='xy', scale_units='xy', scale=1, color='red')
+                if z < self.drone_z + self.height / 8:
+                    if (x, z) not in self.plotted:
+                        dx, dy, dz, left_vel, right_vel = self.weight_vels(x, 0, z)
+                        plt.plot(x, z, 'bo', markersize=6)
+                        plt.quiver(x, z, 12 * dx, 12 * dz, angles='xy', scale_units='xy', scale=1, color='red')
+                        self.plotted.append((x, z))
+                        self.vels.append((dx, dz))
+                    
+                    else:
+                        index = self.plotted.index((x, z))
+                        dx, dz = self.vels[index]
+                        plt.plot(x, z, 'bo', markersize=6)
+                        plt.quiver(x, z, 12 * dx, 12 * dz, angles='xy', scale_units='xy', scale=1, color='red')
 
+    def test_control(self):
+        test_points = [
+            (-40, -60),
+            (-40, 60),
+            (40, 0),
+        ]
+
+        wall_points = [
+            (-60, -50),
+            (-60, 70),
+            (60, 10),
+        ]
+
+        for i in range (3):
+            drone_x, drone_z = test_points[i]
+            x, z = wall_points[i]
+            dx = self.static_vels(drone_x, drone_z, x, z)
+            
+            plt.plot(drone_x, drone_z, 'bo', markersize=8)
+            plt.plot(x, z, 'go', markersize=8)
+            plt.quiver(drone_x, drone_z, 15 * dx, 15, angles='xy', scale_units='xy', scale=1, color='red')
+            
     def transform(self):
         self.transformed_points = []
 
