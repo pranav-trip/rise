@@ -23,7 +23,7 @@ class topSim(Node):
         self.drone_dx, self.drone_dy, self.drone_dz = 0.0, 0.0, 1.0
 
         self.frame_count = 0
-        self.point_count = 10
+        self.point_count = 5
 
         self.points = self.generate_points()
         self.transformed_points = []
