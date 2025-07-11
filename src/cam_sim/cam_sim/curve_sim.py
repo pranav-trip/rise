@@ -22,11 +22,11 @@ class curveSim(Node):
         self.drone_x = self.radius * np.cos(self.drone_theta)
         self.drone_z = self.radius * np.sin(self.drone_theta)
 
-        self.drone_dx, self.drone_dz, self.drone_dt = 0.0, 1.0, 0.0
+        self.drone_dx, self.drone_dz, self.drone_dt = 0.0, 0.0, 0.0
 
         self.timer = self.create_timer(0.01, self.update)
 
-        self.point_count = 5
+        self.point_count = 4
         self.points = self.generate_points() 
 
     def generate_points(self):
@@ -77,44 +77,11 @@ class curveSim(Node):
             plt.plot(point['x'], point['z'], 'bo', markersize=10)
             plt.plot(point['x'], point['z'], marker=f'${point["num"]}$', markersize=6, color='white')
 
-    def scale_vel(self, vel):
-        return vel * 1.2 * abs(vel * 100)**2.8
-
-    def weight_vels(self):
-        left_vx_avg, right_vx_avg = 0.0, 0.0
-        max_vx, min_vx = 0.0, 0.0
-        vels = []
-
-        for point in self.points:
-            wall = point['wall']
-            dx = point['x'] - self.drone_x
-            dz = point['z'] - self.drone_z
-
-            Vx = (-self.drone_dx * dz + self.drone_dz * dx) / (dz ** 2)
-
-            max_vx = max(max_vx, abs(Vx))
-            min_vx = min(min_vx, abs(Vx))
-
-            vels.append({'dx': dx, 'Vx': Vx, 'wall': wall})
-
-        for vel in vels:
-            vel['Vx'] = (vel['Vx'] - min_vx) / max((max_vx - min_vx), 0.001)
-
-        for vel in vels:
-            if vel['wall'] == 'left': left_vx_avg -= vel['Vx']
-            else: right_vx_avg += vel['Vx']
-
-        left_vx_avg /= self.point_count
-        right_vx_avg /= self.point_count
-
-        dt = self.scale_vel(left_vx_avg) + self.scale_vel(right_vx_avg)
-
-        return dt
-
     def control(self):
         forward_speed = 1.0
+        angular_speed = 0.01
 
-        self.drone_dt = self.weight_vels()
+        self.drone_dt = angular_speed
         self.drone_theta += self.drone_dt
 
         self.drone_dx = forward_speed * -np.sin(self.drone_theta)
@@ -124,7 +91,7 @@ class curveSim(Node):
         self.drone_z += self.drone_dz
 
         plt.plot(self.drone_x, self.drone_z, 'ro', markersize=10)
-        plt.quiver(self.drone_x, self.drone_z, 20*self.drone_dx, 20*self.drone_dz, angles='xy', scale_units='xy', scale=1, color='blue')
+        plt.quiver(self.drone_x, self.drone_z, 20 * self.drone_dx, 20 * self.drone_dz, angles='xy', scale_units='xy', scale=1, color='blue')
 
     def update(self):
         plt.clf()
