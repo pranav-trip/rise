@@ -65,17 +65,14 @@ class topSim(Node):
         for point in self.points:
             plt.plot(point['x'], point['z'], 'bo', markersize=12)
             plt.plot(point['x'], point['z'], marker = f'${point["num"]}$', markersize = 7, color = 'white')
-
-    def scale_vel(self, vel):
-        return vel * 1.2 * abs(vel*100)**2.8
     
     def weight_vels(self, drone_x, drone_y, drone_z):
         left_vx_avg, right_vx_avg = 0.0, 0.0
         bottom_vy_avg, top_vy_avg = 0.0, 0.0
 
         vels = []
-        max_vx, min_vx = 0.0, 0.0
-        max_vy, min_vy = 0.0, 0.0
+        max_vx, min_vx = -float('inf'), float('inf')
+        max_vy, min_vy = -float('inf'), float('inf')
         total_weight = 0.0
 
         for point in self.points:
@@ -89,37 +86,42 @@ class topSim(Node):
             Vx = (-self.drone_dx * dz + self.drone_dz * dx) / (dz ** 2)
             Vy = (-self.drone_dy * dz + self.drone_dz * dy) / (dz ** 2)
 
-            if (Vx > max_vx): max_vx = Vx
-            elif (Vx < min_vx): min_vx = Vx
-            if (Vy > max_vy): max_vy = Vy
-            elif (Vy < min_vy): min_vy = Vy
+            if (abs(Vx) > max_vx): max_vx = abs(Vx)
+            elif (abs(Vx) < min_vx): min_vx = abs(Vx)
+            if (abs(Vy) > max_vy): max_vy = abs(Vy)
+            elif (abs(Vy) < min_vy): min_vy = abs(Vy)
 
-            vels.append((dx, dy, Vx, Vy))
+            vels.append({'dx': dx, 'dy': dy, 'Vx': Vx, 'Vy': Vy})
         
-        for dx, dy, Vx, Vy in vels:
-            Vx = (Vx - min_vx) / (max_vx - min_vx)
-            Vy = (Vy - min_vy) / (max_vy - min_vy)
+        for vel in vels:
+            vel['Vx'] = (abs(vel['Vx']) - min_vx) / (max_vx - min_vx)
+            vel['Vy'] = (abs(vel['Vy']) - min_vy) / (max_vy - min_vy)
+
+            if vel['dx'] < 0: vel['Vx'] *= -1
+            if vel['dy'] < 0: vel['Vy'] *= -1
 
         if total_weight == 0:
             total_weight = 1.0
 
-        for dx, dy, Vx, Vy in vels:
-            if dx < 0: left_vx_avg += Vx
-            else: right_vx_avg += Vx
+        for vel in vels:
+            if vel['dx'] < 0: left_vx_avg += vel['Vx']
+            else: right_vx_avg += vel['Vx']
 
-            if dy < 0: bottom_vy_avg += Vy
-            else: top_vy_avg += Vy
+            if vel['dy'] < 0: bottom_vy_avg += vel['Vy']
+            else: top_vy_avg += vel['Vy']
+        
+        scale = 0.25
 
-        left_vx_avg /= self.point_count
-        right_vx_avg /= self.point_count
-        bottom_vy_avg /= self.point_count
-        top_vy_avg /= self.point_count
+        left_vx_avg = (left_vx_avg / self.point_count) * scale
+        right_vx_avg = (right_vx_avg / self.point_count) * scale
+        bottom_vy_avg = (bottom_vy_avg / self.point_count) * scale
+        top_vy_avg = (top_vy_avg / self.point_count) * scale
 
-        drone_dx = (self.scale_vel(left_vx_avg) + self.scale_vel(right_vx_avg))
-        drone_dy = (self.scale_vel(bottom_vy_avg) + self.scale_vel(top_vy_avg))
+        drone_dx = (left_vx_avg + right_vx_avg)
+        drone_dy = (bottom_vy_avg + top_vy_avg)
         drone_dz = 1.0
 
-        return drone_dx, drone_dy, drone_dz, self.scale_vel(left_vx_avg), self.scale_vel(right_vx_avg)
+        return drone_dx, drone_dy, drone_dz, left_vx_avg, right_vx_avg
 
     def static_vels(self, drone_x, drone_z, point_x, point_z):
         dx = point_x - drone_x
@@ -137,8 +139,8 @@ class topSim(Node):
         plt.plot(self.drone_x, self.drone_z, 'ro', markersize=12)
         plt.plot(80, 0, 'ko', markersize=10)
         plt.plot(-80, 0, 'ko', markersize=10)
-        plt.quiver(80, 0, 500 * right_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
-        plt.quiver(-80, 0, 500 * left_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
+        plt.quiver(80, 0, 200*right_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
+        plt.quiver(-80, 0, 200*left_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
 
     def control_field(self):
         field_x = [-50, -35, -20, 20, 35, 50]

@@ -1,0 +1,15 @@
+[0.000000] (-) TimerEvent: {}
+[0.003673] (cam_sim) JobQueued: {'identifier': 'cam_sim', 'dependencies': OrderedDict()}
+[0.003908] (cam_sim) JobStarted: {'identifier': 'cam_sim'}
+[0.102704] (-) TimerEvent: {}
+[0.203506] (-) TimerEvent: {}
+[0.304295] (-) TimerEvent: {}
+[0.405164] (-) TimerEvent: {}
+[0.506494] (-) TimerEvent: {}
+[0.607706] (-) TimerEvent: {}
+[0.713091] (-) TimerEvent: {}
+[0.814010] (-) TimerEvent: {}
+[0.915071] (-) TimerEvent: {}
+[1.016006] (-) TimerEvent: {}
+[1.074286] (cam_sim) JobEnded: {'identifier': 'cam_sim', 'rc': 0}
+[1.079907] (-) EventReactorShutdown: {}
