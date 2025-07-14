@@ -110,7 +110,7 @@ class topSim(Node):
             if vel['dy'] < 0: bottom_vy_avg += vel['Vy']
             else: top_vy_avg += vel['Vy']
         
-        scale = 0.25
+        scale = 0.1
 
         left_vx_avg = (left_vx_avg / self.point_count) * scale
         right_vx_avg = (right_vx_avg / self.point_count) * scale
@@ -123,11 +123,6 @@ class topSim(Node):
 
         return drone_dx, drone_dy, drone_dz, left_vx_avg, right_vx_avg
 
-    def static_vels(self, drone_x, drone_z, point_x, point_z):
-        dx = point_x - drone_x
-        dz = point_z - drone_z
-        return  -1 * (-self.drone_dx * dz + self.drone_dz * dx) / (dz ** 2)
-
     def control(self):
         self.drone_dx, self.drone_dy, self.drone_dz, left_vx_avg, right_vx_avg = self.weight_vels(self.drone_x, self.drone_y, self.drone_z)
 
@@ -139,8 +134,8 @@ class topSim(Node):
         plt.plot(self.drone_x, self.drone_z, 'ro', markersize=12)
         plt.plot(80, 0, 'ko', markersize=10)
         plt.plot(-80, 0, 'ko', markersize=10)
-        plt.quiver(80, 0, 200*right_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
-        plt.quiver(-80, 0, 200*left_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
+        plt.quiver(80, 0, 250*right_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
+        plt.quiver(-80, 0, 250*left_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
 
     def control_field(self):
         field_x = [-50, -35, -20, 20, 35, 50]
@@ -178,11 +173,13 @@ class topSim(Node):
         for i in range (3):
             drone_x, drone_z = test_points[i]
             x, z = wall_points[i]
-            dx = self.static_vels(drone_x, drone_z, x, z)
+            dx = x - drone_x
+            dz = z - drone_z
+            vel =  -1 * (-self.drone_dx * dz + self.drone_dz * dx) / (dz ** 2)
             
             plt.plot(drone_x, drone_z, 'bo', markersize=8)
             plt.plot(x, z, 'go', markersize=8)
-            plt.quiver(drone_x, drone_z, 15 * dx, 15, angles='xy', scale_units='xy', scale=1, color='red')
+            plt.quiver(drone_x, drone_z, 15 * vel, 15, angles='xy', scale_units='xy', scale=1, color='red')
             
     def transform(self):
         self.transformed_points = []

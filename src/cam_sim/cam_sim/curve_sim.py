@@ -13,7 +13,7 @@ class curveSim(Node):
         super().__init__('curve_sim')
 
         self.bound_width = 60
-        self.window = np.pi/4
+        self.window = np.pi/12
 
         self.radius = 100
         self.angle_range = np.linspace(0, np.pi, 500)
@@ -36,8 +36,8 @@ class curveSim(Node):
             left_radius = self.radius - self.bound_width
             right_radius = self.radius + self.bound_width
 
-            left_angle = random.uniform(self.drone_theta, self.drone_theta + self.window)
-            right_angle = random.uniform(self.drone_theta, self.drone_theta + self.window)
+            left_angle = random.uniform(self.drone_theta + self.window*2, self.drone_theta + self.window*3)
+            right_angle = random.uniform(self.drone_theta + self.window*2, self.drone_theta + self.window*3)
 
             x_left = left_radius * np.cos(left_angle)
             z_left = left_radius * np.sin(left_angle)
@@ -66,12 +66,17 @@ class curveSim(Node):
         right_center = self.radius + self.bound_width/10
 
         left_center_x = left_center * np.cos(self.angle_range)
-        left_center_y = left_center * np.sin(self.angle_range)
+        left_center_z = left_center * np.sin(self.angle_range)
         right_center_x = right_center * np.cos(self.angle_range)
-        right_center_y = right_center * np.sin(self.angle_range)
+        right_center_z = right_center * np.sin(self.angle_range)
 
-        plt.plot(left_center_x, left_center_y, color='green', linestyle='--')
-        plt.plot(right_center_x, right_center_y, color='green', linestyle='--')
+        drone_radius = np.sqrt(self.drone_x**2 + self.drone_z**2)
+        
+        if self.radius-5 <= drone_radius <= self.radius+5: clr = 'green'
+        else: clr = 'red'
+
+        plt.plot(left_center_x, left_center_z, color=clr, linestyle='--')
+        plt.plot(right_center_x, right_center_z, color=clr, linestyle='--')
 
         for point in self.points:
             plt.plot(point['x'], point['z'], 'bo', markersize=10)
@@ -88,18 +93,15 @@ class curveSim(Node):
             dx = point['x'] - drone_x
             dz = point['z'] - drone_z
 
-            if dz <= 0:
-                continue
-
             Vx = (-self.drone_dx * dz + self.drone_dz * dx) / (dz ** 2)
 
             if (abs(Vx) > max_vx): max_vx = abs(Vx)
             elif (abs(Vx) < min_vx): min_vx = abs(Vx)
 
-            vels.append({'dx': dx, 'Vx': Vx})
+            vels.append({'dx': dx, 'Vx': Vx, 'wall': point['wall']})
         
         for vel in vels:
-            vel['Vx'] = (abs(vel['Vx']) - min_vx) / (max_vx - min_vx)
+            vel['Vx'] = (abs(vel['Vx']) - min_vx) / max((max_vx - min_vx), 0.001)
 
             if vel['wall'] == 'left': vel['Vx'] *= -1
 
@@ -121,22 +123,13 @@ class curveSim(Node):
         return drone_dx, drone_dz
 
     def control(self):
-        forward_speed = 1.0
-        angular_speed = 0.01
+        dx, dz = self.weight_vels(self.drone_x, self.drone_z)
 
-        self.drone_dt = angular_speed
+        self.drone_dt = 0.01
         self.drone_theta += self.drone_dt
 
-        forward_dx = -np.sin(self.drone_theta)
-        forward_dz =  np.cos(self.drone_theta)
-
-        vx_correction = self.weight_vels()
-
-        lateral_dx = np.cos(self.drone_theta)
-        lateral_dz = np.sin(self.drone_theta)
-
-        self.drone_dx = forward_speed * forward_dx + vx_correction * lateral_dx
-        self.drone_dz = forward_speed * forward_dz + vx_correction * lateral_dz
+        self.drone_dx = dx * np.cos(self.drone_theta) - dz * np.sin(self.drone_theta)
+        self.drone_dz = dx * np.sin(self.drone_theta) + dz * np.cos(self.drone_theta)
 
         self.drone_x += self.drone_dx
         self.drone_z += self.drone_dz
@@ -144,18 +137,20 @@ class curveSim(Node):
         plt.plot(self.drone_x, self.drone_z, 'ro', markersize=10)
         plt.quiver(self.drone_x, self.drone_z, 20 * self.drone_dx, 20 * self.drone_dz, angles='xy', scale_units='xy', scale=1, color='blue')
 
-
     def update(self):
         plt.clf()
+        end_sim = True
 
-        if self.drone_theta >= np.pi:
-            return
+        for point in self.points:
+            if point['theta'] < np.pi: end_sim = False
+        
+        if end_sim: return
 
         for point in self.points:
             theta = point['theta']
 
-            if theta < self.drone_theta:
-                theta = random.uniform(self.drone_theta, self.drone_theta + self.window)
+            if theta < self.drone_theta + self.window*2:
+                theta = random.uniform(self.drone_theta + self.window*2, self.drone_theta + self.window*3)
                 if theta > np.pi: theta = np.pi 
 
                 if point['wall'] == 'left': radius = self.radius - self.bound_width
