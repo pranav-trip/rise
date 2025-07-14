@@ -179,7 +179,7 @@ class topSim(Node):
             
             plt.plot(drone_x, drone_z, 'bo', markersize=8)
             plt.plot(x, z, 'go', markersize=8)
-            plt.quiver(drone_x, drone_z, 15 * vel, 15, angles='xy', scale_units='xy', scale=1, color='red')
+            plt.quiver(drone_x, drone_z, 15 * vel, angles='xy', scale_units='xy', scale=1, color='red')
             
     def transform(self):
         self.transformed_points = []

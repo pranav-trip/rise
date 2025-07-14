@@ -16,7 +16,7 @@ class curveSim(Node):
         self.window = np.pi/12
 
         self.radius = 100
-        self.angle_range = np.linspace(0, np.pi, 500)
+        self.angle_range = np.linspace(0, np.pi/2, 500)
 
         self.drone_theta = 0.0
         self.drone_x = self.radius * np.cos(self.drone_theta)
@@ -28,6 +28,9 @@ class curveSim(Node):
 
         self.point_count = 4
         self.points = self.generate_points() 
+
+        self.plotted = []
+        self.inner_signals, self.outer_signals = [], []
 
     def generate_points(self):
         points = []
@@ -87,7 +90,6 @@ class curveSim(Node):
 
         vels = []
         max_vx, min_vx = -float('inf'), float('inf')
-        total_weight = 0.0
 
         for point in self.points:
             dx = point['x'] - drone_x
@@ -105,44 +107,105 @@ class curveSim(Node):
 
             if vel['wall'] == 'left': vel['Vx'] *= -1
 
-        if total_weight == 0:
-            total_weight = 1.0
-
         for vel in vels:
             if vel['dx'] < 0: left_vx_avg += vel['Vx']
             else: right_vx_avg += vel['Vx']
-        
-        scale = 0.25
 
-        left_vx_avg = (left_vx_avg / self.point_count) * scale
-        right_vx_avg = (right_vx_avg / self.point_count) * scale
+        left_vx_avg = (left_vx_avg / self.point_count)
+        right_vx_avg = (right_vx_avg / self.point_count)
 
-        drone_dx = (left_vx_avg + right_vx_avg)
-        drone_dz = 1.0
+        signal = (left_vx_avg + right_vx_avg)
+        scale = 0.05 / (1 + 3.5 * abs(signal))
 
-        return drone_dx, drone_dz
+        return signal*scale
 
     def control(self):
-        dx, dz = self.weight_vels(self.drone_x, self.drone_z)
+        signal = self.weight_vels(self.drone_x, self.drone_z)
 
-        self.drone_dt = 0.01
+        self.drone_dt = -signal * 0.5
         self.drone_theta += self.drone_dt
 
-        self.drone_dx = dx * np.cos(self.drone_theta) - dz * np.sin(self.drone_theta)
-        self.drone_dz = dx * np.sin(self.drone_theta) + dz * np.cos(self.drone_theta)
+        self.drone_dx = -np.sin(self.drone_theta)
+        self.drone_dz = np.cos(self.drone_theta)
 
-        self.drone_x += self.drone_dx
-        self.drone_z += self.drone_dz
+        self.drone_x += self.drone_dx * 0.5
+        self.drone_z += self.drone_dz * 0.5
 
         plt.plot(self.drone_x, self.drone_z, 'ro', markersize=10)
-        plt.quiver(self.drone_x, self.drone_z, 20 * self.drone_dx, 20 * self.drone_dz, angles='xy', scale_units='xy', scale=1, color='blue')
+        plt.quiver(self.drone_x, self.drone_z, 10 * self.drone_dx, 10 * self.drone_dz, angles='xy', scale_units='xy', scale=1, color='blue')
+
+    def control_field(self):
+        field_theta = [np.pi/12, np.pi/6, np.pi/4, np.pi/3, 5*np.pi/12]
+        inner, outer = self.radius - self.bound_width/2, self.radius + self.bound_width/2
+
+        for theta in field_theta:
+                x_inner, z_inner = inner * np.cos(theta), inner * np.sin(theta)
+                x_outer, z_outer = outer * np.cos(theta), outer * np.sin(theta)
+                scale = 1000
+
+                if theta not in self.plotted:
+                    inner_signal = self.weight_vels(x_inner, z_inner)
+                    outer_signal = self.weight_vels(x_outer, z_outer)
+                    self.plotted.append(theta)
+
+                    self.inner_signals.append(inner_signal)
+                    self.outer_signals.append(outer_signal)
+
+                    plt.plot(x_inner, z_inner, 'bo', markersize=6)
+                    plt.plot(x_outer, z_outer, 'bo', markersize=6)
+                    
+                    plt.quiver(x_inner, z_inner, inner_signal*scale * np.cos(theta), inner_signal*scale * np.sin(theta), angles='xy', scale_units='xy', scale=1, color='red')
+                    plt.quiver(x_outer, z_outer, outer_signal*scale * np.cos(theta), outer_signal*scale * np.sin(theta), angles='xy', scale_units='xy', scale=1, color='red')
+
+                else:
+                    index = field_theta.index(theta)
+                    inner_signal = self.inner_signals[index]
+                    outer_signal = self.outer_signals[index]
+
+                    plt.plot(x_inner, z_inner, 'bo', markersize=6)
+                    plt.plot(x_outer, z_outer, 'bo', markersize=6)
+                    
+                    plt.quiver(x_inner, z_inner, inner_signal*scale * np.cos(theta), inner_signal*scale * np.sin(theta), angles='xy', scale_units='xy', scale=1, color='red')
+                    plt.quiver(x_outer, z_outer, outer_signal*scale * np.cos(theta), outer_signal*scale * np.sin(theta), angles='xy', scale_units='xy', scale=1, color='red')
+
+    def test_control(self):
+        test_thetas = [np.pi/8, 2*np.pi/8, 3*np.pi/8]
+        drone_radii = [self.radius - self.bound_width/2, self.radius + self.bound_width/2, self.radius - self.bound_width/2]
+        wall_radii = [self.radius - self.bound_width, self.radius + self.bound_width, self.radius - self.bound_width]
+
+        for i in range(3):
+            theta = test_thetas[i]
+            drone_radius = drone_radii[i]
+            wall_radius = wall_radii[i]
+
+            drone_x = drone_radius * np.cos(theta)
+            drone_z = drone_radius * np.sin(theta)
+            wall_x = wall_radius * np.cos(theta + np.pi/12)
+            wall_z = wall_radius * np.sin(theta + np.pi/12)
+
+            dx = wall_x - drone_x
+            dz = wall_z - drone_z
+
+            drone_dx = -np.sin(theta)
+            drone_dz =  np.cos(theta)
+
+            distance_sq = dx**2 + dz**2
+            vel = -1 * (-drone_dx * dz + drone_dz * dx) /  distance_sq
+
+            arrow_length = 700 * abs(vel)
+            arrow_dx = arrow_length * np.cos(theta) * np.sign(vel)
+            arrow_dz = arrow_length * np.sin(theta) * np.sign(vel)
+
+            plt.plot(drone_x, drone_z, 'bo', markersize=8)
+            plt.plot(wall_x, wall_z, 'go', markersize=8)
+            plt.quiver(drone_x, drone_z, arrow_dx, arrow_dz, angles='xy', scale_units='xy', scale=1, color='red')
 
     def update(self):
         plt.clf()
         end_sim = True
 
         for point in self.points:
-            if point['theta'] < np.pi: end_sim = False
+            if point['theta'] < np.pi/2: end_sim = False
         
         if end_sim: return
 
@@ -151,7 +214,7 @@ class curveSim(Node):
 
             if theta < self.drone_theta + self.window*2:
                 theta = random.uniform(self.drone_theta + self.window*2, self.drone_theta + self.window*3)
-                if theta > np.pi: theta = np.pi 
+                if theta > np.pi/2: theta = np.pi/2 
 
                 if point['wall'] == 'left': radius = self.radius - self.bound_width
                 else: radius = self.radius + self.bound_width
@@ -162,11 +225,12 @@ class curveSim(Node):
 
         self.plot()
         self.control()
+        self.test_control()
 
         plt.axis('equal')
 
         arc_lim = self.radius + self.bound_width
-        plt.xlim(-arc_lim, arc_lim)
+        plt.xlim(0, arc_lim)
         plt.ylim(0, arc_lim)
 
         plt.axis('off')
