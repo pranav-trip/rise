@@ -77,6 +77,49 @@ class curveSim(Node):
             plt.plot(point['x'], point['z'], 'bo', markersize=10)
             plt.plot(point['x'], point['z'], marker=f'${point["num"]}$', markersize=6, color='white')
 
+    def weight_vels(self, drone_x, drone_z):
+        left_vx_avg, right_vx_avg = 0.0, 0.0
+
+        vels = []
+        max_vx, min_vx = -float('inf'), float('inf')
+        total_weight = 0.0
+
+        for point in self.points:
+            dx = point['x'] - drone_x
+            dz = point['z'] - drone_z
+
+            if dz <= 0:
+                continue
+
+            Vx = (-self.drone_dx * dz + self.drone_dz * dx) / (dz ** 2)
+
+            if (abs(Vx) > max_vx): max_vx = abs(Vx)
+            elif (abs(Vx) < min_vx): min_vx = abs(Vx)
+
+            vels.append({'dx': dx, 'Vx': Vx})
+        
+        for vel in vels:
+            vel['Vx'] = (abs(vel['Vx']) - min_vx) / (max_vx - min_vx)
+
+            if vel['wall'] == 'left': vel['Vx'] *= -1
+
+        if total_weight == 0:
+            total_weight = 1.0
+
+        for vel in vels:
+            if vel['dx'] < 0: left_vx_avg += vel['Vx']
+            else: right_vx_avg += vel['Vx']
+        
+        scale = 0.25
+
+        left_vx_avg = (left_vx_avg / self.point_count) * scale
+        right_vx_avg = (right_vx_avg / self.point_count) * scale
+
+        drone_dx = (left_vx_avg + right_vx_avg)
+        drone_dz = 1.0
+
+        return drone_dx, drone_dz
+
     def control(self):
         forward_speed = 1.0
         angular_speed = 0.01
@@ -84,14 +127,23 @@ class curveSim(Node):
         self.drone_dt = angular_speed
         self.drone_theta += self.drone_dt
 
-        self.drone_dx = forward_speed * -np.sin(self.drone_theta)
-        self.drone_dz = forward_speed * np.cos(self.drone_theta)
+        forward_dx = -np.sin(self.drone_theta)
+        forward_dz =  np.cos(self.drone_theta)
+
+        vx_correction = self.weight_vels()
+
+        lateral_dx = np.cos(self.drone_theta)
+        lateral_dz = np.sin(self.drone_theta)
+
+        self.drone_dx = forward_speed * forward_dx + vx_correction * lateral_dx
+        self.drone_dz = forward_speed * forward_dz + vx_correction * lateral_dz
 
         self.drone_x += self.drone_dx
         self.drone_z += self.drone_dz
 
         plt.plot(self.drone_x, self.drone_z, 'ro', markersize=10)
         plt.quiver(self.drone_x, self.drone_z, 20 * self.drone_dx, 20 * self.drone_dz, angles='xy', scale_units='xy', scale=1, color='blue')
+
 
     def update(self):
         plt.clf()

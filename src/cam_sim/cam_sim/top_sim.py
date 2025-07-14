@@ -78,7 +78,7 @@ class topSim(Node):
         for point in self.points:
             dx = point['x'] - drone_x
             dy = point['y'] - self.drone_y
-            dz = point['z'] - self.drone_z
+            dz = point['z'] - drone_z
 
             if dz <= 0:
                 continue
