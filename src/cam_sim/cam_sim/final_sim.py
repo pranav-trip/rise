@@ -142,28 +142,26 @@ class finalSim(Node):
                         plt.quiver(x, z, scale*signal, scale*abs(signal), angles='xy', scale_units='xy', scale=1, color='red')
 
     def test_control(self):
-        test_points = [
-            (-40, -60),
-            (-40, 60),
-            (40, 0),
-        ]
 
-        wall_points = [
-            (-60, -50),
-            (-60, 70),
-            (60, 10),
-        ]
+        wall_x, wall_z = 60, 20 #-60,70 and 60,20
 
-        for i in range (3):
-            drone_x, drone_z = test_points[i]
-            x, z = wall_points[i]
-            dx = x - drone_x
-            dz = z - drone_z
-            vel =  -1 * (-self.drone_dx * dz + self.drone_dz * dx) / (dz ** 2)
-            
-            plt.plot(drone_x, drone_z, 'bo', markersize=8)
-            plt.plot(x, z, 'go', markersize=8)
-            plt.quiver(drone_x, drone_z, 100 * vel, 0, angles='xy', scale_units='xy', scale=1, color='red')
+        field_x = [-50, -20, 20, 50]
+        field_z = [-75, -50, -25, 0, 25, 50, 75]
+
+        for drone_x in field_x:
+            for drone_z in field_z:
+                if (drone_z > wall_z): continue
+
+                dx = wall_x - drone_x
+                dz = wall_z - drone_z
+                vel = (-self.drone_dx * dz + self.drone_dz * dx) / (dz ** 2)
+                if (wall_x < 0 and drone_x < 0): vel *= -1
+                if (wall_x > 0 and drone_x > 0): vel *= -1
+                vel = np.clip(vel, -0.5, 0.5)
+                    
+                plt.plot(drone_x, drone_z, 'bo', markersize=8)
+                plt.plot(wall_x, wall_z, 'go', markersize=8)
+                plt.quiver(drone_x, drone_z, 80 * vel, 10, angles='xy', scale_units='xy', scale=1, color='red')
 
     def transform(self):
         self.transformed_points = []
@@ -187,7 +185,7 @@ class finalSim(Node):
 
         self.plot()
         self.control()
-        self.control_field()
+        self.test_control()
         self.transform()
 
         os.system("clear")
