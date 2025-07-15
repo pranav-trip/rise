@@ -13,6 +13,7 @@ cam_sim/curve_sim.py
 cam_sim/final_sim.py
 cam_sim/sim_node.py
 cam_sim/top_sim.py
+cam_sim/turn_sim.py
 cam_sim.egg-info/PKG-INFO
 cam_sim.egg-info/SOURCES.txt
 cam_sim.egg-info/dependency_links.txt

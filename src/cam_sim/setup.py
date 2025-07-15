@@ -24,6 +24,7 @@ setup(
             'sim2 = cam_sim.top_sim:main',
             'sim3 = cam_sim.curve_sim:main',
             'sim4 = cam_sim.final_sim:main',
+            'sim5 = cam_sim.turn_sim:main',
         ],
     },
 )
