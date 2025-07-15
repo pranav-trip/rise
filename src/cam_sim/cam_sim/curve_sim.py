@@ -169,36 +169,45 @@ class curveSim(Node):
                     plt.quiver(x_outer, z_outer, outer_signal*scale * np.cos(theta), outer_signal*scale * np.sin(theta), angles='xy', scale_units='xy', scale=1, color='red')
 
     def test_control(self):
-        test_thetas = [np.pi/8, 2*np.pi/8, 3*np.pi/8]
-        drone_radii = [self.radius - self.bound_width/2, self.radius + self.bound_width/2, self.radius - self.bound_width/2]
-        wall_radii = [self.radius - self.bound_width, self.radius + self.bound_width, self.radius - self.bound_width]
+        test_thetas = [np.pi/18, 2*np.pi/18, 3*np.pi/18, 4*np.pi/18, 5*np.pi/18, 6*np.pi/18, 7*np.pi/18, 8*np.pi/18, 9*np.pi/18]
+        wall_radius, wall_theta = self.radius - self.bound_width, 5*np.pi/18 #radius-bound,9*np.pi/12 and radius+bound, 7*np.pi/12
+        wall_x, wall_z = wall_radius*np.cos(wall_theta + np.pi/18), wall_radius*np.sin(wall_theta + np.pi/18)
 
-        for i in range(3):
-            theta = test_thetas[i]
-            drone_radius = drone_radii[i]
-            wall_radius = wall_radii[i]
+        for theta in test_thetas:
+            if (theta >= wall_theta): continue
 
-            drone_x = drone_radius * np.cos(theta)
-            drone_z = drone_radius * np.sin(theta)
-            wall_x = wall_radius * np.cos(theta + np.pi/12)
-            wall_z = wall_radius * np.sin(theta + np.pi/12)
+            drone_x_inner = (self.radius-self.bound_width/2) * np.cos(theta)
+            drone_z_inner = (self.radius-self.bound_width/2) * np.sin(theta)
+            drone_x_outer = (self.radius+self.bound_width/2) * np.cos(theta)
+            drone_z_outer = (self.radius+self.bound_width/2) * np.sin(theta)
 
-            dx = wall_x - drone_x
-            dz = wall_z - drone_z
+            dx_inner = wall_x - drone_x_inner
+            dz_inner = wall_z - drone_z_inner
+            dx_outer = wall_x - drone_x_outer
+            dz_outer = wall_z - drone_z_outer
 
             drone_dx = -np.sin(theta)
             drone_dz =  np.cos(theta)
 
-            distance_sq = dx**2 + dz**2
-            vel = -1 * (-drone_dx * dz + drone_dz * dx) /  distance_sq
+            inner_dist = dx_inner**2 + dz_inner**2
+            outer_dist = dx_outer**2 + dz_outer**2
+            vel_inner = -1*(-drone_dx * dz_inner + drone_dz * dx_inner) / inner_dist
+            vel_outer = (-drone_dx * dz_outer + drone_dz * dx_outer) / outer_dist
+            vel_inner = np.clip(vel_inner, -10, 10)
+            vel_outer = np.clip(vel_outer, -10, 10)
 
-            arrow_length = 700 * abs(vel)
-            arrow_dx = arrow_length * np.cos(theta) * np.sign(vel)
-            arrow_dz = arrow_length * np.sin(theta) * np.sign(vel)
+            inner_len = 100 * abs(vel_inner)
+            outer_len = 100 * abs(vel_outer)
+            inner_arrowx = inner_len * np.cos(theta) * np.sign(vel_inner)
+            inner_arrowz = inner_len * np.sin(theta) * np.sign(vel_inner)
+            outer_arrowx = outer_len * np.cos(theta) * np.sign(vel_outer)
+            outer_arrowz = outer_len * np.sin(theta) * np.sign(vel_outer)
 
-            plt.plot(drone_x, drone_z, 'bo', markersize=8)
+            plt.plot(drone_x_inner, drone_z_inner, 'bo', markersize=8)
+            plt.plot(drone_x_outer, drone_z_outer, 'bo', markersize=8)
             plt.plot(wall_x, wall_z, 'go', markersize=8)
-            plt.quiver(drone_x, drone_z, arrow_dx, arrow_dz, angles='xy', scale_units='xy', scale=1, color='red')
+            plt.quiver(drone_x_inner, drone_z_inner, inner_arrowx, inner_arrowz, angles='xy', scale_units='xy', scale=1, color='red')
+            plt.quiver(drone_x_outer, drone_z_outer, outer_arrowx, outer_arrowz, angles='xy', scale_units='xy', scale=1, color='red')
 
     def update(self):
         plt.clf()
@@ -225,7 +234,6 @@ class curveSim(Node):
 
         self.plot()
         self.control()
-        self.test_control()
 
         plt.axis('equal')
 
