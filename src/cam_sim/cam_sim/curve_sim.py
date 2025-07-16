@@ -87,37 +87,62 @@ class curveSim(Node):
 
     def weight_vels(self, drone_x, drone_z):
         left_vx_avg, right_vx_avg = 0.0, 0.0
-
         vels = []
         max_vx, min_vx = -float('inf'), float('inf')
 
+        theta = self.drone_theta
+        R = np.array([
+            [ np.cos(theta), 0, -np.sin(theta)],
+            [          0.0, 1,           0.0 ],
+            [ np.sin(theta), 0,  np.cos(theta)]
+        ])
+
+        drone_pos = np.array([drone_x, 0.0, drone_z])
+        drone_vel = np.array([self.drone_dx, 0.0, self.drone_dz])
+        angular_vel = np.array([0.0, self.drone_dt, 0.0])
+
         for point in self.points:
-            dx = point['x'] - drone_x
-            dz = point['z'] - drone_z
+            point_pos = np.array([point['x'], 0.0, point['z']])
 
-            Vx = (-self.drone_dx * dz + self.drone_dz * dx) / (dz ** 2)
+            p_rel = point_pos - drone_pos
 
-            if (abs(Vx) > max_vx): max_vx = abs(Vx)
-            elif (abs(Vx) < min_vx): min_vx = abs(Vx)
+            p_body = R.T @ p_rel
+            dx, dy, dz = p_body
+
+            v_rot = np.cross(angular_vel, p_body)
+
+            v_body = v_rot + R.T @ drone_vel
+            vx_b, vy_b, vz_b = v_body
+
+            Vx = - (vx_b * dz - vz_b * dx) / (dz ** 2)
+            Vy = - (vy_b * dz - vz_b * dy) / (dz ** 2)
+
+            absVx = abs(Vx)
+            if absVx > max_vx:
+                max_vx = absVx
+            if absVx < min_vx:
+                min_vx = absVx
 
             vels.append({'dx': dx, 'Vx': Vx, 'wall': point['wall']})
-        
+
         for vel in vels:
             vel['Vx'] = (abs(vel['Vx']) - min_vx) / max((max_vx - min_vx), 0.001)
-
-            if vel['wall'] == 'left': vel['Vx'] *= -1
+            if vel['wall'] == 'left':
+                vel['Vx'] *= -1
 
         for vel in vels:
-            if vel['dx'] < 0: left_vx_avg += vel['Vx']
-            else: right_vx_avg += vel['Vx']
+            if vel['wall'] == 'left':
+                left_vx_avg += vel['Vx']
+            else:
+                right_vx_avg += vel['Vx']
 
-        left_vx_avg = (left_vx_avg / self.point_count)
-        right_vx_avg = (right_vx_avg / self.point_count)
+        left_vx_avg /= max(1, self.point_count)
+        right_vx_avg /= max(1, self.point_count)
 
-        signal = (left_vx_avg + right_vx_avg)
-        scale = 0.05 / (1 + 3.5 * abs(signal))
+        signal = left_vx_avg + right_vx_avg
+        scale = 0.05 / (1 + 3.8 * abs(signal))
 
-        return signal*scale
+        return signal * scale
 
     def control(self):
         signal = self.weight_vels(self.drone_x, self.drone_z)
@@ -133,81 +158,6 @@ class curveSim(Node):
 
         plt.plot(self.drone_x, self.drone_z, 'ro', markersize=10)
         plt.quiver(self.drone_x, self.drone_z, 10 * self.drone_dx, 10 * self.drone_dz, angles='xy', scale_units='xy', scale=1, color='blue')
-
-    def control_field(self):
-        field_theta = [np.pi/12, np.pi/6, np.pi/4, np.pi/3, 5*np.pi/12]
-        inner, outer = self.radius - self.bound_width/2, self.radius + self.bound_width/2
-
-        for theta in field_theta:
-                x_inner, z_inner = inner * np.cos(theta), inner * np.sin(theta)
-                x_outer, z_outer = outer * np.cos(theta), outer * np.sin(theta)
-                scale = 1000
-
-                if theta not in self.plotted:
-                    inner_signal = self.weight_vels(x_inner, z_inner)
-                    outer_signal = self.weight_vels(x_outer, z_outer)
-                    self.plotted.append(theta)
-
-                    self.inner_signals.append(inner_signal)
-                    self.outer_signals.append(outer_signal)
-
-                    plt.plot(x_inner, z_inner, 'bo', markersize=6)
-                    plt.plot(x_outer, z_outer, 'bo', markersize=6)
-                    
-                    plt.quiver(x_inner, z_inner, inner_signal*scale * np.cos(theta), inner_signal*scale * np.sin(theta), angles='xy', scale_units='xy', scale=1, color='red')
-                    plt.quiver(x_outer, z_outer, outer_signal*scale * np.cos(theta), outer_signal*scale * np.sin(theta), angles='xy', scale_units='xy', scale=1, color='red')
-
-                else:
-                    index = field_theta.index(theta)
-                    inner_signal = self.inner_signals[index]
-                    outer_signal = self.outer_signals[index]
-
-                    plt.plot(x_inner, z_inner, 'bo', markersize=6)
-                    plt.plot(x_outer, z_outer, 'bo', markersize=6)
-                    
-                    plt.quiver(x_inner, z_inner, inner_signal*scale * np.cos(theta), inner_signal*scale * np.sin(theta), angles='xy', scale_units='xy', scale=1, color='red')
-                    plt.quiver(x_outer, z_outer, outer_signal*scale * np.cos(theta), outer_signal*scale * np.sin(theta), angles='xy', scale_units='xy', scale=1, color='red')
-
-    def test_control(self):
-        test_thetas = [np.pi/18, 2*np.pi/18, 3*np.pi/18, 4*np.pi/18, 5*np.pi/18, 6*np.pi/18, 7*np.pi/18, 8*np.pi/18, 9*np.pi/18]
-        wall_radius, wall_theta = self.radius - self.bound_width, 5*np.pi/18 #radius-bound,9*np.pi/12 and radius+bound, 7*np.pi/12
-        wall_x, wall_z = wall_radius*np.cos(wall_theta + np.pi/18), wall_radius*np.sin(wall_theta + np.pi/18)
-
-        for theta in test_thetas:
-            if (theta >= wall_theta): continue
-
-            drone_x_inner = (self.radius-self.bound_width/2) * np.cos(theta)
-            drone_z_inner = (self.radius-self.bound_width/2) * np.sin(theta)
-            drone_x_outer = (self.radius+self.bound_width/2) * np.cos(theta)
-            drone_z_outer = (self.radius+self.bound_width/2) * np.sin(theta)
-
-            dx_inner = wall_x - drone_x_inner
-            dz_inner = wall_z - drone_z_inner
-            dx_outer = wall_x - drone_x_outer
-            dz_outer = wall_z - drone_z_outer
-
-            drone_dx = -np.sin(theta)
-            drone_dz =  np.cos(theta)
-
-            inner_dist = dx_inner**2 + dz_inner**2
-            outer_dist = dx_outer**2 + dz_outer**2
-            vel_inner = -1*(-drone_dx * dz_inner + drone_dz * dx_inner) / inner_dist
-            vel_outer = (-drone_dx * dz_outer + drone_dz * dx_outer) / outer_dist
-            vel_inner = np.clip(vel_inner, -10, 10)
-            vel_outer = np.clip(vel_outer, -10, 10)
-
-            inner_len = 100 * abs(vel_inner)
-            outer_len = 100 * abs(vel_outer)
-            inner_arrowx = inner_len * np.cos(theta) * np.sign(vel_inner)
-            inner_arrowz = inner_len * np.sin(theta) * np.sign(vel_inner)
-            outer_arrowx = outer_len * np.cos(theta) * np.sign(vel_outer)
-            outer_arrowz = outer_len * np.sin(theta) * np.sign(vel_outer)
-
-            plt.plot(drone_x_inner, drone_z_inner, 'bo', markersize=8)
-            plt.plot(drone_x_outer, drone_z_outer, 'bo', markersize=8)
-            plt.plot(wall_x, wall_z, 'go', markersize=8)
-            plt.quiver(drone_x_inner, drone_z_inner, inner_arrowx, inner_arrowz, angles='xy', scale_units='xy', scale=1, color='red')
-            plt.quiver(drone_x_outer, drone_z_outer, outer_arrowx, outer_arrowz, angles='xy', scale_units='xy', scale=1, color='red')
 
     def update(self):
         plt.clf()
@@ -244,6 +194,7 @@ class curveSim(Node):
         plt.axis('off')
         plt.draw()
         plt.pause(0.01)
+
 
 def main(args=None):
     rclpy.init(args=args)

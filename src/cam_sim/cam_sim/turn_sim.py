@@ -21,6 +21,7 @@ class camSim(Node):
 
         self.show_vel = False
         self.vel_count = 0
+        self.flip = False
 
         self.world_points = [
             np.array([random.uniform(0, self.x_lim), 
@@ -42,8 +43,13 @@ class camSim(Node):
         if event.key == 'up': self.angular_velocity[0] += ang_step
         elif event.key == 'down': self.angular_velocity[0] -= ang_step
 
-        if event.key == "i":  self.drone_vel[2] -= lin_step
-        elif event.key == "o":  self.drone_vel[2] += lin_step
+        if event.key == "i":  
+            self.drone_vel[2] += lin_step
+            self.flip = True
+        elif event.key == "o":  
+            self.drone_vel[2] -= lin_step
+            self.flip = True
+        else: self.flip = False
 
         if event.key == 'a': self.drone_vel[0] -= lin_step
         elif event.key == 'd': self.drone_vel[0] += lin_step
@@ -97,7 +103,8 @@ class camSim(Node):
 
             Vx, Vy = self.velocities[i]
             if self.show_vel:
-                plt.quiver(x, y, 200*Vx, 200*Vy, angles='xy', scale_units='xy', scale=0.5, color='red')
+                if self.flip: plt.quiver(x, y, -100*Vx, -100*Vy, angles='xy', scale_units='xy', scale=0.5, color='red')
+                else: plt.quiver(x, y, 100*Vx, 100*Vy, angles='xy', scale_units='xy', scale=0.5, color='red')
 
         self.drone_pos += self.drone_vel
         self.drone_vel = np.zeros(3)
@@ -126,8 +133,8 @@ class camSim(Node):
         v_rot = np.cross(angular_v, p_body)
         v_body = v_rot + R.T @ self.drone_vel
 
-        Vx = - (v_body[0]*dz - v_body[2]*dx) / dz**2
-        Vy = - (v_body[1]*dz - v_body[2]*dy) / dz**2
+        Vx = (v_body[0]*dz - v_body[2]*dx) / dz**2
+        Vy = (v_body[1]*dz - v_body[2]*dy) / dz**2
 
         return x_proj, y_proj, dz, Vx, Vy
 

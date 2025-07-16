@@ -68,37 +68,62 @@ class finalSim(Node):
     
     def weight_vels(self, drone_x, drone_z):
         left_vx_avg, right_vx_avg = 0.0, 0.0
-
         vels = []
         max_vx, min_vx = -float('inf'), float('inf')
 
+        theta = self.drone_theta
+        R = np.array([
+            [ np.cos(theta), 0, -np.sin(theta)],
+            [          0.0, 1,           0.0 ],
+            [ np.sin(theta), 0,  np.cos(theta)]
+        ])
+
+        drone_pos = np.array([drone_x, 0.0, drone_z])
+        drone_vel = np.array([self.drone_dx, 0.0, self.drone_dz])
+        angular_vel = np.array([0.0, self.drone_dt, 0.0])
+
         for point in self.points:
-            dx = point['x'] - drone_x
-            dz = point['z'] - drone_z
+            point_pos = np.array([point['x'], 0.0, point['z']])
 
-            Vx = (-self.drone_dx * dz + self.drone_dz * dx) / (dz ** 2)
+            p_rel = point_pos - drone_pos
 
-            if (abs(Vx) > max_vx): max_vx = abs(Vx)
-            elif (abs(Vx) < min_vx): min_vx = abs(Vx)
+            p_body = R.T @ p_rel
+            dx, dy, dz = p_body
+
+            v_rot = np.cross(angular_vel, p_body)
+
+            v_body = v_rot + R.T @ drone_vel
+            vx_b, vy_b, vz_b = v_body
+
+            Vx = - (vx_b * dz - vz_b * dx) / (dz ** 2)
+            Vy = - (vy_b * dz - vz_b * dy) / (dz ** 2)
+
+            absVx = abs(Vx)
+            if absVx > max_vx:
+                max_vx = absVx
+            if absVx < min_vx:
+                min_vx = absVx
 
             vels.append({'dx': dx, 'Vx': Vx})
-        
-        for vel in vels:
-            vel['Vx'] = (abs(vel['Vx']) - min_vx) / (max_vx - min_vx)
-
-            if vel['dx'] < 0: vel['Vx'] *= -1
 
         for vel in vels:
-            if vel['dx'] < 0: left_vx_avg += vel['Vx']
-            else: right_vx_avg += vel['Vx']
+            vel['Vx'] = (abs(vel['Vx']) - min_vx) / max((max_vx - min_vx), 0.001)
+            if vel['dx'] < 0:
+                vel['Vx'] *= -1
 
-        left_vx_avg = (left_vx_avg / self.point_count)
-        right_vx_avg = (right_vx_avg / self.point_count)
+        for vel in vels:
+            if vel['dx'] < 0:
+                left_vx_avg += vel['Vx']
+            else:
+                right_vx_avg += vel['Vx']
 
-        signal = (left_vx_avg + right_vx_avg)
-        scale = 0.05 / (1 + 3.5 * abs(signal))
+        left_vx_avg /= max(1, self.point_count)
+        right_vx_avg /= max(1, self.point_count)
 
-        return signal*scale, left_vx_avg, right_vx_avg
+        signal = left_vx_avg + right_vx_avg
+        scale = 0.01 / (1 + 3.8 * abs(signal))
+
+        return signal * scale, left_vx_avg, right_vx_avg
 
     def control(self):
         signal, left_vx_avg, right_vx_avg = self.weight_vels(self.drone_x, self.drone_z)
@@ -127,7 +152,7 @@ class finalSim(Node):
         for x in field_x:
             for z in field_z:
                 if z < self.drone_z + self.height / 8:
-                    scale = 800
+                    scale = 10000
                     if (x, z) not in self.plotted:
                         signal, left_vx_avg, right_vx_avg = self.weight_vels(x, z)
                         plt.plot(x, z, 'bo', markersize=6)
@@ -143,7 +168,7 @@ class finalSim(Node):
 
     def test_control(self):
 
-        wall_x, wall_z = 60, 20 #-60,70 and 60,20
+        wall_x, wall_z = 60, 45 #-60,70 and 60,20
 
         field_x = [-50, -20, 20, 50]
         field_z = [-75, -50, -25, 0, 25, 50, 75]
