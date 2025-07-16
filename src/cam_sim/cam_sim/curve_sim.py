@@ -118,7 +118,7 @@ class curveSim(Node):
             v_lin = R.T @ drone_vel
 
             #Adding rotation and translation velocities
-            v_body = v_rot + R.T @ drone_vel
+            v_body = v_rot + v_lin
             vx_b, vy_b, vz_b = v_body
 
             #Using derivative of pinhole model to find velocities in 2D frame
