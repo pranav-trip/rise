@@ -92,7 +92,7 @@ class finalSim(Node):
 
             v_rot = np.cross(angular_vel, p_body)
 
-            v_body = v_rot + R.T @ drone_vel
+            v_body = v_rot + drone_vel
             vx_b, vy_b, vz_b = v_body
 
             Vx = - (vx_b * dz - vz_b * dx) / (dz ** 2)
@@ -119,10 +119,9 @@ class finalSim(Node):
         left_vx_avg /= max(1, self.point_count)
         right_vx_avg /= max(1, self.point_count)
 
-        signal = left_vx_avg + right_vx_avg
-        scale = 0.01 / (1 + 3.8 * abs(signal))
+        signal = (left_vx_avg + right_vx_avg) * 0.012
 
-        return signal * scale, left_vx_avg, right_vx_avg
+        return signal, left_vx_avg, right_vx_avg
 
     def control(self):
         signal, left_vx_avg, right_vx_avg = self.weight_vels(self.drone_x, self.drone_z)

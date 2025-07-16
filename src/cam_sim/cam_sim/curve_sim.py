@@ -108,17 +108,16 @@ class curveSim(Node):
             point_pos = np.array([point['x'], 0.0, point['z']])
             p_rel = point_pos - drone_pos
 
-            #Rotating point from world to body frame
+            #Rotating point into the correct frame
+            #Using transpose of R to get from world to body frame
             p_body = R.T @ p_rel
             dx, dy, dz = p_body
 
             #Finding velocity due to rotation in body frame
             v_rot = np.cross(angular_vel, p_body)
-            #Finding velocity due to translation of the drone
-            v_lin = R.T @ drone_vel
 
             #Adding rotation and translation velocities
-            v_body = v_rot + v_lin
+            v_body = v_rot + drone_vel
             vx_b, vy_b, vz_b = v_body
 
             #Using derivative of pinhole model to find velocities in 2D frame
@@ -146,10 +145,9 @@ class curveSim(Node):
         left_vx_avg /= max(1, self.point_count)
         right_vx_avg /= max(1, self.point_count)
 
-        signal = left_vx_avg + right_vx_avg
-        scale = 0.01 / (1 + 3.8 * abs(signal))
+        signal = (left_vx_avg + right_vx_avg) * 0.012
 
-        return signal * scale
+        return signal
 
     def control(self):
         signal = self.weight_vels(self.drone_x, self.drone_z)
