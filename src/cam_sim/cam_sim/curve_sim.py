@@ -90,29 +90,38 @@ class curveSim(Node):
         max_vx, min_vx = -float('inf'), float('inf')
 
         theta = self.drone_theta
+
+        #Rotation matrix for drone yaw
         R = np.array([
             [np.cos(theta), 0, -np.sin(theta)],
             [0.0, 1, 0.0 ],
             [np.sin(theta), 0,  np.cos(theta)]
         ])
 
+        #Matrices for drone position and velocity
         drone_pos = np.array([drone_x, 0.0, drone_z])
         drone_vel = np.array([self.drone_dx, 0.0, self.drone_dz])
         angular_vel = np.array([0.0, self.drone_dt, 0.0])
 
         for point in self.points:
+            #Finding point position relative to drone in space
             point_pos = np.array([point['x'], 0.0, point['z']])
-
             p_rel = point_pos - drone_pos
 
+            #Rotating point from world to body frame
             p_body = R.T @ p_rel
             dx, dy, dz = p_body
 
+            #Finding velocity due to rotation in body frame
             v_rot = np.cross(angular_vel, p_body)
+            #Finding velocity due to translation of the drone
+            v_lin = R.T @ drone_vel
 
+            #Adding rotation and translation velocities
             v_body = v_rot + R.T @ drone_vel
             vx_b, vy_b, vz_b = v_body
 
+            #Using derivative of pinhole model to find velocities in 2D frame
             Vx = - (vx_b * dz - vz_b * dx) / (dz ** 2)
 
             absVx = abs(Vx)
