@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import matplotlib
 import random
 import numpy as np
-import os
 
 matplotlib.use('Qt5Agg')
 
@@ -92,9 +91,9 @@ class curveSim(Node):
 
         theta = self.drone_theta
         R = np.array([
-            [ np.cos(theta), 0, -np.sin(theta)],
-            [          0.0, 1,           0.0 ],
-            [ np.sin(theta), 0,  np.cos(theta)]
+            [np.cos(theta), 0, -np.sin(theta)],
+            [0.0, 1, 0.0 ],
+            [np.sin(theta), 0,  np.cos(theta)]
         ])
 
         drone_pos = np.array([drone_x, 0.0, drone_z])
@@ -115,7 +114,6 @@ class curveSim(Node):
             vx_b, vy_b, vz_b = v_body
 
             Vx = - (vx_b * dz - vz_b * dx) / (dz ** 2)
-            Vy = - (vy_b * dz - vz_b * dy) / (dz ** 2)
 
             absVx = abs(Vx)
             if absVx > max_vx:
@@ -140,7 +138,7 @@ class curveSim(Node):
         right_vx_avg /= max(1, self.point_count)
 
         signal = left_vx_avg + right_vx_avg
-        scale = 0.05 / (1 + 3.8 * abs(signal))
+        scale = 0.01 / (1 + 3.8 * abs(signal))
 
         return signal * scale
 
