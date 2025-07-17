@@ -1,0 +1,21 @@
+[3.693s] Invoking command in '/home/ptrip/ros2_ws/build/cam_sim': PYTHONPATH=/home/ptrip/ros2_ws/build/cam_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/ptrip/ros2_ws/build/cam_sim/build --no-deps symlink_data
+[4.813s] running develop
+[5.757s] running egg_info
+[5.809s] writing cam_sim.egg-info/PKG-INFO
+[5.811s] writing dependency_links to cam_sim.egg-info/dependency_links.txt
+[5.812s] writing entry points to cam_sim.egg-info/entry_points.txt
+[5.813s] writing requirements to cam_sim.egg-info/requires.txt
+[5.814s] writing top-level names to cam_sim.egg-info/top_level.txt
+[5.913s] reading manifest file 'cam_sim.egg-info/SOURCES.txt'
+[5.915s] writing manifest file 'cam_sim.egg-info/SOURCES.txt'
+[5.963s] running build_ext
+[5.963s] Creating /home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages/cam-sim.egg-link (link to .)
+[5.965s] Installing sim1 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim
+[5.967s] Installing sim2 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim
+[5.969s] Installing sim3 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim
+[5.973s] Installing sim4 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim
+[5.974s] Installing sim5 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim
+[5.975s] 
+[5.976s] Installed /home/ptrip/ros2_ws/build/cam_sim
+[5.978s] running symlink_data
+[6.082s] Invoked command in '/home/ptrip/ros2_ws/build/cam_sim' returned '0': PYTHONPATH=/home/ptrip/ros2_ws/build/cam_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/ptrip/ros2_ws/build/cam_sim/build --no-deps symlink_data

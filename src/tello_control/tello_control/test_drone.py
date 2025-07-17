@@ -20,7 +20,7 @@ class testTello(Node):
         time.sleep(2)
         self.tello.send_rc_control(0, 0, 0, 0)
         time.sleep(2)
-        self.tello.flip_right()
+        self.tello.flip_forward()
 
         self.tello.land()
         self.tello.end()
