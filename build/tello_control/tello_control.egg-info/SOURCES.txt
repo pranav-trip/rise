@@ -1,0 +1,13 @@
+package.xml
+setup.cfg
+setup.py
+resource/tello_control
+tello_control/__init__.py
+tello_control/test_drone.py
+tello_control.egg-info/PKG-INFO
+tello_control.egg-info/SOURCES.txt
+tello_control.egg-info/dependency_links.txt
+tello_control.egg-info/entry_points.txt
+tello_control.egg-info/requires.txt
+tello_control.egg-info/top_level.txt
+tello_control.egg-info/zip-safe

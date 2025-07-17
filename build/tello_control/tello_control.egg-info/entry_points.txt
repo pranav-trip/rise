@@ -1,0 +1,2 @@
+[console_scripts]
+test = tello_control.test_drone:main

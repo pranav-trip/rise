@@ -1,13 +1,6 @@
 package.xml
 setup.cfg
 setup.py
-../../build/cam_sim/cam_sim.egg-info/PKG-INFO
-../../build/cam_sim/cam_sim.egg-info/SOURCES.txt
-../../build/cam_sim/cam_sim.egg-info/dependency_links.txt
-../../build/cam_sim/cam_sim.egg-info/entry_points.txt
-../../build/cam_sim/cam_sim.egg-info/requires.txt
-../../build/cam_sim/cam_sim.egg-info/top_level.txt
-../../build/cam_sim/cam_sim.egg-info/zip-safe
 cam_sim/__init__.py
 cam_sim/curve_sim.py
 cam_sim/final_sim.py
