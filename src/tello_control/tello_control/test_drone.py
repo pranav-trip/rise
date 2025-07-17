@@ -7,8 +7,8 @@ class testTello(Node):
     def __init__(self):
         super().__init__('testTello')
         self.tello = Tello()
-        self.tello.connect()
-        print(f"Battery: %d%%" % self.tello.get_battery())
+        self.tello.connect(wait_for_state=False)
+        print('connected!')
 
         self.timer = self.create_timer(2.0, self.test)
 
@@ -19,6 +19,8 @@ class testTello(Node):
         self.tello.send_rc_control(0, 40, 0, 0)
         time.sleep(2)
         self.tello.send_rc_control(0, 0, 0, 0)
+        time.sleep(2)
+        self.tello.flip_right()
 
         self.tello.land()
         self.tello.end()
