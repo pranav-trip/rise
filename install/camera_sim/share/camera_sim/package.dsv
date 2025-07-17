@@ -1,6 +1,0 @@
-source;share/camera_sim/hook/pythonpath.dsv
-source;share/camera_sim/hook/pythonpath.sh
-source;share/camera_sim/hook/ament_prefix_path.dsv
-source;share/camera_sim/hook/ament_prefix_path.sh
-source;../../build/camera_sim/share/camera_sim/hook/pythonpath_develop.dsv
-source;../../build/camera_sim/share/camera_sim/hook/pythonpath_develop.sh

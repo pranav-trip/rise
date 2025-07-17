@@ -52,7 +52,7 @@ _colcon_prepend_unique_value() {
 # since a plain shell script can't determine its own path when being sourced
 # either use the provided COLCON_CURRENT_PREFIX
 # or fall back to the build time prefix (if it exists)
-_colcon_package_sh_COLCON_CURRENT_PREFIX="/home/ptrip/ros2_ws/install/camera_sim"
+_colcon_package_sh_COLCON_CURRENT_PREFIX="/home/ptrip/ros2_ws/install/tello_control"
 if [ -z "$COLCON_CURRENT_PREFIX" ]; then
   if [ ! -d "$_colcon_package_sh_COLCON_CURRENT_PREFIX" ]; then
     echo "The build time path \"$_colcon_package_sh_COLCON_CURRENT_PREFIX\" doesn't exist. Either source a script for a different shell or set the environment variable \"COLCON_CURRENT_PREFIX\" explicitly." 1>&2
@@ -78,9 +78,9 @@ _colcon_package_sh_source_script() {
 }
 
 # source sh hooks
-_colcon_package_sh_source_script "$COLCON_CURRENT_PREFIX/share/camera_sim/hook/pythonpath.sh"
-_colcon_package_sh_source_script "$COLCON_CURRENT_PREFIX/share/camera_sim/hook/ament_prefix_path.sh"
-_colcon_package_sh_source_script "$COLCON_CURRENT_PREFIX/../../build/camera_sim/share/camera_sim/hook/pythonpath_develop.sh"
+_colcon_package_sh_source_script "$COLCON_CURRENT_PREFIX/share/tello_control/hook/pythonpath.sh"
+_colcon_package_sh_source_script "$COLCON_CURRENT_PREFIX/share/tello_control/hook/ament_prefix_path.sh"
+_colcon_package_sh_source_script "$COLCON_CURRENT_PREFIX/../../build/tello_control/share/tello_control/hook/pythonpath_develop.sh"
 
 unset _colcon_package_sh_source_script
 unset COLCON_CURRENT_PREFIX
