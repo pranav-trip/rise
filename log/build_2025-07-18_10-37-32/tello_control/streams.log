@@ -1,0 +1,19 @@
+[4.601s] Invoking command in '/home/ptrip/ros2_ws/build/tello_control': PYTHONPATH=/home/ptrip/ros2_ws/build/tello_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/tello_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/ptrip/ros2_ws/build/tello_control/build --no-deps symlink_data
+[5.663s] running develop
+[6.280s] running egg_info
+[6.344s] writing tello_control.egg-info/PKG-INFO
+[6.345s] writing dependency_links to tello_control.egg-info/dependency_links.txt
+[6.346s] writing entry points to tello_control.egg-info/entry_points.txt
+[6.347s] writing requirements to tello_control.egg-info/requires.txt
+[6.348s] writing top-level names to tello_control.egg-info/top_level.txt
+[6.460s] reading manifest file 'tello_control.egg-info/SOURCES.txt'
+[6.463s] writing manifest file 'tello_control.egg-info/SOURCES.txt'
+[6.542s] running build_ext
+[6.542s] Creating /home/ptrip/ros2_ws/install/tello_control/lib/python3.12/site-packages/tello-control.egg-link (link to .)
+[6.544s] Installing command script to /home/ptrip/ros2_ws/install/tello_control/lib/tello_control
+[6.545s] Installing control script to /home/ptrip/ros2_ws/install/tello_control/lib/tello_control
+[6.546s] Installing test script to /home/ptrip/ros2_ws/install/tello_control/lib/tello_control
+[6.548s] 
+[6.548s] Installed /home/ptrip/ros2_ws/build/tello_control
+[6.548s] running symlink_data
+[6.683s] Invoked command in '/home/ptrip/ros2_ws/build/tello_control' returned '0': PYTHONPATH=/home/ptrip/ros2_ws/build/tello_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/tello_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/ptrip/ros2_ws/build/tello_control/build --no-deps symlink_data

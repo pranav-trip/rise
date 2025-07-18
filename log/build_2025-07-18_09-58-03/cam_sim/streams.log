@@ -1,0 +1,21 @@
+[11.859s] Invoking command in '/home/ptrip/ros2_ws/build/cam_sim': PYTHONPATH=/home/ptrip/ros2_ws/build/cam_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/ptrip/ros2_ws/build/cam_sim/build --no-deps symlink_data
+[12.268s] running develop
+[12.490s] running egg_info
+[12.509s] writing cam_sim.egg-info/PKG-INFO
+[12.510s] writing dependency_links to cam_sim.egg-info/dependency_links.txt
+[12.511s] writing entry points to cam_sim.egg-info/entry_points.txt
+[12.529s] writing requirements to cam_sim.egg-info/requires.txt
+[12.529s] writing top-level names to cam_sim.egg-info/top_level.txt
+[12.582s] reading manifest file 'cam_sim.egg-info/SOURCES.txt'
+[12.583s] writing manifest file 'cam_sim.egg-info/SOURCES.txt'
+[12.609s] running build_ext
+[12.610s] Creating /home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages/cam-sim.egg-link (link to .)
+[12.611s] Installing sim1 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim
+[12.616s] Installing sim2 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim
+[12.616s] Installing sim3 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim
+[12.617s] Installing sim4 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim
+[12.617s] Installing sim5 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim
+[12.618s] 
+[12.618s] Installed /home/ptrip/ros2_ws/build/cam_sim
+[12.619s] running symlink_data
+[12.749s] Invoked command in '/home/ptrip/ros2_ws/build/cam_sim' returned '0': PYTHONPATH=/home/ptrip/ros2_ws/build/cam_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/ptrip/ros2_ws/build/cam_sim/build --no-deps symlink_data

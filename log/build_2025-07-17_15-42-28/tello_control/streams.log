@@ -1,0 +1,20 @@
+[6.289s] Invoking command in '/home/ptrip/ros2_ws/build/tello_control': PYTHONPATH=/home/ptrip/ros2_ws/build/tello_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/tello_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/ptrip/ros2_ws/build/tello_control/build --no-deps symlink_data
+[7.368s] running develop
+[8.180s] running egg_info
+[8.284s] writing tello_control.egg-info/PKG-INFO
+[8.287s] writing dependency_links to tello_control.egg-info/dependency_links.txt
+[8.288s] writing entry points to tello_control.egg-info/entry_points.txt
+[8.289s] writing requirements to tello_control.egg-info/requires.txt
+[8.291s] writing top-level names to tello_control.egg-info/top_level.txt
+[8.489s] reading manifest file 'tello_control.egg-info/SOURCES.txt'
+[8.494s] writing manifest file 'tello_control.egg-info/SOURCES.txt'
+[8.580s] running build_ext
+[8.585s] Creating /home/ptrip/ros2_ws/install/tello_control/lib/python3.12/site-packages/tello-control.egg-link (link to .)
+[8.590s] Installing command script to /home/ptrip/ros2_ws/install/tello_control/lib/tello_control
+[8.593s] Installing control script to /home/ptrip/ros2_ws/install/tello_control/lib/tello_control
+[8.595s] Installing test script to /home/ptrip/ros2_ws/install/tello_control/lib/tello_control
+[8.596s] Installing video script to /home/ptrip/ros2_ws/install/tello_control/lib/tello_control
+[8.598s] 
+[8.599s] Installed /home/ptrip/ros2_ws/build/tello_control
+[8.599s] running symlink_data
+[8.762s] Invoked command in '/home/ptrip/ros2_ws/build/tello_control' returned '0': PYTHONPATH=/home/ptrip/ros2_ws/build/tello_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/tello_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/ptrip/ros2_ws/build/tello_control/build --no-deps symlink_data

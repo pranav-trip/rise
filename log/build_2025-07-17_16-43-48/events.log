@@ -1,0 +1,112 @@
+[0.000000] (-) TimerEvent: {}
+[0.002119] (cam_sim) JobQueued: {'identifier': 'cam_sim', 'dependencies': OrderedDict()}
+[0.002314] (tello_control) JobQueued: {'identifier': 'tello_control', 'dependencies': OrderedDict()}
+[0.003548] (cam_sim) JobStarted: {'identifier': 'cam_sim'}
+[0.032341] (tello_control) JobStarted: {'identifier': 'tello_control'}
+[0.098141] (-) TimerEvent: {}
+[0.199098] (-) TimerEvent: {}
+[0.299879] (-) TimerEvent: {}
+[0.400671] (-) TimerEvent: {}
+[0.501407] (-) TimerEvent: {}
+[0.602120] (-) TimerEvent: {}
+[0.702730] (-) TimerEvent: {}
+[0.803491] (-) TimerEvent: {}
+[0.904295] (-) TimerEvent: {}
+[1.005088] (-) TimerEvent: {}
+[1.105822] (-) TimerEvent: {}
+[1.206555] (-) TimerEvent: {}
+[1.307350] (-) TimerEvent: {}
+[1.408072] (-) TimerEvent: {}
+[1.508756] (-) TimerEvent: {}
+[1.609494] (-) TimerEvent: {}
+[1.710169] (-) TimerEvent: {}
+[1.810961] (-) TimerEvent: {}
+[1.911913] (-) TimerEvent: {}
+[2.012678] (-) TimerEvent: {}
+[2.113449] (-) TimerEvent: {}
+[2.214203] (-) TimerEvent: {}
+[2.314971] (-) TimerEvent: {}
+[2.415818] (-) TimerEvent: {}
+[2.516747] (-) TimerEvent: {}
+[2.617575] (-) TimerEvent: {}
+[2.718670] (-) TimerEvent: {}
+[2.819465] (-) TimerEvent: {}
+[2.921695] (-) TimerEvent: {}
+[3.022589] (-) TimerEvent: {}
+[3.123410] (-) TimerEvent: {}
+[3.224294] (-) TimerEvent: {}
+[3.325190] (-) TimerEvent: {}
+[3.425957] (-) TimerEvent: {}
+[3.527095] (-) TimerEvent: {}
+[3.627807] (-) TimerEvent: {}
+[3.728602] (-) TimerEvent: {}
+[3.829374] (-) TimerEvent: {}
+[3.930430] (-) TimerEvent: {}
+[4.031213] (-) TimerEvent: {}
+[4.132019] (-) TimerEvent: {}
+[4.232821] (-) TimerEvent: {}
+[4.333678] (-) TimerEvent: {}
+[4.430319] (tello_control) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'develop', '--editable', '--build-directory', '/home/ptrip/ros2_ws/build/tello_control/build', '--no-deps', 'symlink_data'], 'cwd': '/home/ptrip/ros2_ws/build/tello_control', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'ptrip', 'GIT_ASKPASS': '/home/ptrip/.vscode-server/bin/7adae6a56e34cb64d08899664b814cf620465925/extensions/git/dist/askpass.sh', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/opt/rviz_ogre_vendor/lib:/opt/ros/jazzy/lib/x86_64-linux-gnu:/opt/ros/jazzy/opt/gz_math_vendor/lib:/opt/ros/jazzy/opt/gz_utils_vendor/lib:/opt/ros/jazzy/opt/gz_cmake_vendor/lib:/opt/ros/jazzy/lib', 'HOME': '/home/ptrip', 'TERM_PROGRAM_VERSION': '1.102.1', 'VSCODE_IPC_HOOK_CLI': '/run/user/1000/vscode-ipc-c97381f3-185a-40b8-8c3c-09d5d37adc57.sock', 'ROS_PYTHON_VERSION': '3', 'VSCODE_GIT_ASKPASS_MAIN': '/home/ptrip/.vscode-server/bin/7adae6a56e34cb64d08899664b814cf620465925/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/home/ptrip/.vscode-server/bin/7adae6a56e34cb64d08899664b814cf620465925/node', 'PYDEVD_DISABLE_FILE_VALIDATION': '1', 'BUNDLED_DEBUGPY_PATH': '/home/ptrip/.vscode-server/extensions/ms-python.debugpy-2025.10.0/bundled/libs/debugpy', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'WSL_DISTRO_NAME': 'Ubuntu-24.04', 'WAYLAND_DISPLAY': 'wayland-0', 'COLCON_PREFIX_PATH': '/home/ptrip/ros2_ws/install', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'ptrip', 'NAME': 'Pranav', 'WSL_INTEROP': '/run/WSL/41927_interop', 'PULSE_SERVER': 'unix:/mnt/wslg/PulseServer', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'TERM': 'xterm-256color', 'PATH': '/home/ptrip/.vscode-server/bin/7adae6a56e34cb64d08899664b814cf620465925/bin/remote-cli:/home/ptrip/.local/bin:/opt/ros/jazzy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/cmd:/mnt/c/Users/prana/AppData/Local/Muse Hub/lib:/mnt/c/Users/prana/AppData/Local/Programs/Python/Launcher/:/mnt/c/Users/prana/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/prana/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/home/ptrip/.vscode-server/extensions/ms-python.debugpy-2025.10.0/bundled/scripts/noConfigScripts:/home/ptrip/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand', 'XDG_RUNTIME_DIR': '/run/user/1000/', 'DISPLAY': ':0', 'VSCODE_DEBUGPY_ADAPTER_ENDPOINTS': '/home/ptrip/.vscode-server/extensions/ms-python.debugpy-2025.10.0/.noConfigDebugAdapterEndpoints/endpoint-c01d623203cddd7b.txt', 'LANG': 'C.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1000/vscode-git-c24bc90a59.sock', 'TERM_PROGRAM': 'vscode', 'AMENT_PREFIX_PATH': '/home/ptrip/ros2_ws/install/tello_control:/home/ptrip/ros2_ws/install/cam_sim:/opt/ros/jazzy', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'PWD': '/home/ptrip/ros2_ws/build/tello_control', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/ptrip/ros2_ws/build/tello_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/tello_control/lib/python3.12/site-packages:/home/ptrip/ros2_ws/build/tello_control:/home/ptrip/ros2_ws/install/tello_control/lib/python3.12/site-packages:/home/ptrip/ros2_ws/build/cam_sim:/home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1', 'WSL2_GUI_APPS_ENABLED': '1', 'HOSTTYPE': 'x86_64', 'CMAKE_PREFIX_PATH': '/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor', 'WSLENV': 'VSCODE_WSL_EXT_LOCATION/up'}, 'shell': False}
+[4.443447] (-) TimerEvent: {}
+[4.452359] (cam_sim) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'develop', '--editable', '--build-directory', '/home/ptrip/ros2_ws/build/cam_sim/build', '--no-deps', 'symlink_data'], 'cwd': '/home/ptrip/ros2_ws/build/cam_sim', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'ptrip', 'GIT_ASKPASS': '/home/ptrip/.vscode-server/bin/7adae6a56e34cb64d08899664b814cf620465925/extensions/git/dist/askpass.sh', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/opt/rviz_ogre_vendor/lib:/opt/ros/jazzy/lib/x86_64-linux-gnu:/opt/ros/jazzy/opt/gz_math_vendor/lib:/opt/ros/jazzy/opt/gz_utils_vendor/lib:/opt/ros/jazzy/opt/gz_cmake_vendor/lib:/opt/ros/jazzy/lib', 'HOME': '/home/ptrip', 'TERM_PROGRAM_VERSION': '1.102.1', 'VSCODE_IPC_HOOK_CLI': '/run/user/1000/vscode-ipc-c97381f3-185a-40b8-8c3c-09d5d37adc57.sock', 'ROS_PYTHON_VERSION': '3', 'VSCODE_GIT_ASKPASS_MAIN': '/home/ptrip/.vscode-server/bin/7adae6a56e34cb64d08899664b814cf620465925/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/home/ptrip/.vscode-server/bin/7adae6a56e34cb64d08899664b814cf620465925/node', 'PYDEVD_DISABLE_FILE_VALIDATION': '1', 'BUNDLED_DEBUGPY_PATH': '/home/ptrip/.vscode-server/extensions/ms-python.debugpy-2025.10.0/bundled/libs/debugpy', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'WSL_DISTRO_NAME': 'Ubuntu-24.04', 'WAYLAND_DISPLAY': 'wayland-0', 'COLCON_PREFIX_PATH': '/home/ptrip/ros2_ws/install', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'ptrip', 'NAME': 'Pranav', 'WSL_INTEROP': '/run/WSL/41927_interop', 'PULSE_SERVER': 'unix:/mnt/wslg/PulseServer', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'TERM': 'xterm-256color', 'PATH': '/home/ptrip/.vscode-server/bin/7adae6a56e34cb64d08899664b814cf620465925/bin/remote-cli:/home/ptrip/.local/bin:/opt/ros/jazzy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/Git/cmd:/mnt/c/Users/prana/AppData/Local/Muse Hub/lib:/mnt/c/Users/prana/AppData/Local/Programs/Python/Launcher/:/mnt/c/Users/prana/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/prana/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin:/home/ptrip/.vscode-server/extensions/ms-python.debugpy-2025.10.0/bundled/scripts/noConfigScripts:/home/ptrip/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand', 'XDG_RUNTIME_DIR': '/run/user/1000/', 'DISPLAY': ':0', 'VSCODE_DEBUGPY_ADAPTER_ENDPOINTS': '/home/ptrip/.vscode-server/extensions/ms-python.debugpy-2025.10.0/.noConfigDebugAdapterEndpoints/endpoint-c01d623203cddd7b.txt', 'LANG': 'C.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1000/vscode-git-c24bc90a59.sock', 'TERM_PROGRAM': 'vscode', 'AMENT_PREFIX_PATH': '/home/ptrip/ros2_ws/install/tello_control:/home/ptrip/ros2_ws/install/cam_sim:/opt/ros/jazzy', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'PWD': '/home/ptrip/ros2_ws/build/cam_sim', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/ptrip/ros2_ws/build/cam_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages:/home/ptrip/ros2_ws/build/tello_control:/home/ptrip/ros2_ws/install/tello_control/lib/python3.12/site-packages:/home/ptrip/ros2_ws/build/cam_sim:/home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1', 'WSL2_GUI_APPS_ENABLED': '1', 'HOSTTYPE': 'x86_64', 'CMAKE_PREFIX_PATH': '/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor', 'WSLENV': 'VSCODE_WSL_EXT_LOCATION/up'}, 'shell': False}
+[4.543760] (-) TimerEvent: {}
+[4.644688] (-) TimerEvent: {}
+[4.745476] (-) TimerEvent: {}
+[4.846167] (-) TimerEvent: {}
+[4.946947] (-) TimerEvent: {}
+[5.047554] (-) TimerEvent: {}
+[5.148300] (-) TimerEvent: {}
+[5.249120] (-) TimerEvent: {}
+[5.349935] (-) TimerEvent: {}
+[5.443905] (cam_sim) StdoutLine: {'line': b'running develop\n'}
+[5.450148] (-) TimerEvent: {}
+[5.487312] (tello_control) StdoutLine: {'line': b'running develop\n'}
+[5.550464] (-) TimerEvent: {}
+[5.651169] (-) TimerEvent: {}
+[5.752092] (-) TimerEvent: {}
+[5.852929] (-) TimerEvent: {}
+[5.953642] (-) TimerEvent: {}
+[6.023686] (cam_sim) StdoutLine: {'line': b'running egg_info\n'}
+[6.053888] (-) TimerEvent: {}
+[6.063746] (cam_sim) StdoutLine: {'line': b'writing cam_sim.egg-info/PKG-INFO\n'}
+[6.064774] (cam_sim) StdoutLine: {'line': b'writing dependency_links to cam_sim.egg-info/dependency_links.txt\n'}
+[6.065860] (cam_sim) StdoutLine: {'line': b'writing entry points to cam_sim.egg-info/entry_points.txt\n'}
+[6.067167] (cam_sim) StdoutLine: {'line': b'writing requirements to cam_sim.egg-info/requires.txt\n'}
+[6.068176] (cam_sim) StdoutLine: {'line': b'writing top-level names to cam_sim.egg-info/top_level.txt\n'}
+[6.074130] (tello_control) StdoutLine: {'line': b'running egg_info\n'}
+[6.127212] (tello_control) StdoutLine: {'line': b'writing tello_control.egg-info/PKG-INFO\n'}
+[6.128178] (tello_control) StdoutLine: {'line': b'writing dependency_links to tello_control.egg-info/dependency_links.txt\n'}
+[6.129149] (tello_control) StdoutLine: {'line': b'writing entry points to tello_control.egg-info/entry_points.txt\n'}
+[6.130099] (tello_control) StdoutLine: {'line': b'writing requirements to tello_control.egg-info/requires.txt\n'}
+[6.131357] (tello_control) StdoutLine: {'line': b'writing top-level names to tello_control.egg-info/top_level.txt\n'}
+[6.154182] (-) TimerEvent: {}
+[6.196977] (cam_sim) StdoutLine: {'line': b"reading manifest file 'cam_sim.egg-info/SOURCES.txt'\n"}
+[6.199094] (cam_sim) StdoutLine: {'line': b"writing manifest file 'cam_sim.egg-info/SOURCES.txt'\n"}
+[6.247893] (tello_control) StdoutLine: {'line': b"reading manifest file 'tello_control.egg-info/SOURCES.txt'\n"}
+[6.249259] (cam_sim) StdoutLine: {'line': b'running build_ext\n'}
+[6.249870] (cam_sim) StdoutLine: {'line': b'Creating /home/ptrip/ros2_ws/install/cam_sim/lib/python3.12/site-packages/cam-sim.egg-link (link to .)\n'}
+[6.250675] (tello_control) StdoutLine: {'line': b"writing manifest file 'tello_control.egg-info/SOURCES.txt'\n"}
+[6.252279] (cam_sim) StdoutLine: {'line': b'Installing sim1 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim\n'}
+[6.253178] (cam_sim) StdoutLine: {'line': b'Installing sim2 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim\n'}
+[6.254243] (cam_sim) StdoutLine: {'line': b'Installing sim3 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim\n'}
+[6.254779] (-) TimerEvent: {}
+[6.255412] (cam_sim) StdoutLine: {'line': b'Installing sim4 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim\n'}
+[6.256256] (cam_sim) StdoutLine: {'line': b'Installing sim5 script to /home/ptrip/ros2_ws/install/cam_sim/lib/cam_sim\n'}
+[6.257372] (cam_sim) StdoutLine: {'line': b'\n'}
+[6.258192] (cam_sim) StdoutLine: {'line': b'Installed /home/ptrip/ros2_ws/build/cam_sim\n'}
+[6.258639] (cam_sim) StdoutLine: {'line': b'running symlink_data\n'}
+[6.315335] (tello_control) StdoutLine: {'line': b'running build_ext\n'}
+[6.315721] (tello_control) StdoutLine: {'line': b'Creating /home/ptrip/ros2_ws/install/tello_control/lib/python3.12/site-packages/tello-control.egg-link (link to .)\n'}
+[6.318213] (tello_control) StdoutLine: {'line': b'Installing command script to /home/ptrip/ros2_ws/install/tello_control/lib/tello_control\n'}
+[6.319437] (tello_control) StdoutLine: {'line': b'Installing control script to /home/ptrip/ros2_ws/install/tello_control/lib/tello_control\n'}
+[6.321226] (tello_control) StdoutLine: {'line': b'Installing test script to /home/ptrip/ros2_ws/install/tello_control/lib/tello_control\n'}
+[6.322743] (tello_control) StdoutLine: {'line': b'\n'}
+[6.323215] (tello_control) StdoutLine: {'line': b'Installed /home/ptrip/ros2_ws/build/tello_control\n'}
+[6.323373] (tello_control) StdoutLine: {'line': b'running symlink_data\n'}
+[6.355078] (-) TimerEvent: {}
+[6.381340] (cam_sim) CommandEnded: {'returncode': 0}
+[6.422727] (cam_sim) JobEnded: {'identifier': 'cam_sim', 'rc': 0}
+[6.455284] (-) TimerEvent: {}
+[6.458466] (tello_control) CommandEnded: {'returncode': 0}
+[6.485252] (tello_control) JobEnded: {'identifier': 'tello_control', 'rc': 0}
+[6.490939] (-) EventReactorShutdown: {}

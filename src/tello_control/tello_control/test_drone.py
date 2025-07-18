@@ -8,22 +8,19 @@ class testTello(Node):
         super().__init__('testTello')
         self.tello = Tello()
         self.tello.connect(wait_for_state=False)
-        print('connected!')
+        print('Connected')
 
         self.timer = self.create_timer(2.0, self.test)
 
     def test(self):
-        self.timer.cancel()
+        time.sleep(1)
         self.tello.takeoff()
-
-        self.tello.send_rc_control(0, 40, 0, 0)
-        time.sleep(2)
-        self.tello.send_rc_control(0, 0, 0, 0)
-        time.sleep(2)
+        time.sleep(1)
         self.tello.flip_forward()
-
+        time.sleep(1)
         self.tello.land()
         self.tello.end()
+        self.timer.cancel()
 
 def main(args=None):
     rclpy.init(args=args)

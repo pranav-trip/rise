@@ -22,7 +22,7 @@ setup(
         'console_scripts': [
             'test = tello_control.test_drone:main',
             'command = tello_control.command_node:main',
-            'control = tello_control.control_node:main'
+            'control = tello_control.control_node:main',
         ],
     },
 )
