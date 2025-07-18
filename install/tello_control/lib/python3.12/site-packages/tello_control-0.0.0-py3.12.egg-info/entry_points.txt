@@ -1,0 +1,4 @@
+[console_scripts]
+command = tello_control.command_node:main
+control = tello_control.control_node:main
+test = tello_control.test_drone:main

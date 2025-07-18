@@ -1,0 +1,25 @@
+[0.989s] Invoking command in '/home/roboticslab/rise/src/cam_sim': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/roboticslab/rise/build/cam_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/cam_sim build --build-base /home/roboticslab/rise/build/cam_sim/build install --record /home/roboticslab/rise/build/cam_sim/install.log --single-version-externally-managed install_data
+[1.238s] running egg_info
+[1.256s] writing ../../build/cam_sim/cam_sim.egg-info/PKG-INFO
+[1.256s] writing dependency_links to ../../build/cam_sim/cam_sim.egg-info/dependency_links.txt
+[1.257s] writing entry points to ../../build/cam_sim/cam_sim.egg-info/entry_points.txt
+[1.257s] writing requirements to ../../build/cam_sim/cam_sim.egg-info/requires.txt
+[1.257s] writing top-level names to ../../build/cam_sim/cam_sim.egg-info/top_level.txt
+[1.296s] reading manifest file '../../build/cam_sim/cam_sim.egg-info/SOURCES.txt'
+[1.296s] writing manifest file '../../build/cam_sim/cam_sim.egg-info/SOURCES.txt'
+[1.296s] running build
+[1.296s] running build_py
+[1.297s] running install
+[1.303s] running install_lib
+[1.323s] running install_data
+[1.323s] running install_egg_info
+[1.342s] removing '/home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam_sim-0.0.0-py3.12.egg-info' (and everything under it)
+[1.342s] Copying ../../build/cam_sim/cam_sim.egg-info to /home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam_sim-0.0.0-py3.12.egg-info
+[1.343s] running install_scripts
+[1.469s] Installing sim1 script to /home/roboticslab/rise/install/cam_sim/lib/cam_sim
+[1.469s] Installing sim2 script to /home/roboticslab/rise/install/cam_sim/lib/cam_sim
+[1.469s] Installing sim3 script to /home/roboticslab/rise/install/cam_sim/lib/cam_sim
+[1.469s] Installing sim4 script to /home/roboticslab/rise/install/cam_sim/lib/cam_sim
+[1.469s] Installing sim5 script to /home/roboticslab/rise/install/cam_sim/lib/cam_sim
+[1.470s] writing list of installed files to '/home/roboticslab/rise/build/cam_sim/install.log'
+[1.491s] Invoked command in '/home/roboticslab/rise/src/cam_sim' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/roboticslab/rise/build/cam_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/cam_sim build --build-base /home/roboticslab/rise/build/cam_sim/build install --record /home/roboticslab/rise/build/cam_sim/install.log --single-version-externally-managed install_data

@@ -1,0 +1,28 @@
+[1.028s] Invoking command in '/home/roboticslab/rise/build/cam_sim': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/roboticslab/rise/build/cam_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/roboticslab/rise/build/cam_sim/build --no-deps symlink_data
+[1.342s] running develop
+[1.541s] running egg_info
+[1.542s] creating cam_sim.egg-info
+[1.560s] writing cam_sim.egg-info/PKG-INFO
+[1.560s] writing dependency_links to cam_sim.egg-info/dependency_links.txt
+[1.560s] writing entry points to cam_sim.egg-info/entry_points.txt
+[1.560s] writing requirements to cam_sim.egg-info/requires.txt
+[1.560s] writing top-level names to cam_sim.egg-info/top_level.txt
+[1.560s] writing manifest file 'cam_sim.egg-info/SOURCES.txt'
+[1.598s] reading manifest file 'cam_sim.egg-info/SOURCES.txt'
+[1.599s] writing manifest file 'cam_sim.egg-info/SOURCES.txt'
+[1.618s] running build_ext
+[1.619s] Creating /home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam-sim.egg-link (link to .)
+[1.619s] Installing sim1 script to /home/roboticslab/rise/install/cam_sim/lib/cam_sim
+[1.619s] Installing sim2 script to /home/roboticslab/rise/install/cam_sim/lib/cam_sim
+[1.619s] Installing sim3 script to /home/roboticslab/rise/install/cam_sim/lib/cam_sim
+[1.620s] Installing sim4 script to /home/roboticslab/rise/install/cam_sim/lib/cam_sim
+[1.620s] Installing sim5 script to /home/roboticslab/rise/install/cam_sim/lib/cam_sim
+[1.620s] 
+[1.620s] Installed /home/roboticslab/rise/build/cam_sim
+[1.620s] running symlink_data
+[1.620s] creating /home/roboticslab/rise/install/cam_sim/share/ament_index
+[1.620s] creating /home/roboticslab/rise/install/cam_sim/share/ament_index/resource_index
+[1.620s] creating /home/roboticslab/rise/install/cam_sim/share/ament_index/resource_index/packages
+[1.621s] symbolically linking /home/roboticslab/rise/build/cam_sim/resource/cam_sim -> /home/roboticslab/rise/install/cam_sim/share/ament_index/resource_index/packages
+[1.621s] symbolically linking /home/roboticslab/rise/build/cam_sim/package.xml -> /home/roboticslab/rise/install/cam_sim/share/cam_sim
+[1.655s] Invoked command in '/home/roboticslab/rise/build/cam_sim' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/roboticslab/rise/build/cam_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/roboticslab/rise/build/cam_sim/build --no-deps symlink_data

@@ -1,1 +1,1 @@
-prepend-non-duplicate;PYTHONPATH;/home/ptrip/ros2_ws/build/cam_sim
+prepend-non-duplicate;PYTHONPATH;/home/roboticslab/rise/build/cam_sim

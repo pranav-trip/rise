@@ -1,1 +1,0 @@
-/home/ptrip/ros2_ws/src/tello_control/setup.py

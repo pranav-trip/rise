@@ -1,10 +1,9 @@
+import random
+import os
 import rclpy
 from rclpy.node import Node
 import matplotlib.pyplot as plt
 import matplotlib
-import random
-import numpy as np
-import os
 
 matplotlib.use('Qt5Agg')
 

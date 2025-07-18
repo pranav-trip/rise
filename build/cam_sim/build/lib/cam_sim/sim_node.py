@@ -99,7 +99,7 @@ class camSim(Node):
         dz = z - self.drone_z
 
         if dz <= 0:
-           return float('inf'), float('inf'), dz, 0, 0
+            return float('inf'), float('inf'), dz, 0, 0
 
         x_proj = self.focal_length * (dx/dz)
         y_proj = self.focal_length * (dy/dz)

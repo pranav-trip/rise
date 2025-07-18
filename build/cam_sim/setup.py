@@ -1,1 +1,0 @@
-/home/ptrip/ros2_ws/src/cam_sim/setup.py
