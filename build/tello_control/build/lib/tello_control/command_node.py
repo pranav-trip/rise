@@ -18,22 +18,21 @@ class CommandNode(Node):
             msg = Twist()
             msg.linear.x = 25.0
             self.cmd_pub.publish(msg)
-            self.get_logger().info(f"Command: {msg.linear.x} m/s")
 
         else:
             msg = Twist()
             msg.linear.x = 0.0
             self.cmd_pub.publish(msg)
-            self.get_logger().info(f"Command: {msg.linear.x} m/s")
             self.get_logger().info("Finished")
             self.timer.destroy()
             return
         
         msg = Bool()
-        if (self.time_count+1)%10 == 0: msg.data = True
+        if (self.time_count+1)%10 == 0: 
+            msg.data = True
+            self.get_logger().info("Save Image")
         else: msg.data = False
         self.img_pub.publish(msg)
-        self.get_logger().info("Command: Show Frame")
         
         self.time_count += 1
 
