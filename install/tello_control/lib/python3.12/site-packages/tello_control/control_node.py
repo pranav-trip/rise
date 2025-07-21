@@ -16,6 +16,7 @@ class ControlNode(Node):
         self.tello = Tello()
         self.tello.connect()
         self.get_logger().info("Tello Connected")
+        self.command_recieved = False
 
         self.image_count = -2
         self.save_dir = os.path.expanduser('~/rise/images')
@@ -28,6 +29,8 @@ class ControlNode(Node):
         self.timer = self.create_timer(0.1, self.timeout)
         self.get_logger().info("Ready for Commands")
 
+        self.bw, self.points = None, None
+
     def control(self, msg):
         self.tello.send_rc_control(0, int(msg.linear.x), 0, 0)
         self.last_command = time.time()
@@ -35,11 +38,31 @@ class ControlNode(Node):
         self.command_recieved = True
 
     def stream(self, msg):
-        if msg.data:
-            image = self.tello.get_frame_read()
-            image_path = os.path.join(self.save_dir, f"frame_{self.image_count:04d}.png")
-            if self.image_count >= 0: cv2.imwrite(image_path, image.frame)
-            self.image_count += 1
+        image = self.tello.get_frame_read().frame
+        image_bw = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+        if self.bw is None or self.points is None or len(self.points) == 0:
+            self.bw = image_bw.copy()
+            self.points = cv2.goodFeaturesToTrack(image_bw, maxCorners=20, qualityLevel=0.5, minDistance=0.5)
+            self.image_count +=1
+            return
+        
+        new_points, status, _ = cv2.calcOpticalFlowPyrLK(self.bw, image_bw, self.points, None)
+        tracked_points = new_points[status == 1]
+
+        for point in tracked_points:
+            x, y = point.ravel()
+            cv2.circle(image, (int(x), int(y)), 5, (255, 0, 0), -1)
+
+        self.bw = image_bw.copy()
+        self.points = tracked_points.reshape(-1, 1, 2)
+        self.image_count += 1
+        
+        if not msg.data:
+            return
+
+        image_path = os.path.join(self.save_dir, f"frame_{self.image_count:04d}.png")
+        if self.image_count >= 0: cv2.imwrite(image_path, image)
 
     def timeout(self):
         if time.time() - self.last_command > 5.0 and self.command_recieved == True:
