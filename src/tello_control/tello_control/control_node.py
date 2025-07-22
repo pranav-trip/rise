@@ -45,24 +45,35 @@ class ControlNode(Node):
 
         image = self.tello.get_frame_read().frame
         image_bw = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
         height, width = image_bw.shape
-        mask = np.zeros_like(image_bw, dtype=np.uint8)
-        mask[height // 2 : , width // 5 : 2 * width // 5] = 255
-        mask[height // 2 : , 3 * width // 5 : 4 * width // 5] = 255
+        mask_left = np.zeros_like(image_bw, dtype=np.uint8)
+        mask_right = np.zeros_like(image_bw, dtype=np.uint8)
+
+        mask_left[height // 2 : , width // 7 : 3 * width // 7] = 255
+        mask_right[height // 2 : , 4 * width // 7 : 6 * width // 7] = 255
 
         if self.points is not None:
             self.new_points, status, _ = cv2.calcOpticalFlowPyrLK(self.bw, image_bw, self.points, None)
-            self.new_points = self.new_points[status.flatten() == 1] if self.new_points is not None else None
+            if self.new_points is not None: self.new_points = self.new_points[status.flatten() == 1]
+            else: self.new_points = None
 
             for point in self.new_points:
                 x, y = point.ravel()
                 x, y = int(x), int(y)
-                if not mask[y, x] == 255:
+
+                if 0 <= y < mask_left.shape[0] and 0 <= x < mask_left.shape[1]:
+                    if mask_left[y, x] != 255 and mask_right[y, x] != 255:
+                        self.new_points = None
+                        break
+                else:
                     self.new_points = None
                     break
 
         if self.new_points is None or len(self.new_points) < 10:
-            self.points = cv2.goodFeaturesToTrack(image_bw, mask=mask, maxCorners=10, qualityLevel=0.1, minDistance=2)
+            points_left = cv2.goodFeaturesToTrack(image_bw, mask=mask_left, maxCorners=10, qualityLevel=0.1, minDistance=20)
+            points_right = cv2.goodFeaturesToTrack(image_bw, mask=mask_right, maxCorners=10, qualityLevel=0.1, minDistance=20)
+            if points_left is not None and points_right is not None: self.points = np.concatenate((points_left, points_right))
             self.calc_vel = False
             self.old_points = None
         else:
@@ -75,9 +86,10 @@ class ControlNode(Node):
                 cv2.circle(image, (int(x), int(y)), 5, (255, 0, 0), -1)
 
         if self.image_count >= 0:
-            overlay = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
-            overlay[np.where(mask==255)] = (0, 255, 0)
-            blended = cv2.addWeighted(image.copy(), 0.8, overlay, 0.2, 0)
+            overlay = cv2.cvtColor(mask_left, cv2.COLOR_GRAY2BGR)
+            overlay[np.where(mask_left==255)] = (0, 255, 0)
+            overlay[np.where(mask_right==255)] = (0, 255, 0)
+            blended = cv2.addWeighted(image.copy(), 0.9, overlay, 0.1, 0)
             image_path = os.path.join(self.save_dir, f"frame_{self.image_count:04d}.png")
             cv2.imwrite(image_path, blended)
 
@@ -87,7 +99,7 @@ class ControlNode(Node):
                 if i >= len(self.old_points): break
                 x, y = point.ravel()
                 xo, yo = self.old_points[i].ravel()
-                print(f"Point {i}: {(x - xo)*10:.2f} pixels per second")
+                print(f"Point {i+1}: {(x - xo)*10:.2f} pixels per second")
 
         if self.calc_vel:
             self.old_points = self.points.copy()
