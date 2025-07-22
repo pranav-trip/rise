@@ -21,7 +21,7 @@ class ControlNode(Node):
         self.get_logger().info("Tello Connected")
         self.command_recieved = False
 
-        self.image_count = -22
+        self.image_count = -12
         self.save_dir = os.path.expanduser('~/rise/images')
 
         time.sleep(1)
@@ -32,7 +32,7 @@ class ControlNode(Node):
         self.timer = self.create_timer(0.1, self.timeout)
         self.get_logger().info("Ready for Commands")
 
-        self.points, self.old_points, self.bw = None, None, None
+        self.points, self.old_points, self.new_points, self.bw = None, None, None, None
         self.calc_vel = True
 
     def control(self, msg):
@@ -45,18 +45,28 @@ class ControlNode(Node):
 
         image = self.tello.get_frame_read().frame
         image_bw = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        height, width = image_bw.shape
+        mask = np.zeros_like(image_bw, dtype=np.uint8)
+        mask[height // 2 : , width // 5 : 2 * width // 5] = 255
+        mask[height // 2 : , 3 * width // 5 : 4 * width // 5] = 255
 
-        new_points = None
         if self.points is not None:
-            new_points, status, _ = cv2.calcOpticalFlowPyrLK(self.bw, image_bw, self.points, None)
-            new_points = new_points[status.flatten() == 1] if new_points is not None else None
+            self.new_points, status, _ = cv2.calcOpticalFlowPyrLK(self.bw, image_bw, self.points, None)
+            self.new_points = self.new_points[status.flatten() == 1] if self.new_points is not None else None
 
-        if new_points is None or len(new_points) < 10:
-            self.points = cv2.goodFeaturesToTrack(image_bw, maxCorners=10, qualityLevel=0.5, minDistance=0.5)
+            for point in self.new_points:
+                x, y = point.ravel()
+                x, y = int(x), int(y)
+                if not mask[y, x] == 255:
+                    self.new_points = None
+                    break
+
+        if self.new_points is None or len(self.new_points) < 10:
+            self.points = cv2.goodFeaturesToTrack(image_bw, mask=mask, maxCorners=10, qualityLevel=0.1, minDistance=2)
             self.calc_vel = False
             self.old_points = None
         else:
-            self.points = new_points
+            self.points = self.new_points
             self.calc_vel = True
 
         if self.points is not None:
@@ -65,8 +75,11 @@ class ControlNode(Node):
                 cv2.circle(image, (int(x), int(y)), 5, (255, 0, 0), -1)
 
         if self.image_count >= 0:
+            overlay = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+            overlay[np.where(mask==255)] = (0, 255, 0)
+            blended = cv2.addWeighted(image.copy(), 0.8, overlay, 0.2, 0)
             image_path = os.path.join(self.save_dir, f"frame_{self.image_count:04d}.png")
-            cv2.imwrite(image_path, image)
+            cv2.imwrite(image_path, blended)
 
         if self.calc_vel and self.old_points is not None:
             os.system("clear")
@@ -74,7 +87,7 @@ class ControlNode(Node):
                 if i >= len(self.old_points): break
                 x, y = point.ravel()
                 xo, yo = self.old_points[i].ravel()
-                print(f"Point {i}: {x - xo:.2f} pixels per frame")
+                print(f"Point {i}: {(x - xo)*10:.2f} pixels per second")
 
         if self.calc_vel:
             self.old_points = self.points.copy()
