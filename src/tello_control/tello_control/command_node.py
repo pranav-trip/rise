@@ -2,6 +2,7 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Bool
+import os
 
 class CommandNode(Node):
     def __init__(self):
@@ -11,9 +12,11 @@ class CommandNode(Node):
 
         self.timer = self.create_timer(0.1, self.send_commands)
         self.time_count = 0
-        self.time_lim = 120
+        self.time_lim = 130
 
     def send_commands(self):
+        os.system("clear")
+
         if self.time_count < self.time_lim:
             msg = Twist()
             msg.linear.x = 25.0
@@ -30,8 +33,7 @@ class CommandNode(Node):
             return
         
         msg = Bool()
-        if (self.time_count+1)%10 == 0: msg.data = True
-        else: msg.data = False
+        msg.data = True
         self.img_pub.publish(msg)
         self.get_logger().info("Command: Show Frame")
         
