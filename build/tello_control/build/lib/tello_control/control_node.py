@@ -13,7 +13,7 @@ from collections import deque
 class ControlNode(Node):
     def __init__(self):
         super().__init__('control_node')
-        '''self.cmd_sub = self.create_subscription(Twist, 'drone_command', self.control, 10)
+        self.cmd_sub = self.create_subscription(Twist, 'drone_command', self.control, 10)
         self.img_sub = self.create_subscription(Bool, 'drone_stream', self.stream, 10)
         logging.getLogger("djitellopy").setLevel(logging.ERROR)
 
@@ -36,17 +36,29 @@ class ControlNode(Node):
         self.get_logger().info("Ready for Commands")
 
         self.points, self.old_points = None, None
-        self.ids, self.old_ids = None, None'''
+        self.ids, self.old_ids = None, None
 
         self.stored_frames = deque(maxlen = 9)
         self.dt = 0.1
         self.kernel = np.array([-4, -3, -2, -1, 0, 1, 2, 3, 4], dtype=np.float32)
         self.kernel = self.kernel * (1 / np.sum(np.square(np.arange(-4, 5))))
+        self.signal = 0
+        #self.test_velocity_estimation(self.kernel, 1.0)
 
-        self.test_velocity_estimation(self.kernel, 1.0)
+    def timeout(self):
+        if time.time() - self.last_command > 5.0 and self.command_recieved == True:
+            self.get_logger().info("Tello Disconnected")
+            self.tello.send_rc_control(0, 0, 0, 0)
+
+            self.tello.land()
+            self.tello.streamoff()
+            self.get_logger().info(f"Battery Status: {self.tello.get_battery()}")
+
+            cv2.destroyAllWindows()
+            self.timer.destroy()
 
     def control(self, msg):
-        self.tello.send_rc_control(0, int(msg.linear.x), 0, 0)
+        self.tello.send_rc_control(0, int(msg.linear.x), 0, self.signal)
         self.last_command = time.time()
         self.command_recieved = True
 
@@ -88,7 +100,7 @@ class ControlNode(Node):
             overlay = cv2.cvtColor(mask_left, cv2.COLOR_GRAY2BGR)
             overlay[np.where(mask_left==255)] = (0, 255, 0)
             overlay[np.where(mask_right==255)] = (0, 255, 0)
-            blended = cv2.addWeighted(image.copy(), 0.9, overlay, 0.1, 0)
+            blended = cv2.addWeighted(image.copy(), 0.8, overlay, 0.2, 0)
             image_path = os.path.join(self.save_dir, f"frame_{self.image_count:04d}.png")
             cv2.imwrite(image_path, blended)
 
@@ -99,6 +111,7 @@ class ControlNode(Node):
 
     def compute_vels(self):
         valid_ids = set.intersection(*[set(frame.keys()) for frame in self.stored_frames])
+        vels = []
 
         #os.system("clear")
         print("\n\n")
@@ -109,43 +122,68 @@ class ControlNode(Node):
             vx = float(np.dot(self.kernel, x) / self.dt)
             vy = float(np.dot(self.kernel, y) / self.dt)
 
+            vels.append({'vx': vx, 'vy': vy})
             print(f"Tag {id:>2}: vx = {vx:+.3f}, vy = {vy:+.3f}")
+        
+        self.compute_signal(vels)
+    
+    def compute_signal(self, vels):
+        min_vx, max_vx = float('inf'), -float('inf')
+        left_vx_avg, right_vx_avg = 0, 0
+        left_count, right_count = 0, 0
+        
+        for vel in vels:
+            vx = vel['vx']
+            if abs(vx) < min_vx: min_vx = abs(vx)
+            if abs(vx) > max_vx: max_vx = abs(vx)
+        
+        for vel in vels:
+            neg = vel['vx'] < 0
+            vel['vx'] = (abs(vel['vx']) - min_vx) / max((max_vx - min_vx), 1)
+            if neg: vel['vx'] *= -1
 
-    def timeout(self):
-        if time.time() - self.last_command > 5.0 and self.command_recieved == True:
-            self.get_logger().info("Tello Disconnected")
-            self.tello.send_rc_control(0, 0, 0, 0)
+        for vel in vels:
+            neg = vel['vx'] < 0
 
-            self.tello.land()
-            self.tello.streamoff()
-            self.get_logger().info(f"Battery Status: {self.tello.get_battery()}")
+            if neg: 
+                left_vx_avg += vel['vx']
+                left_count += 1
+            else:
+                right_vx_avg += vel['vx']
+                right_count += 1
+        
+        if left_count > 0: left_vx_avg /= left_count
+        if right_count > 0: right_vx_avg /= right_count
+        signal = (left_vx_avg + right_vx_avg) * 80
+        
+        signal = min(signal, 100)
+        signal = max(signal, 0)
+        
+        self.signal = int(signal)
 
-            cv2.destroyAllWindows()
-            self.timer.destroy()
-
-    def test_velocity_estimation(self, kernel, dt):
-        def compute_velocity_from_track(track_x, track_y):
-            vx = float(np.dot(kernel, track_x) / dt)
-            vy = float(np.dot(kernel, track_y) / dt)
+    def test_vels(self, kernel, dt):
+        def compute_vel(x, y):
+            vx = float(np.dot(kernel, x) / dt)
+            vy = float(np.dot(kernel, y) / dt)
             return vx, vy
 
-        print("=== TEST 1: Perfect Linear Motion (vx=2.0, vy=1.0) ===")
-        track_x = [i * 2 for i in range(9)]
-        track_y = [i * 1 for i in range(9)]
-        vx, vy = compute_velocity_from_track(track_x, track_y)
+        print("TEST 1: Perfect Linear Motion (vx=2.0, vy=1.0)")
+        x = [i * 2 for i in range(9)]
+        y = [i * 1 for i in range(9)]
+        vx, vy = compute_vel(x, y)
         print(f"vx = {vx:.3f}, vy = {vy:.3f}")
 
         print("\n=== TEST 2: Noisy Linear Motion (vx≈2.0, vy≈1.0) ===")
         np.random.seed(0)
-        track_x_noisy = [i * 2 + np.random.normal(0, 0.1) for i in range(9)]
-        track_y_noisy = [i * 1 + np.random.normal(0, 0.1) for i in range(9)]
-        vx, vy = compute_velocity_from_track(track_x_noisy, track_y_noisy)
+        x_noisy = [i * 2 + np.random.normal(0, 0.1) for i in range(9)]
+        y_noisy = [i * 1 + np.random.normal(0, 0.1) for i in range(9)]
+        vx, vy = compute_vel(x_noisy, y_noisy)
         print(f"vx = {vx:.3f}, vy = {vy:.3f}")
 
         print("\n=== TEST 3: Zero Velocity Test (vx=0.0, vy=0.0) ===")
-        track_x_zero = [5] * 9
-        track_y_zero = [10] * 9
-        vx, vy = compute_velocity_from_track(track_x_zero, track_y_zero)
+        x_zero = [5] * 9
+        y_zero = [10] * 9
+        vx, vy = compute_vel(x_zero, y_zero)
         print(f"vx = {vx:.3f}, vy = {vy:.3f}")
 
 def main(args=None):

@@ -12,14 +12,14 @@ class CommandNode(Node):
 
         self.timer = self.create_timer(0.1, self.send_commands)
         self.time_count = 0
-        self.time_lim = 100
+        self.time_lim = 220
 
     def send_commands(self):
         os.system("clear")
 
         if self.time_count < self.time_lim:
             msg = Twist()
-            msg.linear.x = 25.0
+            msg.linear.x = 10.0
             self.cmd_pub.publish(msg)
             self.get_logger().info(f"Command: {msg.linear.x} m/s")
 
