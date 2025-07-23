@@ -1,0 +1,51 @@
+running egg_info
+creating ../../build/cam_sim/cam_sim.egg-info
+writing ../../build/cam_sim/cam_sim.egg-info/PKG-INFO
+writing dependency_links to ../../build/cam_sim/cam_sim.egg-info/dependency_links.txt
+writing entry points to ../../build/cam_sim/cam_sim.egg-info/entry_points.txt
+writing requirements to ../../build/cam_sim/cam_sim.egg-info/requires.txt
+writing top-level names to ../../build/cam_sim/cam_sim.egg-info/top_level.txt
+writing manifest file '../../build/cam_sim/cam_sim.egg-info/SOURCES.txt'
+reading manifest file '../../build/cam_sim/cam_sim.egg-info/SOURCES.txt'
+writing manifest file '../../build/cam_sim/cam_sim.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/roboticslab/rise/build/cam_sim/build
+creating /home/roboticslab/rise/build/cam_sim/build/lib
+creating /home/roboticslab/rise/build/cam_sim/build/lib/cam_sim
+copying cam_sim/curve_sim.py -> /home/roboticslab/rise/build/cam_sim/build/lib/cam_sim
+copying cam_sim/__init__.py -> /home/roboticslab/rise/build/cam_sim/build/lib/cam_sim
+copying cam_sim/top_sim.py -> /home/roboticslab/rise/build/cam_sim/build/lib/cam_sim
+copying cam_sim/turn_sim.py -> /home/roboticslab/rise/build/cam_sim/build/lib/cam_sim
+copying cam_sim/sim_node.py -> /home/roboticslab/rise/build/cam_sim/build/lib/cam_sim
+copying cam_sim/final_sim.py -> /home/roboticslab/rise/build/cam_sim/build/lib/cam_sim
+running install
+running install_lib
+creating /home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam_sim
+copying /home/roboticslab/rise/build/cam_sim/build/lib/cam_sim/curve_sim.py -> /home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam_sim
+copying /home/roboticslab/rise/build/cam_sim/build/lib/cam_sim/__init__.py -> /home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam_sim
+copying /home/roboticslab/rise/build/cam_sim/build/lib/cam_sim/top_sim.py -> /home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam_sim
+copying /home/roboticslab/rise/build/cam_sim/build/lib/cam_sim/turn_sim.py -> /home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam_sim
+copying /home/roboticslab/rise/build/cam_sim/build/lib/cam_sim/sim_node.py -> /home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam_sim
+copying /home/roboticslab/rise/build/cam_sim/build/lib/cam_sim/final_sim.py -> /home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam_sim
+byte-compiling /home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam_sim/curve_sim.py to curve_sim.cpython-312.pyc
+byte-compiling /home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam_sim/__init__.py to __init__.cpython-312.pyc
+byte-compiling /home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam_sim/top_sim.py to top_sim.cpython-312.pyc
+byte-compiling /home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam_sim/turn_sim.py to turn_sim.cpython-312.pyc
+byte-compiling /home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam_sim/sim_node.py to sim_node.cpython-312.pyc
+byte-compiling /home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam_sim/final_sim.py to final_sim.cpython-312.pyc
+running install_data
+creating /home/roboticslab/rise/install/cam_sim/share/ament_index
+creating /home/roboticslab/rise/install/cam_sim/share/ament_index/resource_index
+creating /home/roboticslab/rise/install/cam_sim/share/ament_index/resource_index/packages
+copying resource/cam_sim -> /home/roboticslab/rise/install/cam_sim/share/ament_index/resource_index/packages
+copying package.xml -> /home/roboticslab/rise/install/cam_sim/share/cam_sim
+running install_egg_info
+Copying ../../build/cam_sim/cam_sim.egg-info to /home/roboticslab/rise/install/cam_sim/lib/python3.12/site-packages/cam_sim-0.0.0-py3.12.egg-info
+running install_scripts
+Installing sim1 script to /home/roboticslab/rise/install/cam_sim/lib/cam_sim
+Installing sim2 script to /home/roboticslab/rise/install/cam_sim/lib/cam_sim
+Installing sim3 script to /home/roboticslab/rise/install/cam_sim/lib/cam_sim
+Installing sim4 script to /home/roboticslab/rise/install/cam_sim/lib/cam_sim
+Installing sim5 script to /home/roboticslab/rise/install/cam_sim/lib/cam_sim
+writing list of installed files to '/home/roboticslab/rise/build/cam_sim/install.log'

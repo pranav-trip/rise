@@ -1,0 +1,53 @@
+[0.995s] Invoking command in '/home/roboticslab/rise/src/cam_sim': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/roboticslab/rise/src/build/cam_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/roboticslab/rise/src/install/cam_sim/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/cam_sim build --build-base /home/roboticslab/rise/src/build/cam_sim/build install --record /home/roboticslab/rise/src/build/cam_sim/install.log --single-version-externally-managed install_data
+[1.244s] running egg_info
+[1.244s] creating ../build/cam_sim/cam_sim.egg-info
+[1.262s] writing ../build/cam_sim/cam_sim.egg-info/PKG-INFO
+[1.263s] writing dependency_links to ../build/cam_sim/cam_sim.egg-info/dependency_links.txt
+[1.263s] writing entry points to ../build/cam_sim/cam_sim.egg-info/entry_points.txt
+[1.263s] writing requirements to ../build/cam_sim/cam_sim.egg-info/requires.txt
+[1.263s] writing top-level names to ../build/cam_sim/cam_sim.egg-info/top_level.txt
+[1.263s] writing manifest file '../build/cam_sim/cam_sim.egg-info/SOURCES.txt'
+[1.300s] reading manifest file '../build/cam_sim/cam_sim.egg-info/SOURCES.txt'
+[1.301s] writing manifest file '../build/cam_sim/cam_sim.egg-info/SOURCES.txt'
+[1.301s] running build
+[1.301s] running build_py
+[1.301s] creating /home/roboticslab/rise/src/build/cam_sim/build
+[1.301s] creating /home/roboticslab/rise/src/build/cam_sim/build/lib
+[1.301s] creating /home/roboticslab/rise/src/build/cam_sim/build/lib/cam_sim
+[1.301s] copying cam_sim/curve_sim.py -> /home/roboticslab/rise/src/build/cam_sim/build/lib/cam_sim
+[1.302s] copying cam_sim/__init__.py -> /home/roboticslab/rise/src/build/cam_sim/build/lib/cam_sim
+[1.302s] copying cam_sim/top_sim.py -> /home/roboticslab/rise/src/build/cam_sim/build/lib/cam_sim
+[1.302s] copying cam_sim/turn_sim.py -> /home/roboticslab/rise/src/build/cam_sim/build/lib/cam_sim
+[1.302s] copying cam_sim/sim_node.py -> /home/roboticslab/rise/src/build/cam_sim/build/lib/cam_sim
+[1.302s] copying cam_sim/final_sim.py -> /home/roboticslab/rise/src/build/cam_sim/build/lib/cam_sim
+[1.302s] running install
+[1.308s] running install_lib
+[1.327s] creating /home/roboticslab/rise/src/install/cam_sim/lib/python3.12/site-packages/cam_sim
+[1.328s] copying /home/roboticslab/rise/src/build/cam_sim/build/lib/cam_sim/curve_sim.py -> /home/roboticslab/rise/src/install/cam_sim/lib/python3.12/site-packages/cam_sim
+[1.328s] copying /home/roboticslab/rise/src/build/cam_sim/build/lib/cam_sim/__init__.py -> /home/roboticslab/rise/src/install/cam_sim/lib/python3.12/site-packages/cam_sim
+[1.328s] copying /home/roboticslab/rise/src/build/cam_sim/build/lib/cam_sim/top_sim.py -> /home/roboticslab/rise/src/install/cam_sim/lib/python3.12/site-packages/cam_sim
+[1.328s] copying /home/roboticslab/rise/src/build/cam_sim/build/lib/cam_sim/turn_sim.py -> /home/roboticslab/rise/src/install/cam_sim/lib/python3.12/site-packages/cam_sim
+[1.328s] copying /home/roboticslab/rise/src/build/cam_sim/build/lib/cam_sim/sim_node.py -> /home/roboticslab/rise/src/install/cam_sim/lib/python3.12/site-packages/cam_sim
+[1.328s] copying /home/roboticslab/rise/src/build/cam_sim/build/lib/cam_sim/final_sim.py -> /home/roboticslab/rise/src/install/cam_sim/lib/python3.12/site-packages/cam_sim
+[1.328s] byte-compiling /home/roboticslab/rise/src/install/cam_sim/lib/python3.12/site-packages/cam_sim/curve_sim.py to curve_sim.cpython-312.pyc
+[1.330s] byte-compiling /home/roboticslab/rise/src/install/cam_sim/lib/python3.12/site-packages/cam_sim/__init__.py to __init__.cpython-312.pyc
+[1.330s] byte-compiling /home/roboticslab/rise/src/install/cam_sim/lib/python3.12/site-packages/cam_sim/top_sim.py to top_sim.cpython-312.pyc
+[1.332s] byte-compiling /home/roboticslab/rise/src/install/cam_sim/lib/python3.12/site-packages/cam_sim/turn_sim.py to turn_sim.cpython-312.pyc
+[1.334s] byte-compiling /home/roboticslab/rise/src/install/cam_sim/lib/python3.12/site-packages/cam_sim/sim_node.py to sim_node.cpython-312.pyc
+[1.335s] byte-compiling /home/roboticslab/rise/src/install/cam_sim/lib/python3.12/site-packages/cam_sim/final_sim.py to final_sim.cpython-312.pyc
+[1.337s] running install_data
+[1.337s] creating /home/roboticslab/rise/src/install/cam_sim/share/ament_index
+[1.337s] creating /home/roboticslab/rise/src/install/cam_sim/share/ament_index/resource_index
+[1.337s] creating /home/roboticslab/rise/src/install/cam_sim/share/ament_index/resource_index/packages
+[1.337s] copying resource/cam_sim -> /home/roboticslab/rise/src/install/cam_sim/share/ament_index/resource_index/packages
+[1.337s] copying package.xml -> /home/roboticslab/rise/src/install/cam_sim/share/cam_sim
+[1.337s] running install_egg_info
+[1.357s] Copying ../build/cam_sim/cam_sim.egg-info to /home/roboticslab/rise/src/install/cam_sim/lib/python3.12/site-packages/cam_sim-0.0.0-py3.12.egg-info
+[1.358s] running install_scripts
+[1.485s] Installing sim1 script to /home/roboticslab/rise/src/install/cam_sim/lib/cam_sim
+[1.485s] Installing sim2 script to /home/roboticslab/rise/src/install/cam_sim/lib/cam_sim
+[1.485s] Installing sim3 script to /home/roboticslab/rise/src/install/cam_sim/lib/cam_sim
+[1.485s] Installing sim4 script to /home/roboticslab/rise/src/install/cam_sim/lib/cam_sim
+[1.485s] Installing sim5 script to /home/roboticslab/rise/src/install/cam_sim/lib/cam_sim
+[1.485s] writing list of installed files to '/home/roboticslab/rise/src/build/cam_sim/install.log'
+[1.511s] Invoked command in '/home/roboticslab/rise/src/cam_sim' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/roboticslab/rise/src/build/cam_sim/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/roboticslab/rise/src/install/cam_sim/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/cam_sim build --build-base /home/roboticslab/rise/src/build/cam_sim/build install --record /home/roboticslab/rise/src/build/cam_sim/install.log --single-version-externally-managed install_data
