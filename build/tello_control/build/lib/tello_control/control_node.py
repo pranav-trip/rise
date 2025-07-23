@@ -13,7 +13,7 @@ from collections import deque
 class ControlNode(Node):
     def __init__(self):
         super().__init__('control_node')
-        self.cmd_sub = self.create_subscription(Twist, 'drone_command', self.control, 10)
+        '''self.cmd_sub = self.create_subscription(Twist, 'drone_command', self.control, 10)
         self.img_sub = self.create_subscription(Bool, 'drone_stream', self.stream, 10)
         logging.getLogger("djitellopy").setLevel(logging.ERROR)
 
@@ -36,11 +36,14 @@ class ControlNode(Node):
         self.get_logger().info("Ready for Commands")
 
         self.points, self.old_points = None, None
-        self.ids, self.old_ids = None, None
+        self.ids, self.old_ids = None, None'''
 
         self.stored_frames = deque(maxlen = 9)
         self.dt = 0.1
-        self.kernel = np.array([-0.246, -0.183, -0.110, -0.045, 0.000, 0.045, 0.110, 0.183, 0.246], dtype=np.float32)
+        self.kernel = np.array([-4, -3, -2, -1, 0, 1, 2, 3, 4], dtype=np.float32)
+        self.kernel = self.kernel * (1 / np.sum(np.square(np.arange(-4, 5))))
+
+        self.test_velocity_estimation(self.kernel, 1.0)
 
     def control(self, msg):
         self.tello.send_rc_control(0, int(msg.linear.x), 0, 0)
@@ -120,6 +123,30 @@ class ControlNode(Node):
             cv2.destroyAllWindows()
             self.timer.destroy()
 
+    def test_velocity_estimation(self, kernel, dt):
+        def compute_velocity_from_track(track_x, track_y):
+            vx = float(np.dot(kernel, track_x) / dt)
+            vy = float(np.dot(kernel, track_y) / dt)
+            return vx, vy
+
+        print("=== TEST 1: Perfect Linear Motion (vx=2.0, vy=1.0) ===")
+        track_x = [i * 2 for i in range(9)]
+        track_y = [i * 1 for i in range(9)]
+        vx, vy = compute_velocity_from_track(track_x, track_y)
+        print(f"vx = {vx:.3f}, vy = {vy:.3f}")
+
+        print("\n=== TEST 2: Noisy Linear Motion (vx≈2.0, vy≈1.0) ===")
+        np.random.seed(0)
+        track_x_noisy = [i * 2 + np.random.normal(0, 0.1) for i in range(9)]
+        track_y_noisy = [i * 1 + np.random.normal(0, 0.1) for i in range(9)]
+        vx, vy = compute_velocity_from_track(track_x_noisy, track_y_noisy)
+        print(f"vx = {vx:.3f}, vy = {vy:.3f}")
+
+        print("\n=== TEST 3: Zero Velocity Test (vx=0.0, vy=0.0) ===")
+        track_x_zero = [5] * 9
+        track_y_zero = [10] * 9
+        vx, vy = compute_velocity_from_track(track_x_zero, track_y_zero)
+        print(f"vx = {vx:.3f}, vy = {vy:.3f}")
 
 def main(args=None):
     rclpy.init(args=args)

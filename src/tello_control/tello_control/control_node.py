@@ -40,7 +40,9 @@ class ControlNode(Node):
 
         self.stored_frames = deque(maxlen = 9)
         self.dt = 0.1
-        self.kernel = np.array([-0.246, -0.183, -0.110, -0.045, 0.000, 0.045, 0.110, 0.183, 0.246], dtype=np.float32)
+        self.kernel = np.array([-4, -3, -2, -1, 0, 1, 2, 3, 4], dtype=np.float32)
+        self.kernel = self.kernel * (1 / np.sum(np.square(np.arange(-4, 5))))
+        #self.test_velocity_estimation(self.kernel, 1.0)
 
     def control(self, msg):
         self.tello.send_rc_control(0, int(msg.linear.x), 0, 0)
@@ -120,6 +122,30 @@ class ControlNode(Node):
             cv2.destroyAllWindows()
             self.timer.destroy()
 
+    def test_vels(self, kernel, dt):
+        def compute_vel(x, y):
+            vx = float(np.dot(kernel, x) / dt)
+            vy = float(np.dot(kernel, y) / dt)
+            return vx, vy
+
+        print("TEST 1: Perfect Linear Motion (vx=2.0, vy=1.0)")
+        x = [i * 2 for i in range(9)]
+        y = [i * 1 for i in range(9)]
+        vx, vy = compute_vel(x, y)
+        print(f"vx = {vx:.3f}, vy = {vy:.3f}")
+
+        print("\n=== TEST 2: Noisy Linear Motion (vx≈2.0, vy≈1.0) ===")
+        np.random.seed(0)
+        x_noisy = [i * 2 + np.random.normal(0, 0.1) for i in range(9)]
+        y_noisy = [i * 1 + np.random.normal(0, 0.1) for i in range(9)]
+        vx, vy = compute_vel(x_noisy, y_noisy)
+        print(f"vx = {vx:.3f}, vy = {vy:.3f}")
+
+        print("\n=== TEST 3: Zero Velocity Test (vx=0.0, vy=0.0) ===")
+        x_zero = [5] * 9
+        y_zero = [10] * 9
+        vx, vy = compute_vel(x_zero, y_zero)
+        print(f"vx = {vx:.3f}, vy = {vy:.3f}")
 
 def main(args=None):
     rclpy.init(args=args)
