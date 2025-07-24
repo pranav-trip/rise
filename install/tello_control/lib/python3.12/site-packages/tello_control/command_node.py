@@ -12,7 +12,7 @@ class CommandNode(Node):
 
         self.timer = self.create_timer(0.1, self.send_commands)
         self.time_count = 0
-        self.time_lim = 120
+        self.time_lim = 100
 
     def send_commands(self):
         os.system("clear")

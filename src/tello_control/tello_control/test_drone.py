@@ -7,20 +7,24 @@ class testTello(Node):
     def __init__(self):
         super().__init__('testTello')
         self.tello = Tello()
-        self.tello.connect(wait_for_state=False)
-        print('Connected')
+        self.tello.connect()
+        print('Connected\n')
 
         self.timer = self.create_timer(2.0, self.test)
 
     def test(self):
         time.sleep(1)
+        print("Calibrated")
+        battery = self.tello.get_battery()
+        print(f"Battery: {battery}")
         self.tello.takeoff()
-        time.sleep(1)
-        self.tello.flip_forward()
-        time.sleep(1)
+        time.sleep(2)
+        self.tello.send_rc_control(0, 30, 0, 0)
+        time.sleep(2)
         self.tello.land()
         self.tello.end()
         self.timer.cancel()
+        print("Finished")
 
 def main(args=None):
     rclpy.init(args=args)

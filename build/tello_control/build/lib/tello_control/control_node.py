@@ -41,7 +41,7 @@ class ControlNode(Node):
 
         self.stored_frames = deque(maxlen = 9)
         self.kernel = np.array([-4, -3, -2, -1, 0, 1, 2, 3, 4], dtype=np.float32)
-        self.signal = 0
+        self.signal = 0.0
 
     def timeout(self):
         if time.time() - self.last_command > 5.0 and self.command_recieved == True:
@@ -56,7 +56,9 @@ class ControlNode(Node):
             self.timer.destroy()
 
     def control(self, msg):
-        self.tello.send_rc_control(0, 20, 0, 0)
+        fwd = int(msg.linear.x)
+        yaw = int(self.signal)
+        self.tello.send_rc_control(0, fwd, 0, yaw)
         self.last_command = time.time()
         self.command_recieved = True
 
@@ -154,7 +156,7 @@ class ControlNode(Node):
         signal = (right_vx_avg - left_vx_avg) * 20
         print(f"\n\nLeft Vx: {left_vx_avg:.3f}, Right Vx: {right_vx_avg:.3f}, Signal: {signal:.3f}")
         
-        self.signal = int(signal)
+        self.signal = signal
 
     def test_vels(self, kernel):
         def compute_vel(x, y):
