@@ -42,7 +42,7 @@ class ControlNode(Node):
         self.stored_frames = deque(maxlen = 9)
         self.kernel = np.array([-4, -3, -2, -1, 0, 1, 2, 3, 4], dtype=np.float32)
         self.signal = 0
-        self.test_vels(self.kernel, 1.0)
+        self.test_vels(self.kernel)
 
     def timeout(self):
         if time.time() - self.last_command > 5.0 and self.command_recieved == True:
@@ -162,7 +162,7 @@ class ControlNode(Node):
         
         self.signal = int(signal)
 
-    def test_vels(self, kernel, dt):
+    def test_vels(self, kernel):
         def compute_vel(x, y):
             square_sum = np.sum(np.square(np.arange(-4, 5)))
             vx = float(np.dot(kernel, x) / square_sum)
@@ -186,12 +186,12 @@ class ControlNode(Node):
 
         plt.figure(figsize=(10, 5))
 
-        plt.plot(range(len(vxo)), vxo, color='red', label='Raw Vx', linestyle='-')
+        plt.plot(range(len(vxo)), vxo, color='red', label='Raw Vx', linestyle='--')
         plt.axhline(vx, color='blue', label='Filtered Vx', linestyle='-')
 
         plt.xlabel("Frame Index")
         plt.ylabel("Velocity (pixels/frame)")
-        plt.title("Raw vs. Filtered Velocity Estimations")
+        plt.title("Gaussian Velocity Normalization")
         plt.legend()
         plt.grid(True)
         plt.tight_layout()
@@ -202,6 +202,28 @@ class ControlNode(Node):
         y_zero = [10] * 9
         vx, vy = compute_vel(x_zero, y_zero)
         print(f"vx = {vx:.3f}, vy = {vy:.3f}")
+
+    def test_signal(self):
+        np.random.seed(0)
+        raw_vels = np.concatenate([
+            np.random.normal(2.0, 0.5, 10),
+            np.random.normal(5.0, 0.5, 10)
+        ])
+
+        min_val = np.min(raw_vels)
+        max_val = np.max(raw_vels)
+        norm_vels = (raw_vels - min_val) / (max_val - min_val)
+
+        plt.figure(figsize=(10, 5))
+        plt.plot(raw_vels, 'ro', label='Raw Velocities')
+        plt.plot(norm_vels, 'bo', label='Normalized Velocities')
+        plt.xlabel('Point Index')
+        plt.ylabel('Velocity')
+        plt.grid(True)
+        plt.title('Min-Max Velocity Normalization')
+        plt.legend()
+        plt.tight_layout()
+        plt.show()
 
 def main(args=None):
     rclpy.init(args=args)
