@@ -1,0 +1,5 @@
+  File "/home/roboticslab/rise/install/tello_control/lib/python3.12/site-packages/tello_control/control_node.py", line 194
+    plt.plot(range(len(vx))), vx, color='blue', label='Filtered Vx', linestyle='-')
+                                                                                  ^
+SyntaxError: unmatched ')'
+

@@ -7,13 +7,14 @@ from djitellopy import Tello
 from dt_apriltags import Detector
 
 import numpy as np
+import matplotlib.pyplot as plt
 import cv2, os, time, logging
 from collections import deque
 
 class ControlNode(Node):
     def __init__(self):
         super().__init__('control_node')
-        self.cmd_sub = self.create_subscription(Twist, 'drone_command', self.control, 10)
+        '''self.cmd_sub = self.create_subscription(Twist, 'drone_command', self.control, 10)
         self.img_sub = self.create_subscription(Bool, 'drone_stream', self.stream, 10)
         logging.getLogger("djitellopy").setLevel(logging.ERROR)
 
@@ -36,14 +37,12 @@ class ControlNode(Node):
         self.get_logger().info("Ready for Commands")
 
         self.points, self.old_points = None, None
-        self.ids, self.old_ids = None, None
+        self.ids, self.old_ids = None, None'''
 
         self.stored_frames = deque(maxlen = 9)
-        self.dt = 0.1
         self.kernel = np.array([-4, -3, -2, -1, 0, 1, 2, 3, 4], dtype=np.float32)
-        self.kernel = self.kernel * (1 / np.sum(np.square(np.arange(-4, 5))))
         self.signal = 0
-        #self.test_velocity_estimation(self.kernel, 1.0)
+        self.test_vels(self.kernel, 1.0)
 
     def timeout(self):
         if time.time() - self.last_command > 5.0 and self.command_recieved == True:
@@ -119,8 +118,10 @@ class ControlNode(Node):
             x = np.array([frame[id][0] for frame in self.stored_frames], dtype=np.float32)
             y = np.array([frame[id][1] for frame in self.stored_frames], dtype=np.float32)
 
-            vx = float(np.dot(self.kernel, x) / self.dt)
-            vy = float(np.dot(self.kernel, y) / self.dt)
+            square_sum = np.sum(np.square(np.arange(-4, 5)))
+
+            vx = float(np.dot(self.kernel, x) / square_sum)
+            vy = float(np.dot(self.kernel, y) / square_sum)
 
             vels.append({'vx': vx, 'vy': vy})
             print(f"Tag {id:>2}: vx = {vx:+.3f}, vy = {vy:+.3f}")
@@ -163,24 +164,40 @@ class ControlNode(Node):
 
     def test_vels(self, kernel, dt):
         def compute_vel(x, y):
-            vx = float(np.dot(kernel, x) / dt)
-            vy = float(np.dot(kernel, y) / dt)
+            square_sum = np.sum(np.square(np.arange(-4, 5)))
+            vx = float(np.dot(kernel, x) / square_sum)
+            vy = float(np.dot(kernel, y) / square_sum)
             return vx, vy
 
-        print("TEST 1: Perfect Linear Motion (vx=2.0, vy=1.0)")
-        x = [i * 2 for i in range(9)]
-        y = [i * 1 for i in range(9)]
+        print("TEST 1: Perfect Linear Motion (vx=10.0, vy=7.0)")
+        x = [i * 10 for i in range(9)]
+        y = [i * 7 for i in range(9)]
         vx, vy = compute_vel(x, y)
         print(f"vx = {vx:.3f}, vy = {vy:.3f}")
 
-        print("\n=== TEST 2: Noisy Linear Motion (vx≈2.0, vy≈1.0) ===")
+        print("\nTEST 2: Noisy Linear Motion (vx≈10.0, vy≈7.0)")
         np.random.seed(0)
-        x_noisy = [i * 2 + np.random.normal(0, 0.1) for i in range(9)]
-        y_noisy = [i * 1 + np.random.normal(0, 0.1) for i in range(9)]
+        x_noisy = [i * 10 - np.random.normal(0, 0.5) for i in range(9)]
+        y_noisy = [i * 8 - np.random.normal(0, 0.5) for i in range(9)]
+
+        vxo = np.diff(x_noisy)
         vx, vy = compute_vel(x_noisy, y_noisy)
         print(f"vx = {vx:.3f}, vy = {vy:.3f}")
 
-        print("\n=== TEST 3: Zero Velocity Test (vx=0.0, vy=0.0) ===")
+        plt.figure(figsize=(10, 5))
+
+        plt.plot(range(len(vxo)), vxo, color='red', label='Raw Vx', linestyle='-')
+        plt.axhline(vx, color='blue', label='Filtered Vx', linestyle='-')
+
+        plt.xlabel("Frame Index")
+        plt.ylabel("Velocity (pixels/frame)")
+        plt.title("Raw vs. Filtered Velocity Estimations")
+        plt.legend()
+        plt.grid(True)
+        plt.tight_layout()
+        plt.show()
+
+        print("\nTEST 3: Zero Velocity Test (vx=0.0, vy=0.0)")
         x_zero = [5] * 9
         y_zero = [10] * 9
         vx, vy = compute_vel(x_zero, y_zero)
