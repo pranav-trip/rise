@@ -14,7 +14,7 @@ from collections import deque
 class ControlNode(Node):
     def __init__(self):
         super().__init__('control_node')
-        '''self.cmd_sub = self.create_subscription(Twist, 'drone_command', self.control, 10)
+        self.cmd_sub = self.create_subscription(Twist, 'drone_command', self.control, 10)
         self.img_sub = self.create_subscription(Bool, 'drone_stream', self.stream, 10)
         logging.getLogger("djitellopy").setLevel(logging.ERROR)
 
@@ -37,12 +37,11 @@ class ControlNode(Node):
         self.get_logger().info("Ready for Commands")
 
         self.points, self.old_points = None, None
-        self.ids, self.old_ids = None, None'''
+        self.ids, self.old_ids = None, None
 
         self.stored_frames = deque(maxlen = 9)
         self.kernel = np.array([-4, -3, -2, -1, 0, 1, 2, 3, 4], dtype=np.float32)
         self.signal = 0
-        self.test_vels(self.kernel)
 
     def timeout(self):
         if time.time() - self.last_command > 5.0 and self.command_recieved == True:
@@ -57,7 +56,7 @@ class ControlNode(Node):
             self.timer.destroy()
 
     def control(self, msg):
-        self.tello.send_rc_control(0, int(msg.linear.x), 0, self.signal)
+        self.tello.send_rc_control(0, 20, 0, 0)
         self.last_command = time.time()
         self.command_recieved = True
 
@@ -71,8 +70,8 @@ class ControlNode(Node):
         mask_left = np.zeros_like(image_bw, dtype=np.uint8)
         mask_right = np.zeros_like(image_bw, dtype=np.uint8)
 
-        mask_left[height // 4 : 3 * height // 4, width // 7 : 3 * width // 7] = 255
-        mask_right[height // 4 : 3 * height // 4, 4 * width // 7 : 6 * width // 7] = 255
+        mask_left[height // 4 : 3 * height // 4, width // 15 : 6 * width // 15] = 255
+        mask_right[height // 4 : 3 * height // 4, 9 * width // 15 : 14 * width // 15] = 255
 
         detections = self.tag_detector.detect(image_bw)
         centers, ids = [], []
@@ -91,7 +90,7 @@ class ControlNode(Node):
         current_frame = {id: tuple(center) for id, center in zip(ids, centers)}
 
         if self.image_count > 0 and self.image_count%10 == 0:
-            self.compute_vels()
+            self.compute_vels(mask_left, mask_right)
         else:
             self.stored_frames.append(current_frame)
 
@@ -108,12 +107,12 @@ class ControlNode(Node):
 
         self.image_count += 1
 
-    def compute_vels(self):
+    def compute_vels(self, mask_left, mask_right):
         valid_ids = set.intersection(*[set(frame.keys()) for frame in self.stored_frames])
         vels = []
 
         #os.system("clear")
-        print("\n\n")
+        print(f"\n\n{self.image_count:04d}")
         for id in sorted(valid_ids):
             x = np.array([frame[id][0] for frame in self.stored_frames], dtype=np.float32)
             y = np.array([frame[id][1] for frame in self.stored_frames], dtype=np.float32)
@@ -123,8 +122,11 @@ class ControlNode(Node):
             vx = float(np.dot(self.kernel, x) / square_sum)
             vy = float(np.dot(self.kernel, y) / square_sum)
 
-            vels.append({'vx': vx, 'vy': vy})
-            print(f"Tag {id:>2}: vx = {vx:+.3f}, vy = {vy:+.3f}")
+            if mask_left[int(y[0]), int(x[0])] == 255: side = 'left'
+            if mask_right[int(y[0]), int(x[0])] == 255: side = 'right'
+            
+            vels.append({'vx': vx, 'vy': vy, 'side': side})
+            print(f"Tag {id:>2}: vx = {vx:+.3f}, vy = {vy:+.3f}, side = {side}")
         
         self.compute_signal(vels)
     
@@ -134,19 +136,13 @@ class ControlNode(Node):
         left_count, right_count = 0, 0
         
         for vel in vels:
-            vx = vel['vx']
-            if abs(vx) < min_vx: min_vx = abs(vx)
-            if abs(vx) > max_vx: max_vx = abs(vx)
+            vel['vx'] = abs(vel['vx'])
+            if vel['vx'] < min_vx: min_vx = vel['vx']
+            if vel['vx'] > max_vx: max_vx = vel['vx']
         
         for vel in vels:
-            neg = vel['vx'] < 0
-            vel['vx'] = (abs(vel['vx']) - min_vx) / max((max_vx - min_vx), 1)
-            if neg: vel['vx'] *= -1
-
-        for vel in vels:
-            neg = vel['vx'] < 0
-
-            if neg: 
+            vel['vx'] = (abs(vel['vx']) - min_vx) / max((max_vx - min_vx), 0.1)
+            if vel['side'] == 'left': 
                 left_vx_avg += vel['vx']
                 left_count += 1
             else:
@@ -155,10 +151,8 @@ class ControlNode(Node):
         
         if left_count > 0: left_vx_avg /= left_count
         if right_count > 0: right_vx_avg /= right_count
-        signal = (left_vx_avg + right_vx_avg) * 80
-        
-        signal = min(signal, 100)
-        signal = max(signal, 0)
+        signal = (right_vx_avg - left_vx_avg) * 20
+        print(f"\n\nLeft Vx: {left_vx_avg:.3f}, Right Vx: {right_vx_avg:.3f}, Signal: {signal:.3f}")
         
         self.signal = int(signal)
 
@@ -237,6 +231,7 @@ class ControlNode(Node):
         plt.legend()
         plt.tight_layout()
         plt.show()
+
 
 def main(args=None):
     rclpy.init(args=args)
