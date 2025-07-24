@@ -8,7 +8,7 @@ from dt_apriltags import Detector
 
 import numpy as np
 import matplotlib.pyplot as plt
-import cv2, os, time, logging
+import cv2, os, time, logging, random
 from collections import deque
 
 class ControlNode(Node):
@@ -175,19 +175,32 @@ class ControlNode(Node):
         vx, vy = compute_vel(x, y)
         print(f"vx = {vx:.3f}, vy = {vy:.3f}")
 
-        print("\nTEST 2: Noisy Linear Motion (vx≈10.0, vy≈7.0)")
+        print("\nTEST 2: Noisy Linear Motion (vx≈10.0, vy≈8.0)")
         np.random.seed(0)
-        x_noisy = [i * 10 - np.random.normal(0, 0.5) for i in range(9)]
-        y_noisy = [i * 8 - np.random.normal(0, 0.5) for i in range(9)]
+        x_noisy = [i * 5 + random.random()*3 for i in range(9)]
+        y_noisy = [i * 8 - random.random()*3 for i in range(9)]
 
-        vxo = np.diff(x_noisy)
+        vxo = []
+        for i in range(len(x_noisy)):
+            if i == 0:
+                v = x_noisy[1] - x_noisy[0]
+            elif i == len(x_noisy) - 1:
+                v = x_noisy[-1] - x_noisy[-2]
+            else:
+                v = (x_noisy[i + 1] - x_noisy[i - 1]) / 2
+            vxo.append(v)
+        
         vx, vy = compute_vel(x_noisy, y_noisy)
-        print(f"vx = {vx:.3f}, vy = {vy:.3f}")
+        vx_mean = (vxo[0]+vxo[len(vxo)-1]) / 2
 
-        plt.figure(figsize=(10, 5))
+        print(f"vx = {vx:.3f}, vy = {vy:.3f}")
+        print(f"mean vx = {vx_mean:.3f}")
+
+        plt.figure(figsize=(12, 5))
 
         plt.plot(range(len(vxo)), vxo, color='red', label='Raw Vx', linestyle='--')
-        plt.axhline(vx, color='blue', label='Filtered Vx', linestyle='-')
+        plt.axhline(vx_mean, color='green', label='Average Vx', linestyle='-')
+        plt.axhline(vx, color='blue', label='Filtered Vx (Gaussian)', linestyle='-')
 
         plt.xlabel("Frame Index")
         plt.ylabel("Velocity (pixels/frame)")
@@ -206,8 +219,8 @@ class ControlNode(Node):
     def test_signal(self):
         np.random.seed(0)
         raw_vels = np.concatenate([
-            np.random.normal(2.0, 0.5, 10),
-            np.random.normal(5.0, 0.5, 10)
+            np.random.normal(4.0, 0.8, 10),
+            np.random.normal(9.0, 0.8, 10)
         ])
 
         min_val = np.min(raw_vels)
@@ -218,7 +231,7 @@ class ControlNode(Node):
         plt.plot(raw_vels, 'ro', label='Raw Velocities')
         plt.plot(norm_vels, 'bo', label='Normalized Velocities')
         plt.xlabel('Point Index')
-        plt.ylabel('Velocity')
+        plt.ylabel('Velocity (pixels/second)')
         plt.grid(True)
         plt.title('Min-Max Velocity Normalization')
         plt.legend()
