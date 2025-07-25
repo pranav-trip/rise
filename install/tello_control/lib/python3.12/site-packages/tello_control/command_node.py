@@ -1,43 +1,55 @@
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import Twist
 from std_msgs.msg import Bool
-import os
+from std_msgs.msg import String
+import time, sys, termios, tty, select
 
 class CommandNode(Node):
     def __init__(self):
         super().__init__('command_node')
-        self.cmd_pub = self.create_publisher(Twist, 'drone_command', 10)
+        self.cmd_pub = self.create_publisher(String, 'drone_command', 10)
         self.img_pub = self.create_publisher(Bool, 'drone_stream', 10)
 
-        self.timer = self.create_timer(0.1, self.send_commands)
+        time.sleep(8)
+        self.timer = self.create_timer(0.1, self.send_command)
+        self.time_lim = 210
         self.time_count = 0
-        self.time_lim = 100
 
-    def send_commands(self):
-        os.system("clear")
+    def get_key(self):
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        try:
+            tty.setraw(fd)
+            rlist, _, _ = select.select([sys.stdin], [], [], 0.1)
+            if rlist:
+                return sys.stdin.read(3)
+            return ''
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
 
+    def get_command(self):
+        key = self.get_key()
+
+        if key == '\x1b[A': data = 'forward'
+        elif key == '\x1b[B': data = 'backward'
+        elif key == '\x1b[C': data = 'right'
+        elif key == '\x1b[D': data = 'left'
+        else: data = 'none'
+
+        return data
+
+    def send_command(self):
         if self.time_count < self.time_lim:
-            msg = Twist()
-            msg.linear.x = 20.0
+            msg = String()
+            msg.data = 'forward'
             self.cmd_pub.publish(msg)
-            self.get_logger().info(f"Command: {msg.linear.x} m/s")
-
-        else:
-            msg = Twist()
-            msg.linear.x = 0.0
-            self.cmd_pub.publish(msg)
-            self.get_logger().info(f"Command: {msg.linear.x} m/s")
-            self.get_logger().info("Finished")
-            self.timer.destroy()
-            return
-        
-        msg = Bool()
-        msg.data = True
-        self.img_pub.publish(msg)
-        self.get_logger().info("Command: Show Frame")
-        
-        self.time_count += 1
+            self.get_logger().info(f"Command: {msg.data}")
+            
+            msg = Bool()
+            msg.data = True
+            self.img_pub.publish(msg)
+            
+            self.time_count += 1
 
 
 def main(args=None):

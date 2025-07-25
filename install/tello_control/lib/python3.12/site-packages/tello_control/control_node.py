@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import Twist
+from std_msgs.msg import String
 from std_msgs.msg import Bool
 
 from djitellopy import Tello
@@ -14,7 +14,7 @@ from collections import deque
 class ControlNode(Node):
     def __init__(self):
         super().__init__('control_node')
-        self.cmd_sub = self.create_subscription(Twist, 'drone_command', self.control, 10)
+        self.cmd_sub = self.create_subscription(String, 'drone_command', self.control, 10)
         self.img_sub = self.create_subscription(Bool, 'drone_stream', self.stream, 10)
         logging.getLogger("djitellopy").setLevel(logging.ERROR)
 
@@ -25,7 +25,7 @@ class ControlNode(Node):
         self.get_logger().info("Tello Connected")
         self.command_recieved = False
 
-        self.image_count = -12
+        self.image_count = -18
         self.save_dir = os.path.expanduser('~/rise/images')
 
         time.sleep(1)
@@ -41,7 +41,7 @@ class ControlNode(Node):
 
         self.stored_frames = deque(maxlen = 9)
         self.kernel = np.array([-4, -3, -2, -1, 0, 1, 2, 3, 4], dtype=np.float32)
-        self.signal = 0.0
+        self.signal = 0
 
     def timeout(self):
         if time.time() - self.last_command > 5.0 and self.command_recieved == True:
@@ -56,9 +56,14 @@ class ControlNode(Node):
             self.timer.destroy()
 
     def control(self, msg):
-        fwd = int(msg.linear.x)
-        yaw = int(self.signal)
-        self.tello.send_rc_control(0, fwd, 0, yaw)
+        command = msg.data
+
+        if command == 'forward': self.tello.send_rc_control(0, 15, 0, self.signal)
+        elif command == 'backward': self.tello.send_rc_control(0, -15, 0, 0)
+        elif command == 'right': self.tello.send_rc_control(15, 0, 0, 0)
+        elif command == 'left': self.tello.send_rc_control(-15, 0, 0, 0)
+        elif command == 'none': self.tello.send_rc_control(0, 0, 0, 0)
+
         self.last_command = time.time()
         self.command_recieved = True
 
@@ -67,13 +72,12 @@ class ControlNode(Node):
 
         image = self.tello.get_frame_read().frame
         image_bw = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
         height, width = image_bw.shape
         mask_left = np.zeros_like(image_bw, dtype=np.uint8)
         mask_right = np.zeros_like(image_bw, dtype=np.uint8)
 
-        mask_left[height // 4 : 3 * height // 4, width // 15 : 6 * width // 15] = 255
-        mask_right[height // 4 : 3 * height // 4, 9 * width // 15 : 14 * width // 15] = 255
+        mask_left[height // 4 : 3 * height // 4, width // 7 : 3 * width // 7] = 255
+        mask_right[height // 4 : 3 * height // 4, 4 * width // 7 : 6 * width // 7] = 255
 
         detections = self.tag_detector.detect(image_bw)
         centers, ids = [], []
@@ -113,13 +117,12 @@ class ControlNode(Node):
         valid_ids = set.intersection(*[set(frame.keys()) for frame in self.stored_frames])
         vels = []
 
-        #os.system("clear")
         print(f"\n\n{self.image_count:04d}")
         for id in sorted(valid_ids):
             x = np.array([frame[id][0] for frame in self.stored_frames], dtype=np.float32)
             y = np.array([frame[id][1] for frame in self.stored_frames], dtype=np.float32)
 
-            square_sum = np.sum(np.square(np.arange(-4, 5)))
+            square_sum = np.sum(np.square(self.kernel))
 
             vx = float(np.dot(self.kernel, x) / square_sum)
             vy = float(np.dot(self.kernel, y) / square_sum)
@@ -127,11 +130,10 @@ class ControlNode(Node):
             if mask_left[int(y[0]), int(x[0])] == 255: side = 'left'
             if mask_right[int(y[0]), int(x[0])] == 255: side = 'right'
             
-            vels.append({'vx': vx, 'vy': vy, 'side': side})
-            print(f"Tag {id:>2}: vx = {vx:+.3f}, vy = {vy:+.3f}, side = {side}")
+            vels.append({'vx': vx, 'vy': vy, 'side': side, 'id': id})
         
         self.compute_signal(vels)
-    
+
     def compute_signal(self, vels):
         min_vx, max_vx = float('inf'), -float('inf')
         left_vx_avg, right_vx_avg = 0, 0
@@ -143,20 +145,22 @@ class ControlNode(Node):
             if vel['vx'] > max_vx: max_vx = vel['vx']
         
         for vel in vels:
-            vel['vx'] = (abs(vel['vx']) - min_vx) / max((max_vx - min_vx), 0.1)
+            vel['vx'] = max((abs(vel['vx']) - min_vx) / max((max_vx - min_vx), 0.1), 0.1)
             if vel['side'] == 'left': 
                 left_vx_avg += vel['vx']
                 left_count += 1
             else:
                 right_vx_avg += vel['vx']
                 right_count += 1
+            
+            print(f"Tag {vel['id']:>2}: vx = {vel['vx']:.3f}, side = {vel['side']}")
         
         if left_count > 0: left_vx_avg /= left_count
         if right_count > 0: right_vx_avg /= right_count
-        signal = (right_vx_avg - left_vx_avg) * 20
+        signal = (right_vx_avg - left_vx_avg) * 3
         print(f"\n\nLeft Vx: {left_vx_avg:.3f}, Right Vx: {right_vx_avg:.3f}, Signal: {signal:.3f}")
         
-        self.signal = signal
+        self.signal += int(signal)
 
     def test_vels(self, kernel):
         def compute_vel(x, y):
