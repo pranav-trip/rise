@@ -41,7 +41,8 @@ class ControlNode(Node):
 
         self.stored_frames = deque(maxlen = 9)
         self.kernel = np.array([-4, -3, -2, -1, 0, 1, 2, 3, 4], dtype=np.float32)
-        self.signal = 0
+
+        self.signal = 0.0
 
     def timeout(self):
         if time.time() - self.last_command > 5.0 and self.command_recieved == True:
@@ -58,7 +59,7 @@ class ControlNode(Node):
     def control(self, msg):
         command = msg.data
 
-        if command == 'forward': self.tello.send_rc_control(0, 15, 0, self.signal)
+        if command == 'forward': self.tello.send_rc_control(0, 15, 0, int(self.signal))
         elif command == 'backward': self.tello.send_rc_control(0, -15, 0, 0)
         elif command == 'right': self.tello.send_rc_control(15, 0, 0, 0)
         elif command == 'left': self.tello.send_rc_control(-15, 0, 0, 0)
@@ -138,6 +139,7 @@ class ControlNode(Node):
         min_vx, max_vx = float('inf'), -float('inf')
         left_vx_avg, right_vx_avg = 0, 0
         left_count, right_count = 0, 0
+        amp = 1
         
         for vel in vels:
             vel['vx'] = abs(vel['vx'])
@@ -156,11 +158,23 @@ class ControlNode(Node):
             print(f"Tag {vel['id']:>2}: vx = {vel['vx']:.3f}, side = {vel['side']}")
         
         if left_count > 0: left_vx_avg /= left_count
+        else: left_vx_avg = 0.5
+
         if right_count > 0: right_vx_avg /= right_count
-        signal = (right_vx_avg - left_vx_avg) * 3
-        print(f"\n\nLeft Vx: {left_vx_avg:.3f}, Right Vx: {right_vx_avg:.3f}, Signal: {signal:.3f}")
+        else: right_vx_avg = 0.5
+
+        signal = (right_vx_avg - left_vx_avg) * 2.6
         
-        self.signal += int(signal)
+        self.left_vx = left_vx_avg
+        self.right_vx = right_vx_avg
+
+        if np.sign(self.signal) != np.sign(signal) and self.image_count > 10: 
+            self.signal = 0
+            amp = 2
+
+        self.signal += signal * amp
+
+        print(f"\n\nLeft Vx: {left_vx_avg:.3f}, Right Vx: {right_vx_avg:.3f}, New Signal: {signal:.3f}, Signal: {self.signal:.3f}")
 
     def test_vels(self, kernel):
         def compute_vel(x, y):
