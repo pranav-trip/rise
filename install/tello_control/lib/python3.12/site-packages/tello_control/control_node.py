@@ -77,8 +77,8 @@ class ControlNode(Node):
         mask_left = np.zeros_like(image_bw, dtype=np.uint8)
         mask_right = np.zeros_like(image_bw, dtype=np.uint8)
 
-        mask_left[height // 4 : 3 * height // 4, width // 7 : 3 * width // 7] = 255
-        mask_right[height // 4 : 3 * height // 4, 4 * width // 7 : 6 * width // 7] = 255
+        mask_left[height // 4 : 3 * height // 4, width // 11 : 4 * width // 11] = 255
+        mask_right[height // 4 : 3 * height // 4, 7 * width // 11 : 10 * width // 11] = 255
 
         detections = self.tag_detector.detect(image_bw)
         centers, ids = [], []
@@ -139,7 +139,7 @@ class ControlNode(Node):
         min_vx, max_vx = float('inf'), -float('inf')
         left_vx_avg, right_vx_avg = 0, 0
         left_count, right_count = 0, 0
-        amp = 1
+        amp = 3.2
         
         for vel in vels:
             vel['vx'] = abs(vel['vx'])
@@ -158,19 +158,19 @@ class ControlNode(Node):
             print(f"Tag {vel['id']:>2}: vx = {vel['vx']:.3f}, side = {vel['side']}")
         
         if left_count > 0: left_vx_avg /= left_count
-        else: left_vx_avg = 0.5
+        else: left_vx_avg = 1.0
 
         if right_count > 0: right_vx_avg /= right_count
-        else: right_vx_avg = 0.5
+        else: right_vx_avg = 1.0
 
-        signal = (right_vx_avg - left_vx_avg) * 2.6
+        signal = right_vx_avg - left_vx_avg
         
         self.left_vx = left_vx_avg
         self.right_vx = right_vx_avg
 
-        if np.sign(self.signal) != np.sign(signal) and self.image_count > 10: 
+        if np.sign(self.signal) != np.sign(signal) and self.image_count > 10:
             self.signal = 0
-            amp = 2
+            amp = amp ** 1.3
 
         self.signal += signal * amp
 
