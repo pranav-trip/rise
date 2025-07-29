@@ -59,7 +59,7 @@ class ControlNode(Node):
     def control(self, msg):
         command = msg.data
 
-        if command == 'forward': self.tello.send_rc_control(0, 15, 0, int(self.signal))
+        if command == 'forward': self.tello.send_rc_control(4, 15, 0, int(self.signal))
         elif command == 'backward': self.tello.send_rc_control(0, -15, 0, 0)
         elif command == 'right': self.tello.send_rc_control(15, 0, 0, 0)
         elif command == 'left': self.tello.send_rc_control(-15, 0, 0, 0)
@@ -77,8 +77,8 @@ class ControlNode(Node):
         mask_left = np.zeros_like(image_bw, dtype=np.uint8)
         mask_right = np.zeros_like(image_bw, dtype=np.uint8)
 
-        mask_left[height // 4 : 3 * height // 4, width // 11 : 4 * width // 11] = 255
-        mask_right[height // 4 : 3 * height // 4, 7 * width // 11 : 10 * width // 11] = 255
+        mask_left[3 * height // 8 : 6 * height // 8, width // 10 : 4 * width // 10] = 255
+        mask_right[3 * height // 8 : 6 * height // 8, 6 * width // 10 : 9 * width // 10] = 255
 
         detections = self.tag_detector.detect(image_bw)
         centers, ids = [], []
@@ -139,7 +139,7 @@ class ControlNode(Node):
         min_vx, max_vx = float('inf'), -float('inf')
         left_vx_avg, right_vx_avg = 0, 0
         left_count, right_count = 0, 0
-        amp = 3.2
+        amp = 2.8
         
         for vel in vels:
             vel['vx'] = abs(vel['vx'])
@@ -168,10 +168,10 @@ class ControlNode(Node):
         self.left_vx = left_vx_avg
         self.right_vx = right_vx_avg
 
-        if np.sign(self.signal) != np.sign(signal) and self.image_count > 10:
-            self.signal = 0
-            amp = amp ** 1.3
-
+        if np.sign(self.signal) != np.sign(signal) or self.signal == 0: 
+            self.signal = 0    
+            amp *= 1.8
+        
         self.signal += signal * amp
 
         print(f"\n\nLeft Vx: {left_vx_avg:.3f}, Right Vx: {right_vx_avg:.3f}, New Signal: {signal:.3f}, Signal: {self.signal:.3f}")
