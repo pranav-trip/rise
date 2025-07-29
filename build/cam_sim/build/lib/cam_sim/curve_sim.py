@@ -30,6 +30,7 @@ class curveSim(Node):
 
         self.plotted = []
         self.inner_signals, self.outer_signals = [], []
+        self.vels = []
 
     def generate_points(self):
         points = []
@@ -164,6 +165,79 @@ class curveSim(Node):
         plt.plot(self.drone_x, self.drone_z, 'ro', markersize=10)
         plt.quiver(self.drone_x, self.drone_z, 10 * self.drone_dx, 10 * self.drone_dz, angles='xy', scale_units='xy', scale=1, color='blue')
 
+    def control_field(self):
+        field_radius = [60, 80, 120, 140]
+        field_theta = [np.pi/12, np.pi/6, np.pi/4, np.pi/3, 5*np.pi/12]
+
+        for r in field_radius:
+            for theta in field_theta:
+                    scale = 1900
+                    if theta <= np.pi/6 or (theta == np.pi/4 and r == 60): scale *= -1
+                    x = r * np.cos(theta)
+                    z = r * np.sin(theta)
+
+                    if (x, z) not in self.plotted:
+                        signal = self.weight_vels(x, z)
+
+                        center_x = self.radius * np.cos(theta)
+                        center_z = self.radius * np.sin(theta)
+                        fwd = 25
+
+                        ptc_x = center_x - x + fwd * (-np.sin(theta))
+                        ptc_z = center_z - z + fwd * ( np.cos(theta))
+                        length = np.sqrt(ptc_x**2 + ptc_z**2)
+                        ptc_x /= length
+                        ptc_z /= length
+
+                        U = scale * signal * ptc_x
+                        V = scale * signal * ptc_z
+
+                        plt.plot(x, z, 'bo', markersize=6)
+                        plt.quiver(x, z, U, V, angles='xy', scale_units='xy', scale=1, color='red')
+                        self.plotted.append((x, z))
+                        self.vels.append((U, V))
+                    
+                    else:
+                        index = self.plotted.index((x, z))
+                        U, V = self.vels[index]
+                        plt.plot(x, z, 'bo', markersize=6)
+                        plt.quiver(x, z, U, V, angles='xy', scale_units='xy', scale=1, color='red')
+
+    def test_control(self):
+
+        wall_radius, wall_theta = 40, np.pi/3 #40, np.pi/3 -- 40, np.pi/4 -- 160, np.pi/3
+
+        field_radius = [60, 80, 120, 140]
+        field_theta = [np.pi/12, np.pi/6, np.pi/4, np.pi/3, 5*np.pi/12]
+
+        for r in field_radius:
+            for theta in field_theta:
+                if theta >= wall_theta: continue
+
+                wall_x = wall_radius * np.cos(wall_theta)
+                wall_z = wall_radius * np.sin(wall_theta)
+                drone_x = r * np.cos(theta)
+                drone_z = r * np.sin(theta)
+
+                dx_global = wall_x - drone_x
+                dz_global = wall_z - drone_z
+
+                cos_t = np.cos(-theta)
+                sin_t = np.sin(-theta)
+                dx_local = cos_t * dx_global - sin_t * dz_global
+                dz_local = sin_t * dx_global + cos_t * dz_global
+
+                vel = (-self.drone_dx * dz_local + self.drone_dz * dx_local) / (dz_local ** 2)
+
+                vx = vel * np.cos(theta) * 27
+                vz = vel * np.sin(theta) * 27
+
+                vz += 7
+
+                plt.plot(drone_x, drone_z, 'bo', markersize=8)
+                plt.plot(wall_x, wall_z, 'go', markersize=8)
+                plt.quiver(drone_x, drone_z, vx, vz, angles='xy', scale_units='xy', scale=1, color='red')
+
     def update(self):
         plt.clf()
         end_sim = True
@@ -189,6 +263,7 @@ class curveSim(Node):
 
         self.plot()
         self.control()
+        self.control_field()
 
         plt.axis('equal')
 

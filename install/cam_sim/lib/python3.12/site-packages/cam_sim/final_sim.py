@@ -144,7 +144,7 @@ class finalSim(Node):
         #plt.quiver(-80, 0, 50*left_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
 
     def control_field(self):
-        field_x = [-50, -35, -20, 20, 35, 50]
+        field_x = [-50, -20, 20, 50]
         field_z = [-75, -50, -25, 0, 25, 50, 75]
 
         for x in field_x:
