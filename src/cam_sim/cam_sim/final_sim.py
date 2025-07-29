@@ -119,7 +119,7 @@ class finalSim(Node):
         left_vx_avg /= max(1, self.point_count)
         right_vx_avg /= max(1, self.point_count)
 
-        signal = (left_vx_avg + right_vx_avg) * 0.012
+        signal = (left_vx_avg + right_vx_avg) * 0.002
 
         return signal, left_vx_avg, right_vx_avg
 
@@ -138,10 +138,10 @@ class finalSim(Node):
         plt.plot(self.drone_x, self.drone_z, 'ro', markersize=10)
 
         plt.plot(self.drone_x, self.drone_z, 'ro', markersize=12)
-        plt.plot(80, 0, 'ko', markersize=10)
-        plt.plot(-80, 0, 'ko', markersize=10)
-        plt.quiver(80, 0, 50*right_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
-        plt.quiver(-80, 0, 50*left_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
+        #plt.plot(80, 0, 'ko', markersize=10)
+        #plt.plot(-80, 0, 'ko', markersize=10)
+        #plt.quiver(80, 0, 50*right_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
+        #plt.quiver(-80, 0, 50*left_vx_avg, 0, angles='xy', scale_units='xy', scale=1, color='red')
 
     def control_field(self):
         field_x = [-50, -35, -20, 20, 35, 50]
@@ -154,7 +154,7 @@ class finalSim(Node):
                     if (x, z) not in self.plotted:
                         signal, left_vx_avg, right_vx_avg = self.weight_vels(x, z)
                         plt.plot(x, z, 'bo', markersize=6)
-                        plt.quiver(x, z, scale*signal, scale*abs(signal), angles='xy', scale_units='xy', scale=1, color='red')
+                        plt.quiver(x, z, scale*signal, 8, angles='xy', scale_units='xy', scale=1, color='red')
                         self.plotted.append((x, z))
                         self.vels.append(signal)
                     
@@ -162,11 +162,11 @@ class finalSim(Node):
                         index = self.plotted.index((x, z))
                         signal = self.vels[index]
                         plt.plot(x, z, 'bo', markersize=6)
-                        plt.quiver(x, z, scale*signal, scale*abs(signal), angles='xy', scale_units='xy', scale=1, color='red')
+                        plt.quiver(x, z, scale*signal, 8, angles='xy', scale_units='xy', scale=1, color='red')
 
     def test_control(self):
 
-        wall_x, wall_z = 60, 45 #-60,70 and 60,20
+        wall_x, wall_z = -60, 20 #60, 45 and -60,70
 
         field_x = [-50, -20, 20, 50]
         field_z = [-75, -50, -25, 0, 25, 50, 75]
@@ -178,8 +178,6 @@ class finalSim(Node):
                 dx = wall_x - drone_x
                 dz = wall_z - drone_z
                 vel = (-self.drone_dx * dz + self.drone_dz * dx) / (dz ** 2)
-                if (wall_x < 0 and drone_x < 0): vel *= -1
-                if (wall_x > 0 and drone_x > 0): vel *= -1
                 vel = np.clip(vel, -0.5, 0.5)
                     
                 plt.plot(drone_x, drone_z, 'bo', markersize=8)
@@ -208,7 +206,7 @@ class finalSim(Node):
 
         self.plot()
         self.control()
-        self.test_control()
+        self.control_field()
         self.transform()
 
         os.system("clear")
