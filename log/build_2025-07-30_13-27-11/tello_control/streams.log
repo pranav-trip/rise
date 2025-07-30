@@ -1,0 +1,23 @@
+[0.909s] Invoking command in '/home/roboticslab/rise/src/tello_control': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/roboticslab/rise/build/tello_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/roboticslab/rise/install/tello_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/tello_control build --build-base /home/roboticslab/rise/build/tello_control/build install --record /home/roboticslab/rise/build/tello_control/install.log --single-version-externally-managed install_data
+[1.148s] running egg_info
+[1.165s] writing ../../build/tello_control/tello_control.egg-info/PKG-INFO
+[1.165s] writing dependency_links to ../../build/tello_control/tello_control.egg-info/dependency_links.txt
+[1.166s] writing entry points to ../../build/tello_control/tello_control.egg-info/entry_points.txt
+[1.166s] writing requirements to ../../build/tello_control/tello_control.egg-info/requires.txt
+[1.166s] writing top-level names to ../../build/tello_control/tello_control.egg-info/top_level.txt
+[1.202s] reading manifest file '../../build/tello_control/tello_control.egg-info/SOURCES.txt'
+[1.202s] writing manifest file '../../build/tello_control/tello_control.egg-info/SOURCES.txt'
+[1.203s] running build
+[1.203s] running build_py
+[1.203s] running install
+[1.209s] running install_lib
+[1.228s] running install_data
+[1.228s] running install_egg_info
+[1.247s] removing '/home/roboticslab/rise/install/tello_control/lib/python3.12/site-packages/tello_control-0.0.0-py3.12.egg-info' (and everything under it)
+[1.247s] Copying ../../build/tello_control/tello_control.egg-info to /home/roboticslab/rise/install/tello_control/lib/python3.12/site-packages/tello_control-0.0.0-py3.12.egg-info
+[1.248s] running install_scripts
+[1.369s] Installing command script to /home/roboticslab/rise/install/tello_control/lib/tello_control
+[1.369s] Installing control script to /home/roboticslab/rise/install/tello_control/lib/tello_control
+[1.369s] Installing test script to /home/roboticslab/rise/install/tello_control/lib/tello_control
+[1.370s] writing list of installed files to '/home/roboticslab/rise/build/tello_control/install.log'
+[1.395s] Invoked command in '/home/roboticslab/rise/src/tello_control' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/roboticslab/rise/build/tello_control/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/roboticslab/rise/install/tello_control/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/tello_control build --build-base /home/roboticslab/rise/build/tello_control/build install --record /home/roboticslab/rise/build/tello_control/install.log --single-version-externally-managed install_data

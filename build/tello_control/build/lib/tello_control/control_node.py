@@ -59,7 +59,7 @@ class ControlNode(Node):
     def control(self, msg):
         command = msg.data
 
-        if command == 'forward': self.tello.send_rc_control(4, 15, 0, int(self.signal))
+        if command == 'forward': self.tello.send_rc_control(2, 15, 0, int(self.signal))
         elif command == 'backward': self.tello.send_rc_control(0, -15, 0, 0)
         elif command == 'right': self.tello.send_rc_control(15, 0, 0, 0)
         elif command == 'left': self.tello.send_rc_control(-15, 0, 0, 0)
@@ -116,30 +116,40 @@ class ControlNode(Node):
 
     def compute_vels(self, mask_left, mask_right):
         valid_ids = set.intersection(*[set(frame.keys()) for frame in self.stored_frames])
-        vels = []
+        vels_left = []
+        vels_right = []
 
         print(f"\n\n{self.image_count:04d}")
         for id in sorted(valid_ids):
             x = np.array([frame[id][0] for frame in self.stored_frames], dtype=np.float32)
             y = np.array([frame[id][1] for frame in self.stored_frames], dtype=np.float32)
 
-            square_sum = np.sum(np.square(self.kernel))
+            vx = float(np.dot(self.kernel, x) / np.sum(self.kernel ** 2))
+            vy = float(np.dot(self.kernel, y) / np.sum(self.kernel ** 2))
 
-            vx = float(np.dot(self.kernel, x) / square_sum)
-            vy = float(np.dot(self.kernel, y) / square_sum)
+            px, py = int(x[0]), int(y[0])
+            if mask_left[py, px] == 255:
+                vels_left.append({'vx': vx, 'vy': vy, 'side': 'left', 'id': id})
+            elif mask_right[py, px] == 255:
+                vels_right.append({'vx': vx, 'vy': vy, 'side': 'right', 'id': id})
 
-            if mask_left[int(y[0]), int(x[0])] == 255: side = 'left'
-            if mask_right[int(y[0]), int(x[0])] == 255: side = 'right'
-            
-            vels.append({'vx': vx, 'vy': vy, 'side': side, 'id': id})
-        
+        def remove_outliers(vels):
+            if not vels: return []
+            vx = np.array([v['vx'] for v in vels])
+            median = np.median(vx)
+            mad = np.median(np.abs(vx - median))
+            if mad == 0:
+                return vels
+            return [v for v in vels if abs(v['vx'] - median) < 2 * mad]
+
+        vels = remove_outliers(vels_left) + remove_outliers(vels_right)
         self.compute_signal(vels)
 
     def compute_signal(self, vels):
         min_vx, max_vx = float('inf'), -float('inf')
         left_vx_avg, right_vx_avg = 0, 0
         left_count, right_count = 0, 0
-        amp = 3.2
+        amp = 3.6
         
         for vel in vels:
             vel['vx'] = abs(vel['vx'])
@@ -147,7 +157,7 @@ class ControlNode(Node):
             if vel['vx'] > max_vx: max_vx = vel['vx']
         
         for vel in vels:
-            vel['vx'] = max((abs(vel['vx']) - min_vx) / max((max_vx - min_vx), 0.1), 0.1)
+            vel['vx'] = max((abs(vel['vx']) - min_vx) / max((max_vx - min_vx), 0.1), 0.2)
             if vel['side'] == 'left': 
                 left_vx_avg += vel['vx']
                 left_count += 1
@@ -159,7 +169,6 @@ class ControlNode(Node):
         
         if left_count > 0: left_vx_avg /= left_count
         else: left_vx_avg = 0.75
-
         if right_count > 0: right_vx_avg /= right_count
         else: right_vx_avg = 0.75
 
@@ -169,10 +178,11 @@ class ControlNode(Node):
         self.right_vx = right_vx_avg
 
         if np.sign(self.signal) != np.sign(signal) or self.signal == 0: 
-            self.signal = 0
-            amp = amp ** 1.3
+            self.signal = 2 * np.sign(self.signal)
+            amp *= 1.6
         
         self.signal += signal * amp
+        self.signal = np.clip(self.signal, -8, 8)
 
         print(f"\n\nLeft Vx: {left_vx_avg:.3f}, Right Vx: {right_vx_avg:.3f}, New Signal: {signal:.3f}, Signal: {self.signal:.3f}")
 
