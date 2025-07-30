@@ -12,7 +12,7 @@ class CommandNode(Node):
 
         time.sleep(8)
         self.timer = self.create_timer(0.1, self.send_command)
-        self.time_lim = 250
+        self.time_lim = 210
         self.time_count = 0
 
     def get_key(self):

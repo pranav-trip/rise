@@ -139,7 +139,7 @@ class ControlNode(Node):
         min_vx, max_vx = float('inf'), -float('inf')
         left_vx_avg, right_vx_avg = 0, 0
         left_count, right_count = 0, 0
-        amp = 2.8
+        amp = 3.2
         
         for vel in vels:
             vel['vx'] = abs(vel['vx'])
@@ -158,10 +158,10 @@ class ControlNode(Node):
             print(f"Tag {vel['id']:>2}: vx = {vel['vx']:.3f}, side = {vel['side']}")
         
         if left_count > 0: left_vx_avg /= left_count
-        else: left_vx_avg = 1.0
+        else: left_vx_avg = 0.75
 
         if right_count > 0: right_vx_avg /= right_count
-        else: right_vx_avg = 1.0
+        else: right_vx_avg = 0.75
 
         signal = right_vx_avg - left_vx_avg
         
@@ -169,8 +169,8 @@ class ControlNode(Node):
         self.right_vx = right_vx_avg
 
         if np.sign(self.signal) != np.sign(signal) or self.signal == 0: 
-            self.signal = 0    
-            amp *= 1.8
+            self.signal = 0
+            amp = amp ** 1.3
         
         self.signal += signal * amp
 
