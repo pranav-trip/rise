@@ -149,7 +149,7 @@ class ControlNode(Node):
         min_vx, max_vx = float('inf'), -float('inf')
         left_vx_avg, right_vx_avg = 0, 0
         left_count, right_count = 0, 0
-        amp = 3.6
+        amp = 3.8
         
         for vel in vels:
             vel['vx'] = abs(vel['vx'])
@@ -178,8 +178,8 @@ class ControlNode(Node):
         self.right_vx = right_vx_avg
 
         if np.sign(self.signal) != np.sign(signal) or self.signal == 0: 
-            self.signal = 2 * np.sign(self.signal)
-            amp *= 1.6
+            self.signal = np.sign(self.signal)
+            amp *= 1.5
         
         self.signal += signal * amp
         self.signal = np.clip(self.signal, -8, 8)

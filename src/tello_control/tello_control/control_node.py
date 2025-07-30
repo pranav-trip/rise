@@ -178,7 +178,7 @@ class ControlNode(Node):
         self.right_vx = right_vx_avg
 
         if np.sign(self.signal) != np.sign(signal) or self.signal == 0: 
-            self.signal = 2 * np.sign(self.signal)
+            self.signal = np.sign(self.signal)
             amp *= 1.5
         
         self.signal += signal * amp
