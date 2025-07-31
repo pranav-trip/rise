@@ -135,12 +135,13 @@ class ControlNode(Node):
 
         def remove_outliers(vels):
             if not vels: return []
-            vx = np.array([v['vx'] for v in vels])
+
+            vx = np.array([vel['vx'] for vel in vels])
             median = np.median(vx)
-            mad = np.median(np.abs(vx - median))
-            if mad == 0:
-                return vels
-            return [v for v in vels if abs(v['vx'] - median) < 2 * mad]
+            mad = np.median(np.abs(vx) - median)
+
+            if mad == 0: return vels
+            return [vel for vel in vels if abs(vel['vx'] - median) < 2 * mad]
 
         vels = remove_outliers(vels_left) + remove_outliers(vels_right)
         self.compute_signal(vels)
@@ -149,7 +150,6 @@ class ControlNode(Node):
         min_vx, max_vx = float('inf'), -float('inf')
         left_vx_avg, right_vx_avg = 0, 0
         left_count, right_count = 0, 0
-        amp = 3.8
         
         for vel in vels:
             vel['vx'] = abs(vel['vx'])
@@ -157,7 +157,9 @@ class ControlNode(Node):
             if vel['vx'] > max_vx: max_vx = vel['vx']
         
         for vel in vels:
-            vel['vx'] = max((abs(vel['vx']) - min_vx) / max((max_vx - min_vx), 0.1), 0.2)
+            vel['vx'] = (abs(vel['vx']) - min_vx) / max((max_vx - min_vx), 1e-3)
+            vel['vx'] = np.clip(vel['vx'], 0.2, 0.8)
+
             if vel['side'] == 'left': 
                 left_vx_avg += vel['vx']
                 left_count += 1
@@ -168,21 +170,19 @@ class ControlNode(Node):
             print(f"Tag {vel['id']:>2}: vx = {vel['vx']:.3f}, side = {vel['side']}")
         
         if left_count > 0: left_vx_avg /= left_count
-        else: left_vx_avg = 0.75
+        else: left_vx_avg = 0.80
         if right_count > 0: right_vx_avg /= right_count
-        else: right_vx_avg = 0.75
+        else: right_vx_avg = 0.80
 
         signal = right_vx_avg - left_vx_avg
-        
-        self.left_vx = left_vx_avg
-        self.right_vx = right_vx_avg
+        amp = 3.2
 
         if np.sign(self.signal) != np.sign(signal) or self.signal == 0: 
-            self.signal = np.sign(self.signal)
-            amp *= 1.5
+            self.signal = 2*np.sign(self.signal)
+            amp = 4.5
         
         self.signal += signal * amp
-        self.signal = np.clip(self.signal, -8, 8)
+        self.signal = np.clip(self.signal, -9, 9)
 
         print(f"\n\nLeft Vx: {left_vx_avg:.3f}, Right Vx: {right_vx_avg:.3f}, New Signal: {signal:.3f}, Signal: {self.signal:.3f}")
 

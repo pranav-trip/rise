@@ -10,7 +10,7 @@ class CommandNode(Node):
         self.cmd_pub = self.create_publisher(String, 'drone_command', 10)
         self.img_pub = self.create_publisher(Bool, 'drone_stream', 10)
 
-        time.sleep(8)
+        time.sleep(10)
         self.timer = self.create_timer(0.1, self.send_command)
         self.time_lim = 230
         self.time_count = 0
